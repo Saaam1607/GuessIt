@@ -14,7 +14,7 @@ function ClientPage() {
   }
 
   function goToHostPage() {
-    navigate("/client", { });
+    navigate("/host", { });
   }
 
   return (
