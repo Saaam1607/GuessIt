@@ -33,7 +33,7 @@ function App() {
       >
         <Router>
           <Routes>
-
+            <Route path="/" exact element={<ClientPage />} />
             <Route path="/client" exact element={<ClientPage />} />
             <Route path="/client/join" exact element={<JoinGamePage />} />
             <Route path="/client/create" exact element={<CreateGamePage />} />
