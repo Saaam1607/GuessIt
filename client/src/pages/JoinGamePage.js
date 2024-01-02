@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://guessitserver.onrender.com";
+
 
 
 function JoinGamePage() {
@@ -16,7 +18,7 @@ function JoinGamePage() {
   }
 
   function joinGame(id) {
-    fetch("/api/v1/game/join/code/" + id, {
+    fetch(`${backendUrl}/api/v1/game/join/code/` + id, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
