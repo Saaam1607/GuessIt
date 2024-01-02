@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import Title from './components/Title';
+import HomePage from './pages/HomePage';
 
 import ClientPage from './pages/ClientPage';
 import JoinGamePage from './pages/JoinGamePage';
@@ -33,7 +34,9 @@ function App() {
       >
         <Router>
           <Routes>
-            <Route path="/" exact element={<ClientPage />} />
+
+            <Route path="/" exact element={<HomePage />} />
+
             <Route path="/client" exact element={<ClientPage />} />
             <Route path="/client/join" exact element={<JoinGamePage />} />
             <Route path="/client/create" exact element={<CreateGamePage />} />
@@ -42,7 +45,6 @@ function App() {
 
             <Route path="/host" exact element={<HostWaitingRoom />} />
             <Route path="/host/console" exact element={<HostConsole />} />
-
 
           </Routes>
         </Router> 
