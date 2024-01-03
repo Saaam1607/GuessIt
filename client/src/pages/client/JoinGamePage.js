@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import CustomButton from "../../components/CustomButton.js";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://weathcastserver.onrender.com";
+const backendUrl = "https://weathcastserver.onrender.com";
 
 
 
