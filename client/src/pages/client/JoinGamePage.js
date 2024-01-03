@@ -26,6 +26,7 @@ function JoinGamePage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ name: playerName }),
+      mode: "cors",
     })
       .then((response) => {
         if (!response.ok) {
@@ -37,7 +38,6 @@ function JoinGamePage() {
         console.log(data);
         navigate("/client/game", { state: { gameCode: gameCode, playerName: playerName } });
       })
-
   }
 
   function tryToJoinGame() {
