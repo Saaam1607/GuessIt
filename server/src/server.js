@@ -10,7 +10,7 @@ const tokenManager = require("./components/tokenManager");
 const questionDb = require("./game/questions");
 
 const corsOptions = {
-  origin: "*",
+  origin: ["http://localhost:3000", "https://guessitclient.onrender.com"],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   credentials: true,
   optionsSuccessStatus: 204,
@@ -20,7 +20,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIO(server, {
   cors: {
-    origin: "*",
+    origin: ["http://localhost:3000", "https://guessitclient.onrender.com"],
     methods: ["GET", "POST"],
     credentials: true,
   },
