@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 
 import CustomButton from "../../components/CustomButton.js";
 
-const backendUrl = "https://weathcastserver.onrender.com";
+const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://guessitserver.onrender.com";
 
 
 
@@ -26,7 +26,6 @@ function JoinGamePage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ name: playerName }),
-      mode: "cors",
     })
       .then((response) => {
         if (!response.ok) {
