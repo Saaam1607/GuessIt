@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 
-const socket = io.connect("https://guessitserver.onrender.com");
-
+const socketUrl = process.env.REACT_APP_SOCKET_URL || "https://guessitserver.onrender.com";
+const socket = io.connect(socketUrl);
 
 
 function HostConsole() {
@@ -11,12 +11,26 @@ function HostConsole() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState(undefined);
 
+  function getQuestion() {
+    socket.emit("getQuestion", {});
+  }
+
   function sendNextQuestion() {
     socket.emit("nextQuestion", {});
     setPlayersAnswersData([]);
   }
 
+  function hurryUp() {
+    socket.emit("hurryUp", {});
+  }
+
+  function extremeHurryUp() {
+    socket.emit("extremeHurryUp", {});
+  }
+
   useEffect(() => {
+
+    getQuestion();
 
     function handleNewAnswer(data) {
       console.log("new answer from: " + data.name + " " + data.answer)
@@ -63,10 +77,24 @@ function HostConsole() {
       </div>
 
       <button
-        className={"btn btn-primary btn-lg"}
+        className={"btn btn-primary btn-lg m-3"}
         onClick={sendNextQuestion}
       >
         Send Next Question
+      </button>
+
+      <button
+        className={"btn btn-secondary btn-lg m-3"}
+        onClick={hurryUp}
+      >
+        Metti Fretta
+      </button>
+
+      <button
+        className={"btn btn-secondary btn-lg m-3"}
+        onClick={extremeHurryUp}
+      >
+        Metti Fretta Estremo
       </button>
 
     </div>

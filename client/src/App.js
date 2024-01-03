@@ -3,14 +3,14 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Title from './components/Title';
 import HomePage from './pages/HomePage';
 
-import ClientPage from './pages/ClientPage';
-import JoinGamePage from './pages/JoinGamePage';
-import CreateGamePage from './pages/CreateGamePage';
-import WaitingRoom from './pages/WaitingRoom';
-import ClientGame from './pages/ClientGame';
+import ClientPage from './pages/client/ClientPage';
+import JoinGamePage from './pages/client/JoinGamePage';
+import CreateGamePage from './pages/client/CreateGamePage';
+import WaitingRoom from './pages/client/WaitingRoom';
+import ClientGame from './pages/client/ClientGame';
 
-import HostWaitingRoom from './pages/HostWaitingRoom';
-import HostConsole from './pages/HostConsole';
+import HostWaitingRoom from './pages/host/HostWaitingRoom';
+import HostConsole from './pages/host/HostConsole';
 
 
 function App() {

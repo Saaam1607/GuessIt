@@ -1,14 +1,21 @@
 import React, { useState, useEffect } from "react";
 import { io } from 'socket.io-client';
 
-const socket = io.connect("https://guessitserver.onrender.com");
+import './clientGame.css';
+
+const SoundManager = require('../../components/SoundManager.js');
+
+const socketUrl = process.env.REACT_APP_SOCKET_URL || "https://guessitserver.onrender.com";
+const socket = io.connect(socketUrl);
+
+
 
 
 
 function ClientGame() {
 
   const [question, setQuestion] = useState("");
-  const [answer, setAnswer] = useState(undefined);
+  const [answer, setAnswer] = useState("");
   const [showError, setShowError] = useState(false);
   const [hasAnswered, setHasAnswered] = useState(false);
 
@@ -17,35 +24,64 @@ function ClientGame() {
   }
 
   function sendAnswer() {
+    if (hasAnswered) {
+      return;
+    }
+
     if (answer === undefined || answer === "") {
       setShowError(true);
       return;
     }
     setHasAnswered(true);
     socket.emit("newAnswer", { playerId: localStorage.getItem('playerId'), answer: answer });
+    SoundManager.playAnswerSentSound();
   }
 
+  function handleClockSound() {
+    if (!this.hasAnswered) {
+      SoundManager.playClockSound();
+    }
+  }
+
+  function handleExtremeClockSound() {
+    if (!this.hasAnswered) {
+      SoundManager.playExtremeClockSound();
+    }
+  }
+
+
   useEffect(() => {
+
+    console.log("useEffect");
+    console.log("has useEFF? " + hasAnswered);
 
     getQuestion();
 
     function handleNextQuestion(data) {
+      SoundManager.playNewQuestionSound();
       setQuestion(data.question);
       setAnswer(undefined);
       setShowError(false);
       setHasAnswered(false);
     }
+
+
   
     socket.on("nextQuestion", handleNextQuestion);
+    socket.on("clock", handleClockSound);
+    socket.on("extremeClock", handleExtremeClockSound);
   
     return () => {
       socket.off("nextQuestion", handleNextQuestion);
+      socket.off("clock", handleClockSound);
+      socket.off("extremeClock", handleExtremeClockSound);
     };
 
   }, [socket]);
 
   return (
     <div className="d-flex flex-column align-items-center justify-content-center">
+      {console.log("has? " + hasAnswered)}
       <div
         className={"d-flex flex-column align-items-center justify-content-center bg-light m-3 p-2"}
         style={{
@@ -53,14 +89,16 @@ function ClientGame() {
           width: "80%",
         }}
       >
-        <h1>Question</h1>
-        <h3>{question}</h3>
+        <h1>DOMANDA</h1>
+        <h5 className="p-3">
+          {question}
+        </h5>
 
         { !hasAnswered && (
           <form
-            className="d-flex flex-column align-items-center justify-content-center"
+            className="d-flex flex-column align-items-center justify-content-center p-3"
             onSubmit={(e) => {
-              e.preventDefault(); // Evita il submit automatico del form
+              e.preventDefault();
               sendAnswer();
             }}
           >
@@ -68,8 +106,8 @@ function ClientGame() {
               type="number"
               className="form-control"
               id="answerInput"
-              placeholder="your answer"
-              value={answer}
+              placeholder="risposta"
+              value={answer || ''}
               onChange={(e) => {
                 setAnswer(e.target.value);
                 setShowError(false);
@@ -80,7 +118,7 @@ function ClientGame() {
               type="submit"
               className="btn btn-primary m-5"
             >
-              Answer
+              Indovina
             </button>
             <p className="text-danger m-1">
               {showError && "Please enter a valid answer!"}
@@ -89,7 +127,7 @@ function ClientGame() {
         )}
 
         { hasAnswered && (
-          <p>Waiting for other players to answer...</p>
+          <p>Aspettando le risposte degli altri giocatori...</p>
         )}
 
 

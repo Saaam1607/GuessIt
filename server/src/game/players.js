@@ -51,6 +51,10 @@ function updatePlayerLeft(socketId) {
   });
 }
 
+function checkIfAllPlayersOffline() {
+  return players.every(player => player.active === false);
+}
+
 module.exports = {
   checkIfAlreadyJoined,
   addPlayer,
@@ -59,5 +63,6 @@ module.exports = {
   printPlayers,
   getPlayerName,
   updatePlayerActive,
-  updatePlayerLeft
+  updatePlayerLeft,
+  checkIfAllPlayersOffline
 };

@@ -31,6 +31,7 @@ app.use(cors(corsOptions));
 
 app.use(routes);
 
+let gameStarted = false;
 let questionIndex = 0;
 const maxQuestionIndex = questionDb.length - 1;
 
@@ -83,10 +84,16 @@ io.on("connection", (socket) => {
     console.log("stampa aggiornata dei players: ");
     playerManager.printPlayers();
 
+    if (gameStarted) {
+      socket.emit("gameStarted", {});
+    }
   });
 
   socket.on("startGame", (data) => {
     io.emit("gameStarted", {});
+    io.emit("nextQuestion", {question: getCurrentQuestion()});
+    gameStarted = true;
+
   });
 
   socket.on("newAnswer", (data) => {
@@ -96,11 +103,24 @@ io.on("connection", (socket) => {
   });
 
   socket.on("nextQuestion", (data) => {
+    updateQuestionIndex();
     const question = getCurrentQuestion();
     const answer = getCurrentAnswer();
     io.emit("nextQuestion", {question: question});
     io.emit("nextAnswer", {answer: answer});
-    updateQuestionIndex();
+  });
+
+  socket.on("getQuestion", (data) => {
+    const question = getCurrentQuestion();
+    socket.emit("nextQuestion", {question: question});
+  });
+
+  socket.on("hurryUp", (data) => {
+    io.emit("clock", {});
+  });
+
+  socket.on("extremeHurryUp", (data) => {
+    io.emit("extremeClock", {});
   });
 
   socket.on("disconnect", () => {
@@ -108,6 +128,10 @@ io.on("connection", (socket) => {
     io.emit("playersList", { playersList: playerManager.getAllPlayersNames() });
     playerManager.printPlayers();
     console.log(`User Disconnected: ${socket.id}`);
+    if (playerManager.checkIfAllPlayersOffline()) {
+      gameStarted = false;
+      questionIndex = 0;
+    }
   });
 });
 

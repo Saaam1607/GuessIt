@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://guessitserver.onrender.com";
+const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://weathcastserver.onrender.com";
 
 
 

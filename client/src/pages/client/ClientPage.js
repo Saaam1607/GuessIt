@@ -35,7 +35,7 @@ function ClientPage() {
       }}
     >
       <form className="m-1">
-        <div class="form-group">
+        <div className="form-group">
         <label>Enter your name</label>
         <input
           type="string"
