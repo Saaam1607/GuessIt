@@ -115,6 +115,10 @@ io.on("connection", (socket) => {
     socket.emit("nextQuestion", {question: question});
   });
 
+  socket.on("results", (data) => {
+    io.emit("results", { playersAnswersData: data.playersAnswersData });
+  });
+
   socket.on("hurryUp", (data) => {
     io.emit("clock", {});
   });

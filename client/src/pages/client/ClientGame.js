@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { io } from 'socket.io-client';
 
+import CustomButton from "../../components/CustomButton.js";
+
 import './clientGame.css';
 
 const SoundManager = require('../../components/SoundManager.js');
@@ -19,6 +21,9 @@ function ClientGame() {
   const [showError, setShowError] = useState(false);
   const [hasAnswered, setHasAnswered] = useState(false);
   const hasAnsweredRef = useRef(hasAnswered);
+
+  const [showResults, setShowResults] = useState(false);
+  const [playersAnswersData, setPlayersAnswersData] = useState([]);
 
   useEffect(() => {
     hasAnsweredRef.current = hasAnswered;
@@ -66,14 +71,26 @@ function ClientGame() {
       setAnswer(undefined);
       setShowError(false);
       setHasAnswered(false);
+      setShowResults(false);
+    }
+
+    function handleResults(data) {
+      const unsortedPlayersAnswersData = data.playersAnswersData;
+      const sortedPlayersAnswersData = unsortedPlayersAnswersData.sort((a, b) => {
+        return a.answer - b.answer;
+      });
+      setPlayersAnswersData(sortedPlayersAnswersData);
+      setShowResults(true);
     }
   
     socket.on("nextQuestion", handleNextQuestion);
+    socket.on("results", handleResults);
     socket.on("clock", handleClockSound);
     socket.on("extremeClock", handleExtremeClockSound);
   
     return () => {
       socket.off("nextQuestion", handleNextQuestion);
+      socket.off("results", handleResults);
       socket.off("clock", handleClockSound);
       socket.off("extremeClock", handleExtremeClockSound);
     };
@@ -81,22 +98,40 @@ function ClientGame() {
   }, [socket]);
 
   return (
-    <div className="d-flex flex-column align-items-center justify-content-center">
+    <div
+      className="d-flex flex-column align-items-center justify-content-center  border-4"
+      style={{
+        height: "90%",
+        width: "100%",
+      }}
+    >
       <div
-        className={"d-flex flex-column align-items-center justify-content-center bg-light m-3 p-2"}
+        className={"d-flex flex-column align-items-center justify-content-start bg-light m-3 p-2"}
         style={{
           borderRadius: "30px",
           width: "80%",
+          height: "100%",
         }}
       >
-        <h1>DOMANDA</h1>
+        <h1
+          style={{
+            fontFamily: "customFont",
+            fontSize: "2rem",
+            letterSpacing: "0.1rem",
+          }}
+        >
+          Domanda
+        </h1>
         <h5 className="p-3">
           {question}
         </h5>
 
-        { !hasAnswered && (
+        { !hasAnswered && !showResults && (
           <form
-            className="d-flex flex-column align-items-center justify-content-center p-3"
+            className=" border-4 d-flex flex-column align-items-center justify-content-center p-3"
+            style={{
+              height: "100%",
+            }}
             onSubmit={(e) => {
               e.preventDefault();
               sendAnswer();
@@ -114,20 +149,60 @@ function ClientGame() {
               }}
             />
 
-            <button
-              type="submit"
-              className="btn btn-primary m-5"
+            <div
+              className=" d-flex flex-column align-items-center justify-content-center"
+              style={{
+                width: "100%",
+                height: "100%",
+              }}
             >
-              Indovina
-            </button>
-            <p className="text-danger m-1">
-              {showError && "Please enter a valid answer!"}
-            </p>
+              <CustomButton
+                message="Invia"
+                color="rgb(87, 169, 221)"
+                type="submit"
+              />
+
+              <p className="text-danger m-1">
+                {showError && "Please enter a valid answer!"}
+              </p>
+            </div>
+            
+
           </form>
         )}
 
-        { hasAnswered && (
+        { hasAnswered && !showResults && (
           <p>Aspettando le risposte degli altri giocatori...</p>
+        )}
+
+        { showResults && (
+          <div>
+            <h3
+              style={{
+                fontFamily: "customFont",
+                fontSize: "2rem",
+                letterSpacing: "0.1rem",
+              }}
+            >
+              Risultati
+            </h3>
+            {playersAnswersData.map((playerAnswerData, index) => (
+              <div
+                key={index}
+                className={"m-1"}
+              >
+                <p
+                  style={{
+                    fontFamily: "customFont",
+                    fontSize: "1.4rem",
+                    letterSpacing: "0.1rem",
+                  }}
+                >
+                  {playerAnswerData.name} : {playerAnswerData.answer}
+                </p>
+              </div>
+            ))}
+          </div>
         )}
 
 

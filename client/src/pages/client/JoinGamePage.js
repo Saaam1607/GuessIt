@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 
+import CustomButton from "../../components/CustomButton.js";
+
 const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://weathcastserver.onrender.com";
 
 
@@ -56,14 +58,14 @@ function JoinGamePage() {
         width: "100%",
       }}
     >
-      <p>Welcome: {playerName}!</p>
+      <p>Benvenuto {playerName}!</p>
       <form className="m-1">
         <div className="form-group">
-        <label>Enter a game code</label>
+        <label>Inserisci il codice della partita</label>
         <input
           type="string"
           className="form-control"
-          placeholder="game code"
+          placeholder="codice"
           value={gameCode}
           onChange={(e) => {
             setGameCode(e.target.value)
@@ -72,20 +74,18 @@ function JoinGamePage() {
         />
         </div>
       </form>
-      <button
-        type="button"
-        className="btn btn-primary m-1"
-        onClick={tryToJoinGame}
-      >
-        Join
-      </button>
-      <button
-        type="button"
-        className="btn btn-danger m-1"
-        onClick={backToClientHomePage}
-      >
-        Back
-      </button>
+
+      <CustomButton
+        message="Entra"
+        onClickFunction={tryToJoinGame}
+        color="rgb(87, 169, 221)"
+      />
+
+      <CustomButton
+        message="Indietro"
+        onClickFunction={backToClientHomePage}
+        color="rgb(221, 0, 47)"
+      />
 
       <p className="text-danger m-1">
         {showError ? "Please enter a game code first" : ""}

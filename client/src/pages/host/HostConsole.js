@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 
+import CustomButton from "../../components/CustomButton.js";
+
 const socketUrl = process.env.REACT_APP_SOCKET_URL || "https://guessitserver.onrender.com";
 const socket = io.connect(socketUrl);
 
@@ -13,6 +15,10 @@ function HostConsole() {
 
   function getQuestion() {
     socket.emit("getQuestion", {});
+  }
+
+  function sendResults() {
+    socket.emit("results", { playersAnswersData: playersAnswersData });
   }
 
   function sendNextQuestion() {
@@ -75,26 +81,37 @@ function HostConsole() {
         ))}
       </div>
 
-      <button
-        className={"btn btn-primary btn-lg m-3"}
-        onClick={sendNextQuestion}
-      >
-        Send Next Question
-      </button>
+      <div className="m-2">
+        <CustomButton
+          message={"Invia Prossima Domanda"}
+          color={"rgb(87, 169, 221)"}
+          onClickFunction={sendNextQuestion}
+        />
+      </div>
 
-      <button
-        className={"btn btn-secondary btn-lg m-3"}
-        onClick={hurryUp}
-      >
-        Metti Fretta
-      </button>
+      <div className="m-2">
+        <CustomButton
+          message={"Invia Risultati"}
+          color={"#00b300"}
+          onClickFunction={sendResults}
+        />
+      </div>
 
-      <button
-        className={"btn btn-secondary btn-lg m-3"}
-        onClick={extremeHurryUp}
-      >
-        Metti Fretta Estremo
-      </button>
+      <div className="m-2">
+        <CustomButton
+          message={"Metti Fretta"}
+          color={"#ff6600"}
+          onClickFunction={hurryUp}
+        />
+      </div>
+
+      <div className="m-2">
+        <CustomButton
+          message={"Metti Fretta Estremo"}
+          color={"#ff0000"}
+          onClickFunction={extremeHurryUp}
+        />
+      </div>
 
     </div>
   );

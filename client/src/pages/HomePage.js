@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-
+import CustomButton from "../components/CustomButton.js";
 
 
 
@@ -25,20 +25,18 @@ function ClientPage() {
         width: "100%",
       }}
     >
-      <button
-        type="button"
-        className="btn btn-primary m-1"
-        onClick={goToClientPage}
-      >
-        Client
-      </button>
-      <button
-        type="button"
-        className="btn btn-primary m-1"
-        onClick={goToHostPage}
-      >
-        Host
-      </button>
+
+      <CustomButton
+        message="Giocatore"
+        onClickFunction={goToClientPage}
+        color="rgb(87, 169, 221)"
+      />
+
+      <CustomButton
+        message="Host"
+        onClickFunction={goToHostPage}
+        color="rgb(87, 169, 221)"
+      />
 
     </div>
   );

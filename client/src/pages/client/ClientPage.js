@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import CustomButton from "../../components/CustomButton.js";
+
 
 
 function ClientPage() {
@@ -36,11 +38,11 @@ function ClientPage() {
     >
       <form className="m-1">
         <div className="form-group">
-        <label>Enter your name</label>
+        <label>Inserisci il tuo nome</label>
         <input
           type="string"
           className="form-control"
-          placeholder="your name"
+          placeholder="nome"
           value={name}
           onChange={(e) => {
             setName(e.target.value)
@@ -49,23 +51,21 @@ function ClientPage() {
         />
         </div>
       </form>
-      <button
-        type="button"
-        className="btn btn-primary m-1"
-        onClick={goToCreateGamePage}
-      >
-        Create a new game
-      </button>
-      <button
-        type="button"
-        className="btn btn-primary m-1"
-        onClick={goToJoinGamePage}
-      >
-        Join a game
-      </button>
+
+      <CustomButton
+        message="Crea una partita"
+        onClickFunction={goToCreateGamePage}
+        color="rgb(87, 169, 221)"
+      />
+
+      <CustomButton
+        message="Entra in una partita"
+        onClickFunction={goToJoinGamePage}
+        color="rgb(87, 169, 221)"
+      />
       
       <p className="text-danger m-1">
-        {showError ? "Please enter your name first" : ""}
+        {showError ? "Inserisci un nome prima di giocare" : ""}
       </p>
     </div>
   );
