@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { io } from 'socket.io-client';
 
 import './clientGame.css';
@@ -18,6 +18,11 @@ function ClientGame() {
   const [answer, setAnswer] = useState("");
   const [showError, setShowError] = useState(false);
   const [hasAnswered, setHasAnswered] = useState(false);
+  const hasAnsweredRef = useRef(hasAnswered);
+
+  useEffect(() => {
+    hasAnsweredRef.current = hasAnswered;
+  }, [hasAnswered]);
 
   function getQuestion() {
     socket.emit("getQuestion", {});
@@ -38,22 +43,20 @@ function ClientGame() {
   }
 
   function handleClockSound() {
-    if (!this.hasAnswered) {
+    if (!hasAnsweredRef.current) {
       SoundManager.playClockSound();
     }
   }
 
   function handleExtremeClockSound() {
-    if (!this.hasAnswered) {
+    if (!hasAnsweredRef.current) {
       SoundManager.playExtremeClockSound();
     }
   }
 
 
-  useEffect(() => {
 
-    console.log("useEffect");
-    console.log("has useEFF? " + hasAnswered);
+  useEffect(() => {
 
     getQuestion();
 
@@ -64,8 +67,6 @@ function ClientGame() {
       setShowError(false);
       setHasAnswered(false);
     }
-
-
   
     socket.on("nextQuestion", handleNextQuestion);
     socket.on("clock", handleClockSound);
@@ -81,7 +82,6 @@ function ClientGame() {
 
   return (
     <div className="d-flex flex-column align-items-center justify-content-center">
-      {console.log("has? " + hasAnswered)}
       <div
         className={"d-flex flex-column align-items-center justify-content-center bg-light m-3 p-2"}
         style={{

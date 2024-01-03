@@ -33,7 +33,6 @@ function HostConsole() {
     getQuestion();
 
     function handleNewAnswer(data) {
-      console.log("new answer from: " + data.name + " " + data.answer)
       setPlayersAnswersData((prevData) => [
         ...(prevData || []),
         { name: data.name || 'Unknown', answer: data.answer || 'No answer' },
