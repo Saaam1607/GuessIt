@@ -15,7 +15,7 @@ function CustomButton({ message, color, onClickFunction }) {
 
   return (
     <button
-      className="btn m-1 ps-5 pe-5"
+      className="btn ps-5 pe-5"
       style={{
         backgroundColor: color,
         color: "white",

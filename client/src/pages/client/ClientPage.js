@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import CustomButton from "../../components/CustomButton.js";
+import CustomInput from "../../components/CustomInput.js";
+import CustomDiv from "../../components/CustomDiv.js";
 
 
 
@@ -36,37 +38,47 @@ function ClientPage() {
         width: "100%",
       }}
     >
-      <form className="m-1">
-        <div className="form-group">
-        <label>Inserisci il tuo nome</label>
-        <input
-          type="string"
-          className="form-control"
-          placeholder="nome"
+
+      <CustomDiv>
+        <CustomInput
+          textLabel="Inserisci il tuo nickname"
           value={name}
-          onChange={(e) => {
-            setName(e.target.value)
-            setShowError(false)
-          }}
+          setValue={setName}
+          setShowError={setShowError}
+          placeholder="Nome"
         />
-        </div>
-      </form>
+      </CustomDiv>
 
-      <CustomButton
-        message="Crea una partita"
-        onClickFunction={goToCreateGamePage}
-        color="rgb(87, 169, 221)"
-      />
+      <CustomDiv>
+        <CustomButton
+          message="Crea una partita"
+          onClickFunction={goToCreateGamePage}
+          color="rgb(87, 169, 221)"
+        />
+      </CustomDiv>
 
-      <CustomButton
-        message="Entra in una partita"
-        onClickFunction={goToJoinGamePage}
-        color="rgb(87, 169, 221)"
-      />
-      
-      <p className="text-danger m-1">
-        {showError ? "Inserisci un nome prima di giocare" : ""}
+      <CustomDiv>
+        <CustomButton
+          message="Entra in una partita"
+          onClickFunction={goToJoinGamePage}
+          color="rgb(87, 169, 221)"
+        />
+      </CustomDiv>
+
+      <CustomDiv>
+      <p
+        className="text-danger"
+        style={{
+          fontFamily: "customFont",
+          fontSize: "1.2rem",
+          letterSpacing: "0.05rem",
+          textAlign: "center",
+        }}
+      >
+        {showError ? "Inserisci un nome prima di giocare!" : ""}
       </p>
+      </CustomDiv>
+
     </div>
   );
 }

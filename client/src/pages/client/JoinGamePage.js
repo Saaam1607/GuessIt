@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import CustomButton from "../../components/CustomButton.js";
+import CustomInput from "../../components/CustomInput.js";
+import CustomDiv from "../../components/CustomDiv.js";
 
 const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://guessitserver.onrender.com";
 
@@ -57,38 +59,63 @@ function JoinGamePage() {
         width: "100%",
       }}
     >
-      <p>Benvenuto {playerName}!</p>
-      <form className="m-1">
-        <div className="form-group">
-        <label>Inserisci il codice della partita</label>
-        <input
-          type="string"
-          className="form-control"
-          placeholder="codice"
-          value={gameCode}
-          onChange={(e) => {
-            setGameCode(e.target.value)
-            setShowError(false)
+
+      <CustomDiv>
+        <p
+          style={{
+            fontFamily: "customFont",
+            fontSize: "2rem",
+            letterSpacing: "0.1rem",
+            color: "rgb(112,128,144)",
           }}
+        >
+          Benvenuto <b>{playerName}</b>!
+        </p>
+      </CustomDiv>
+
+      <CustomDiv>
+        <form>
+          <div className="form-group">
+            <CustomInput
+              textLabel="Inserisci il codice della partita"
+              value={gameCode}
+              setValue={setGameCode}
+              setShowError={setShowError}
+              placeholder="codice"
+            />
+          </div>
+        </form>
+      </CustomDiv>
+
+      <CustomDiv>
+        <CustomButton
+          message="Entra"
+          onClickFunction={tryToJoinGame}
+          color="rgb(87, 169, 221)"
         />
-        </div>
-      </form>
+      </CustomDiv>
 
-      <CustomButton
-        message="Entra"
-        onClickFunction={tryToJoinGame}
-        color="rgb(87, 169, 221)"
-      />
+      <CustomDiv>
+        <CustomButton
+          message="Indietro"
+          onClickFunction={backToClientHomePage}
+          color="rgb(221, 0, 47)"
+        />
+      </CustomDiv>
 
-      <CustomButton
-        message="Indietro"
-        onClickFunction={backToClientHomePage}
-        color="rgb(221, 0, 47)"
-      />
-
-      <p className="text-danger m-1">
-        {showError ? "Please enter a game code first" : ""}
-      </p>
+      <CustomDiv>
+        <p
+          className="text-danger"
+          style={{
+            fontFamily: "customFont",
+            fontSize: "1.2rem",
+            letterSpacing: "0.05rem",
+            textAlign: "center",
+          }}
+        >          
+          {showError ? "Please enter a game code first" : ""}
+        </p>
+      </CustomDiv>
 
     </div>
   );

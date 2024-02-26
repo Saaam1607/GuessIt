@@ -40,6 +40,22 @@ function getCurrentQuestion() {
   return nextQuestion;
 }
 
+function getCurrentMin() {
+  return questionDb[questionIndex].min;
+}
+
+function getCurrentMax() {
+  return questionDb[questionIndex].max;
+}
+
+function getCurrentStep() {
+  return questionDb[questionIndex].step;
+}
+
+function getCurrentUnit() {
+  return questionDb[questionIndex].unit;
+}
+
 function getCurrentAnswer() {
   return questionDb[questionIndex].answer;
 }
@@ -55,10 +71,24 @@ function updateQuestionIndex() {
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
+  /*
+    on          <--- playersList
+    to client   ---> playersList
+  */
   socket.on("playersList", (data) => {
     socket.emit("playersList", { playersList: playerManager.getAllPlayersNames() });
   });
 
+  /*
+    on          <--- join
+    if (new player)
+    to client   ---> newPlayerId
+    to all      ---> playersList
+    if (old player)
+    to all      ---> playersList
+    if (gameStarted)
+    to client   ---> gameStarted
+  */
   socket.on("join", (data) => {
 
     console.log("new join request: " + data.name + " " + data.playerId + " " + socket.id);
@@ -89,40 +119,67 @@ io.on("connection", (socket) => {
     }
   });
 
+  /*
+    on          <--- startGame
+    to all      ---> gameStarted
+                ---> nextQuestion
+  */
   socket.on("startGame", (data) => {
     io.emit("gameStarted", {});
-    io.emit("nextQuestion", {question: getCurrentQuestion()});
+    io.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit()});
     gameStarted = true;
-
   });
 
+  /*
+    on          <--- newAnswer
+    to all      ---> newAnswer
+  */
   socket.on("newAnswer", (data) => {
     const name = playerManager.getPlayerName(data.playerId);
     console.log("new answer from: " + name + " " + data.answer)
     io.emit("newAnswer", {name: name, answer: data.answer});
   });
 
+  /*
+    on          <--- nextQuestion
+    to all      ---> nextQuestion
+                ---> nextAnswer
+  */
   socket.on("nextQuestion", (data) => {
     updateQuestionIndex();
-    const question = getCurrentQuestion();
     const answer = getCurrentAnswer();
-    io.emit("nextQuestion", {question: question});
+    io.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit()});
     io.emit("nextAnswer", {answer: answer});
   });
 
+  /*
+    on          <--- getQuestion
+    to client   ---> nextQuestion
+  */
   socket.on("getQuestion", (data) => {
-    const question = getCurrentQuestion();
-    socket.emit("nextQuestion", {question: question});
+    socket.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit()});
   });
 
+  /*
+    on          <--- results
+    to all      ---> results
+  */
   socket.on("results", (data) => {
     io.emit("results", { playersAnswersData: data.playersAnswersData });
   });
 
+  /*
+    on          <--- hurryUp
+    to all      ---> clock
+  */
   socket.on("hurryUp", (data) => {
     io.emit("clock", {});
   });
 
+  /*
+    on          <--- extremeHurryUp
+    to all      ---> extremeClock
+  */
   socket.on("extremeHurryUp", (data) => {
     io.emit("extremeClock", {});
   });

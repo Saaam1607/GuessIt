@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from 'react-router-dom';
 import { io } from 'socket.io-client';
 
+import CustomButton from "../../components/CustomButton.js";
+
 const socketUrl = process.env.REACT_APP_SOCKET_URL || "https://guessitserver.onrender.com";
 const socket = io.connect(socketUrl);
 
@@ -12,6 +14,11 @@ function WaitingRoom() {
   const playerName = location.state?.playerName || "DefaultPlayerName";
   const [playersList, setPlayersList] = useState([]);
   const navigate = useNavigate();
+  const [isReady, setIsReady] = useState(false);
+
+  function setIsReadyTrue() {
+    setIsReady(true);
+  }
 
   function joinGame() {
     socket.emit("join", { name: playerName, playerId: localStorage.getItem('playerId') });
@@ -19,6 +26,10 @@ function WaitingRoom() {
 
   function getPlayersList() {
     socket.emit("playersList", {});
+  }
+
+  function ready() {
+    socket.emit("ready",  { name: playerName, playerId: localStorage.getItem('playerId') });
   }
 
   useEffect(() => {
@@ -51,23 +62,80 @@ function WaitingRoom() {
   }, [socket]);
 
   return (
-    <div className="d-flex flex-column align-items-center justify-content-center">
+    <div
+      className="d-flex flex-column align-items-center border"
+      style={{
+        height: "100%",
+        width: "100%",
+      }}
+    >
       <div
-        className={"d-flex flex-column align-items-center justify-content-center bg-light m-3 p-2"}
+        className={"d-flex flex-column align-items-center justify-content-top bg-light border"}
         style={{
           borderRadius: "30px",
           width: "80%",
+          height: "90%",
         }}
       >
-        <h1>Players Ready</h1>
-        {playersList !== undefined > 0 && playersList.map((player, index) => (
-          <p
-            key={index}
-            className={"display-5 m-2"}
+
+        <div>
+          <h1
+            className={"m-0 mt-2 mb-4"}
+            style={{
+              fontFamily: "customFont",
+              fontSize: "2.5rem",
+              letterSpacing: "0.05rem",
+              color: "rgb(112,128,144)",
+            }}
           >
-            {player}
-          </p>
-        ))}
+            Giocatori in attesa
+          </h1>
+        </div>
+
+        <div
+          className="border border-danger"
+          style={{
+            width: "80%",
+            height: "60%",
+            overflow: "auto",
+          }}
+        >
+          {playersList !== undefined > 0 && playersList.map((player, index) => (
+            <p
+              key={index}
+              className={"display-5 m-0 mb-2"}
+              style={{
+                fontFamily: "customFont",
+                fontSize: "2rem",
+                letterSpacing: "0.05rem",
+                textAlign: "center",
+              }}
+            >
+              {player}
+            </p>
+          ))}
+        </div>
+
+        <div
+          className="border border-danger d-flex align-items-center justify-content-center"
+          style={{
+            width: "80%",
+            height: "20%",
+            overflow: "auto",
+          }}
+        >
+          <CustomButton
+            message="Pronto"
+            onClickFunction={() => {
+              setIsReadyTrue();
+              ready();
+            }}
+            color={isReady ? 'rgb(152, 179, 152)' : 'rgb(112, 219, 112)'}
+          />
+
+
+        </div>
+
       </div>
     </div>
   );

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import CustomButton from "../components/CustomButton.js";
+import CustomDiv from "../components/CustomDiv.js";
 
 
 
@@ -26,17 +27,21 @@ function ClientPage() {
       }}
     >
 
-      <CustomButton
-        message="Giocatore"
-        onClickFunction={goToClientPage}
-        color="rgb(87, 169, 221)"
-      />
+      <CustomDiv>
+        <CustomButton
+          message="Giocatore"
+          onClickFunction={goToClientPage}
+          color="rgb(87, 169, 221)"
+        />
+      </CustomDiv>
 
-      <CustomButton
-        message="Host"
-        onClickFunction={goToHostPage}
-        color="rgb(87, 169, 221)"
-      />
+      <CustomDiv>
+        <CustomButton
+          message="Host"
+          onClickFunction={goToHostPage}
+          color="rgb(87, 169, 221)"
+        />
+      </CustomDiv>
 
     </div>
   );

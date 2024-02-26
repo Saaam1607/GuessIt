@@ -17,6 +17,10 @@ const socket = io.connect(socketUrl);
 function ClientGame() {
 
   const [question, setQuestion] = useState("");
+  const [min, setMin] = useState(0);
+  const [max, setMax] = useState(0);
+  const [step, setStep] = useState(0);
+  const [unit, setUnit] = useState("");
   const [answer, setAnswer] = useState("");
   const [showError, setShowError] = useState(false);
   const [hasAnswered, setHasAnswered] = useState(false);
@@ -68,6 +72,10 @@ function ClientGame() {
     function handleNextQuestion(data) {
       SoundManager.playNewQuestionSound();
       setQuestion(data.question);
+      setMin(data.min);
+      setMax(data.max);
+      setStep(data.step);
+      setUnit(data.unit);
       setAnswer(undefined);
       setShowError(false);
       setHasAnswered(false);
@@ -141,14 +149,25 @@ function ClientGame() {
               type="number"
               className="form-control"
               id="answerInput"
-              placeholder="risposta"
               value={answer || ''}
               onChange={(e) => {
                 setAnswer(e.target.value);
                 setShowError(false);
               }}
             />
-
+            <input 
+              type="range"
+              className="form-range"
+              min={min}
+              max={max}
+              step={step}
+              id="answerSlider"
+              value={answer || ''}
+              onChange={(e) => {
+                setAnswer(e.target.value);
+                setShowError(false);
+              }}
+            />
             <div
               className=" d-flex flex-column align-items-center justify-content-center"
               style={{
