@@ -4,8 +4,6 @@ import Title from './components/Title';
 import HomePage from './pages/HomePage';
 
 import ClientPage from './pages/client/ClientPage';
-import JoinGamePage from './pages/client/JoinGamePage';
-import CreateGamePage from './pages/client/CreateGamePage';
 import WaitingRoom from './pages/client/WaitingRoom';
 import ClientGame from './pages/client/ClientGame';
 
@@ -38,8 +36,6 @@ function App() {
             <Route path="/" exact element={<HomePage />} />
 
             <Route path="/client" exact element={<ClientPage />} />
-            <Route path="/client/join" exact element={<JoinGamePage />} />
-            <Route path="/client/create" exact element={<CreateGamePage />} />
             <Route path="/client/game" exact element={<WaitingRoom />} />
             <Route path="/client/play" exact element={<ClientGame />} />
 

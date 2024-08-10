@@ -76,7 +76,7 @@ function ClientGame() {
       setMax(data.max);
       setStep(data.step);
       setUnit(data.unit);
-      setAnswer(undefined);
+      setAnswer((data.max + data.min) / 2);
       setShowError(false);
       setHasAnswered(false);
       setShowResults(false);
@@ -130,9 +130,9 @@ function ClientGame() {
         >
           Domanda
         </h1>
-        <h5 className="p-3">
+        <h3 className="p-3">
           {question}
-        </h5>
+        </h3>
 
         { !hasAnswered && !showResults && (
           <form
@@ -154,18 +154,22 @@ function ClientGame() {
                 setAnswer(e.target.value);
                 setShowError(false);
               }}
+              style={{ fontSize: '1.3rem', padding: '10px', width: '100%' }}
             />
             <input 
               type="range"
-              className="form-range"
+              className="form-range d-flex justify-content-center"
               min={min}
               max={max}
               step={step}
               id="answerSlider"
-              value={answer || ''}
+              value={answer}
               onChange={(e) => {
                 setAnswer(e.target.value);
                 setShowError(false);
+              }}
+              style={{ 
+                height: '80px', 
               }}
             />
             <div

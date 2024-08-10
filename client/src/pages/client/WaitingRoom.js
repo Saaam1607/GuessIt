@@ -11,14 +11,9 @@ const socket = io.connect(socketUrl);
 function WaitingRoom() {
 
   const location = useLocation();
-  const playerName = location.state?.playerName || "DefaultPlayerName";
+  const playerName = location.state?.name || "DefaultPlayerName";
   const [playersList, setPlayersList] = useState([]);
   const navigate = useNavigate();
-  const [isReady, setIsReady] = useState(false);
-
-  function setIsReadyTrue() {
-    setIsReady(true);
-  }
 
   function joinGame() {
     socket.emit("join", { name: playerName, playerId: localStorage.getItem('playerId') });
@@ -28,11 +23,10 @@ function WaitingRoom() {
     socket.emit("playersList", {});
   }
 
-  function ready() {
-    socket.emit("ready",  { name: playerName, playerId: localStorage.getItem('playerId') });
-  }
-
   useEffect(() => {
+
+    console.log("WaitingRoom useEffect");
+    console.log("playerName: " + playerName);
 
     joinGame();
     getPlayersList();
@@ -114,26 +108,6 @@ function WaitingRoom() {
               {player}
             </p>
           ))}
-        </div>
-
-        <div
-          className="border border-danger d-flex align-items-center justify-content-center"
-          style={{
-            width: "80%",
-            height: "20%",
-            overflow: "auto",
-          }}
-        >
-          <CustomButton
-            message="Pronto"
-            onClickFunction={() => {
-              setIsReadyTrue();
-              ready();
-            }}
-            color={isReady ? 'rgb(152, 179, 152)' : 'rgb(112, 219, 112)'}
-          />
-
-
         </div>
 
       </div>

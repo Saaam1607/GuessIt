@@ -5,6 +5,8 @@ import CustomButton from "../../components/CustomButton.js";
 import CustomInput from "../../components/CustomInput.js";
 import CustomDiv from "../../components/CustomDiv.js";
 
+const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://guessitserver.onrender.com";
+
 
 
 function ClientPage() {
@@ -13,21 +15,12 @@ function ClientPage() {
   const [showError, setShowError] = useState(false);
   const navigate = useNavigate();
 
-
-  function goToJoinGamePage() {
+  function tryToJoinGame() {
     if (name === "") {
       setShowError(true);
       return;
     }
-    navigate("/client/join", { state: { playerName: name } });
-  }
-
-  function goToCreateGamePage() {
-    if (name === "") {
-      setShowError(true);
-      return;
-    }
-    navigate("/client/create", { state: { playerName: name } });
+    navigate("/client/game", { state: { name: name } });
   }
 
   return (
@@ -49,34 +42,28 @@ function ClientPage() {
         />
       </CustomDiv>
 
+
+
       <CustomDiv>
         <CustomButton
-          message="Crea una partita"
-          onClickFunction={goToCreateGamePage}
+          message="Entra"
+          onClickFunction={tryToJoinGame}
           color="rgb(87, 169, 221)"
         />
       </CustomDiv>
 
       <CustomDiv>
-        <CustomButton
-          message="Entra in una partita"
-          onClickFunction={goToJoinGamePage}
-          color="rgb(87, 169, 221)"
-        />
-      </CustomDiv>
-
-      <CustomDiv>
-      <p
-        className="text-danger"
-        style={{
-          fontFamily: "customFont",
-          fontSize: "1.2rem",
-          letterSpacing: "0.05rem",
-          textAlign: "center",
-        }}
-      >
-        {showError ? "Inserisci un nome prima di giocare!" : ""}
-      </p>
+        <p
+          className="text-danger"
+          style={{
+            fontFamily: "customFont",
+            fontSize: "1.2rem",
+            letterSpacing: "0.05rem",
+            textAlign: "center",
+          }}
+        >
+          {showError ? "Inserisci un nome prima di giocare!" : ""}
+        </p>
       </CustomDiv>
 
     </div>
