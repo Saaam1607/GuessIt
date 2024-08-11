@@ -7,6 +7,7 @@ const cors = require("cors");
 
 const playerManager = require("./game/players");
 const tokenManager = require("./components/tokenManager");
+const helperManager = require("./game/helperManager");
 const questionDb = require("./game/questions");
 
 const corsOptions = {
@@ -100,7 +101,16 @@ io.on("connection", (socket) => {
       console.log("nuovo giocatore")
       const newPlayerId = tokenManager.generatePlayerId();
       socket.emit("newPlayerId", { newPlayerId });
-      playerManager.addPlayer({ name: data.name, playerId: newPlayerId, socketId: socket.id, active: true });
+      playerManager.addPlayer({
+        name: data.name,
+        playerId: newPlayerId,
+        socketId: socket.id,
+        active: true,
+        ghostPowersAvailable: 1,
+        helpPowersAvailable: 1,
+        x2PowersAvailable: 1,
+        score: 0
+      });
       io.emit("playersList", { playersList: playerManager.getAllPlayersNames() });
     }
 
@@ -130,6 +140,25 @@ io.on("connection", (socket) => {
     gameStarted = true;
   });
 
+  socket.on("help", (data) => {
+    const {suggestedMin, suggestedMax} = helperManager.computeSuggestedMinAndManx(getCurrentAnswer(), getCurrentMin(), getCurrentMax(), getCurrentStep());
+    socket.emit("suggest", {suggestedMin: suggestedMin, suggestedMax: suggestedMax, step: getCurrentStep()} );
+  });
+
+  socket.on("ghost", (data) => {
+    const playersData = playerManager.getPlayers();
+    socket.emit("ghostData", {playersData: playersData} );
+  });
+
+  socket.on("ghostAnswer", (data) => {
+    const playerResponse = playerManager.getLastResponseFromPlayer(data.playerId);
+    if (playerResponse !== undefined) {
+      socket.emit("ghostAnswer", {playerResponse: playerResponse} );
+    } else {
+      socket.emit("ghostAnswerNotReady", {} );
+    }
+  });
+
   /*
     on          <--- newAnswer
     to all      ---> newAnswer
@@ -137,7 +166,17 @@ io.on("connection", (socket) => {
   socket.on("newAnswer", (data) => {
     const name = playerManager.getPlayerName(data.playerId);
     console.log("new answer from: " + name + " " + data.answer)
-    io.emit("newAnswer", {name: name, answer: data.answer});
+
+    if (data.hasUsedHelp)
+      playerManager.consumeHelpPower(data.playerId);
+
+    if (data.hasUsedGhost)
+      playerManager.consumeGhostPower(data.playerId);
+
+    if (data.hasUsedX2)
+      playerManager.consumeX2Power(data.playerId);
+
+    io.emit("newAnswer", {name: name, answer: data.answer, playerId: data.playerId, hasUsedX2: data.hasUsedX2, hasUsedHelp: data.hasUsedHelp, hasUsedGhost: data.hasUsedGhost});
   });
 
   /*
@@ -148,8 +187,14 @@ io.on("connection", (socket) => {
   socket.on("nextQuestion", (data) => {
     updateQuestionIndex();
     const answer = getCurrentAnswer();
+    playerManager.resetLastPlayersResponses();
     io.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit()});
     io.emit("nextAnswer", {answer: answer});
+  });
+
+  socket.on("getBonus", (data) => {
+    const availableBonusesData = playerManager.getAvailableBonuses(data.playerId);
+    socket.emit("bonus", availableBonusesData);
   });
 
   /*
@@ -165,7 +210,56 @@ io.on("connection", (socket) => {
     to all      ---> results
   */
   socket.on("results", (data) => {
+
+    const answer = getCurrentAnswer();
+    const playersAnswersData = data.playersAnswersData;
+
+    let minDistance = Math.abs(playersAnswersData[0]?.answer - answer);
+    let maxDistance = 0;
+
+    playersAnswersData.forEach(player => {
+      if (Math.abs(player.answer - answer) < minDistance) {
+        minDistance = Math.abs(player.answer - answer);
+      }
+      if (Math.abs(player.answer - answer) > maxDistance) {
+        maxDistance = Math.abs(player.answer - answer);
+      }
+    });
+
+    playersAnswersData.forEach(player => {
+      if (parseInt(player.answer + minDistance) === parseInt(answer) || parseInt(player.answer - minDistance) === parseInt(answer)) {
+        playerManager.addScore(player.playerId);
+        if (player.hasUsedX2) {
+          playerManager.addScore(player.playerId);
+        }
+
+        // todo
+        // if (playerManager.getScore(player.playerId) >= 3) {
+        // }
+
+        playerManager.addRandomPower(player.playerId);
+
+        player.hasWon = true;
+      }
+      if (parseInt(player.answer + maxDistance) === parseInt(answer) || parseInt(player.answer - maxDistance) === parseInt(answer)) {
+        playerManager.addRandomPower(player.playerId);
+      }
+    });
+
+    playersAnswersData.sort((a, b) => {
+      return a.answer - b.answer;
+    });
+
+    console.log("Logging players answers data: ");
+    console.log(data.playersAnswersData);
+
     io.emit("results", { playersAnswersData: data.playersAnswersData });
+  });
+
+  socket.on("classification", () => {
+
+    console.log("players: ")
+    io.emit("classification", { classificationData: playerManager.getPlayers() });
   });
 
   /*

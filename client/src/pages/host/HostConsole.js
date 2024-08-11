@@ -21,6 +21,10 @@ function HostConsole() {
     socket.emit("results", { playersAnswersData: playersAnswersData });
   }
 
+  function sendClassification() {
+    socket.emit("classification", {});
+  }
+
   function sendNextQuestion() {
     socket.emit("nextQuestion", {});
     setPlayersAnswersData([]);
@@ -41,7 +45,7 @@ function HostConsole() {
     function handleNewAnswer(data) {
       setPlayersAnswersData((prevData) => [
         ...(prevData || []),
-        { name: data.name || 'Unknown', answer: data.answer || 'No answer' },
+        { name: data.name || 'Unknown', answer: data.answer || 'No answer', playerId: data.playerId, hasUsedX2: data.hasUsedX2, hasUsedHelp: data.hasUsedHelp, hasUsedGhost: data.hasUsedGhost },
       ]);
     }
 
@@ -94,6 +98,14 @@ function HostConsole() {
           message={"Invia Risultati"}
           color={"#00b300"}
           onClickFunction={sendResults}
+        />
+      </div>
+
+      <div className="m-2">
+        <CustomButton
+          message={"Invia Classifica"}
+          color={"#00b300"}
+          onClickFunction={sendClassification}
         />
       </div>
 
