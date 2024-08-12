@@ -98,9 +98,10 @@ function ClientGame() {
   }
 
   function showGhostResponseSwal(response) {
+    console.log(response)
     Swal.fire({
       title: "La risposta del fantasma è...",
-      text: response,
+      html: `<p style="font-size: 40px;"><strong>${response}</strong></p>`, // Styling inline
       timer: 10000
     })
   }
@@ -108,7 +109,7 @@ function ClientGame() {
   function showGhostResponseNotReadySwal() {
     Swal.fire({
       title: "Non ha ancora risposto",
-      timer: 1000,
+      timer: 2000,
       showConfirmButton: false,
     })
   }
@@ -127,13 +128,13 @@ function ClientGame() {
   }
 
   function handleGhostIconClick() {
-    if (ghostPowerAvailableBonuses) {
+    if (ghostPowerAvailableBonuses && !ghostIconClicked) {
       socket.emit("ghost", {});
     }
   }
 
   function handleHelpIconClick() {
-    if (helpPowerAvailableBonuses) {
+    if (helpPowerAvailableBonuses && !helpIconClicked) {
       socket.emit("help", { playerId: localStorage.getItem('playerId') });
     }
   }
@@ -147,7 +148,7 @@ function ClientGame() {
   }
 
   function handleX2IconClick() {
-    if (x2PowerAvailableBonuses) {
+    if (x2PowerAvailableBonuses && !x2IconClicked) {
       setX2IconClicked(true);
     }
   }
@@ -217,8 +218,8 @@ function ClientGame() {
     }
 
     function handleGhostAnswer(data) {
-      setGhostResponse(data.ghostResponse);
-      showGhostResponseSwal(data.ghostResponse);
+      setGhostResponse(data.playerResponse);
+      showGhostResponseSwal(data.playerResponse);
       setShowGhostModal(false);
     }
 
@@ -493,7 +494,7 @@ function ClientGame() {
                   {playerAnswerData.hasUsedHelp && (
                     <img
                       src={help_icon}
-                      alt="X2 icon"
+                      alt="help icon"
                       className={`m-0 p-0`}
                       style={{
                         width: "30px",
@@ -503,11 +504,10 @@ function ClientGame() {
                     />
                   )}
 
-                  
                   {playerAnswerData.hasUsedGhost && (
                     <img
                       src={ghost_icon}
-                      alt="X2 icon"
+                      alt="ghost icon"
                       className={`m-0 p-0`}
                       style={{
                         width: "30px",

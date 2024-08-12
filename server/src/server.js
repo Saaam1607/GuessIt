@@ -151,8 +151,11 @@ io.on("connection", (socket) => {
   });
 
   socket.on("ghostAnswer", (data) => {
-    const playerResponse = playerManager.getLastResponseFromPlayer(data.playerId);
-    if (playerResponse !== undefined) {
+    console.log(data)
+    const playerResponse = playerManager.getLastResponseFromPlayer(data.selectedPlayerId);
+    console.log(playerResponse);
+    console.log("response: " + playerResponse);
+    if (playerResponse != undefined) {
       socket.emit("ghostAnswer", {playerResponse: playerResponse} );
     } else {
       socket.emit("ghostAnswerNotReady", {} );
@@ -175,6 +178,8 @@ io.on("connection", (socket) => {
 
     if (data.hasUsedX2)
       playerManager.consumeX2Power(data.playerId);
+
+    playerManager.setLastResponseFromPlayer(data.playerId, data.answer);
 
     io.emit("newAnswer", {name: name, answer: data.answer, playerId: data.playerId, hasUsedX2: data.hasUsedX2, hasUsedHelp: data.hasUsedHelp, hasUsedGhost: data.hasUsedGhost});
   });

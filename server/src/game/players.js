@@ -13,14 +13,29 @@ function resetLastPlayersResponses() {
   });
 }
 
-function getLastResponseFromPlayer(playerId) {
+function setLastResponseFromPlayer(playerId, response) {
   players.forEach(player => {
     if (player.playerId == playerId) {
+      player.lastResponse = response;
+      console.log("SETTING LAST RESPONSE");
+      console.log(player.lastResponse);
+    }
+  });
+}
+
+function getLastResponseFromPlayer(playerId) {
+  console.log(players);
+  for (let player of players) {
+    if (player.playerId == playerId) {
+      console.log("GETTING LAST RESPONSE");
+      console.log(player.lastResponse);
       if (player.lastResponse) {
+        console.log("RETURNING LAST RESPONSE: " + player.lastResponse);
         return player.lastResponse;
       }
     }
-  });
+  }
+  return undefined;
 }
 
 function checkIfAlreadyJoined(playerId) {
@@ -157,6 +172,7 @@ function checkIfAllPlayersOffline() {
 module.exports = {
   getPlayers,
   resetLastPlayersResponses,
+  setLastResponseFromPlayer,
   getLastResponseFromPlayer,
   checkIfAlreadyJoined,
   addPlayer,
