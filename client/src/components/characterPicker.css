@@ -1,0 +1,53 @@
+.arrow {
+    margin-left: 0.5em;
+    margin-right: 0.5em;
+    font-size: 3em;
+    color: grey;
+}
+
+
+.character-selector {
+    width: 60vmin;
+    height: 50vmin;
+    display: grid;
+    place-content: center;
+    color: white;
+    text-shadow: 0 1px 0 #000;
+  
+    --border-angle: 0turn;
+  
+    --main-bg: conic-gradient(
+      from var(--border-angle),
+      #213,
+      #112 5%,
+      #112 60%,
+      #213 95%
+    );
+  
+    --gradient-border: conic-gradient(from var(--border-angle), lightblue 25%, rgb(60, 105, 209), rgb(147, 173, 234) 99%, lightblue);
+  
+    border: solid 10px transparent;
+    border-radius: 2em;
+  
+    background: 
+      var(--main-bg) padding-box,
+      var(--gradient-border) border-box, 
+      var(--main-bg) border-box;
+  
+    background-position: center center;
+  
+    animation: bg-spin 8s linear infinite;
+  }
+  
+  @keyframes bg-spin {
+    to {
+      --border-angle: 1turn;
+    }
+  }
+  
+  /* Define custom property --border-angle for animation */
+  @property --border-angle {
+    syntax: "<angle>";
+    inherits: true;
+    initial-value: 0turn;
+  }

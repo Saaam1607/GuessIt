@@ -82,11 +82,6 @@ input[type="range"]::-webkit-slider-thumb {
   initial-value: 0turn;
 }
 
-/* Pause animation on hover */
-.box:hover {
-  animation-play-state: paused;
-}
-
 
 .strikethrough {
   position: relative;

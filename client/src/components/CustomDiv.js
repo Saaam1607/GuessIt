@@ -9,7 +9,7 @@ function CustomDiv({ children }) {
 
   return (
     <div
-      className="mt-3 mb-3"
+      className="mt-2 mb-2"
     >
       {children}
     </div>

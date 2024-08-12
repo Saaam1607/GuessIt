@@ -5,6 +5,8 @@ import CustomButton from "../../components/CustomButton.js";
 import CustomInput from "../../components/CustomInput.js";
 import CustomDiv from "../../components/CustomDiv.js";
 
+import CharacterPicker from "../../components/CharacterPicker.js";
+
 const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://guessitserver.onrender.com";
 
 
@@ -40,6 +42,10 @@ function ClientPage() {
           setShowError={setShowError}
           placeholder="Nome"
         />
+      </CustomDiv>
+
+      <CustomDiv>
+        <CharacterPicker />
       </CustomDiv>
 
 
