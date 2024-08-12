@@ -32,4 +32,32 @@ function CustomButton({ message, color, onClickFunction }) {
 
 };
 
-export default CustomButton;
+function CustomButtonSmaller({ message, color, onClickFunction }) {
+
+  function handleClick() {
+    if (onClickFunction) {
+      onClickFunction();
+    }
+  }
+
+
+  return (
+    <button
+      className="btn px-3"
+      style={{
+        backgroundColor: color,
+        color: "white",
+        borderRadius: "10px",
+        fontFamily: "customFont",
+        fontSize: "1.5rem",
+        letterSpacing: "0.2rem",
+      }}
+      onClick={handleClick}
+    >
+      {message}
+    </button>
+  );
+
+};
+
+export { CustomButton as default, CustomButtonSmaller };

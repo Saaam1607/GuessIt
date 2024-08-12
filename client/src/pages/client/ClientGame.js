@@ -71,6 +71,10 @@ function ClientGame() {
     socket.emit("getQuestion", {});
   }
 
+  function checkIfAlreadyAnswered() {
+    socket.emit("hasAnswered", { playerId: localStorage.getItem('playerId') });
+  }
+
   function sendAnswer() {
     if (hasAnswered) {
       return;
@@ -227,7 +231,16 @@ function ClientGame() {
       showGhostResponseNotReadySwal();
     }
 
+    function handleHasAnswered(data) {
+      if (data.hasAnswered) {
+        setAnswer(data.response);
+        setHasAnswered(true);
+      }
+    }
+
     socket.on("nextQuestion", handleNextQuestion);
+    socket.on("hasAnswered", handleHasAnswered);
+
     socket.on("bonus", handleBonus);
     socket.on("suggest", handleSuggest);
     socket.on("ghostData", handleGhostData);
@@ -242,6 +255,7 @@ function ClientGame() {
   
     return () => {
       socket.off("nextQuestion", handleNextQuestion);
+      socket.off("hasAnswered", handleHasAnswered);
       socket.off("bonus", handleBonus);
       socket.off("suggest", handleSuggest);
       socket.off("ghostData", handleGhostData);

@@ -90,6 +90,12 @@ function getScore(playerId) {
   return score;
 }
 
+function resetPoints() {
+  players.forEach(player => {
+    player.score = 0;
+  });
+}
+
 function consumeX2Power(playerId) {
   players.forEach(player => {
     if (player.playerId == playerId) {
@@ -185,6 +191,7 @@ module.exports = {
   consumeGhostPower,
   consumeHelpPower,
   getScore,
+  resetPoints,
   getAvailableBonuses,
   addRandomPower,
   updatePlayerActive,

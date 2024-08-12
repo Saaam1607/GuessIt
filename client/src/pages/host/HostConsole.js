@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 
-import CustomButton from "../../components/CustomButton.js";
+import CustomButton, { CustomButtonSmaller } from "../../components/CustomButton.js";
 
 const socketUrl = process.env.REACT_APP_SOCKET_URL || "https://guessitserver.onrender.com";
 const socket = io.connect(socketUrl);
@@ -36,6 +36,10 @@ function HostConsole() {
 
   function extremeHurryUp() {
     socket.emit("extremeHurryUp", {});
+  }
+
+  function resetPoints() {
+    socket.emit("resetPoints", {});
   }
 
   useEffect(() => {
@@ -73,55 +77,63 @@ function HostConsole() {
       <h3>Host Console</h3>
 
       <div>
-        <h1>{question}</h1>
-        <h3>{answer}</h3>
+        <h3>{question}</h3>
+        <h4>{answer}</h4>
         {playersAnswersData !== undefined && playersAnswersData.map((playerAnswerData, index) => (
           <div
             key={index}
             className={"m-1"}
           >
-            <p>{playerAnswerData.name} : {playerAnswerData.answer}</p>
+            <p className="m-0 p-0">{playerAnswerData.name} : {playerAnswerData.answer}</p>
           </div>
         ))}
       </div>
 
-      <div className="m-2">
-        <CustomButton
+      <div className="m-1">
+        <CustomButtonSmaller
           message={"Invia Prossima Domanda"}
           color={"rgb(87, 169, 221)"}
           onClickFunction={sendNextQuestion}
         />
       </div>
 
-      <div className="m-2">
-        <CustomButton
+      <div className="m-1">
+        <CustomButtonSmaller
           message={"Invia Risultati"}
           color={"#00b300"}
           onClickFunction={sendResults}
         />
       </div>
 
-      <div className="m-2">
-        <CustomButton
+      <div className="m-1">
+        <CustomButtonSmaller
           message={"Invia Classifica"}
           color={"#00b300"}
           onClickFunction={sendClassification}
         />
       </div>
 
-      <div className="m-2">
-        <CustomButton
+      <div className="m-1">
+        <CustomButtonSmaller
           message={"Metti Fretta"}
           color={"#ff6600"}
           onClickFunction={hurryUp}
         />
       </div>
 
-      <div className="m-2">
-        <CustomButton
+      <div className="m-1">
+        <CustomButtonSmaller
           message={"Metti Fretta Estremo"}
           color={"#ff0000"}
           onClickFunction={extremeHurryUp}
+        />
+      </div>
+
+      <div className="m-1">
+        <CustomButtonSmaller
+          message={"Reset punti"}
+          color={"#4f2020"}
+          onClickFunction={resetPoints}
         />
       </div>
 

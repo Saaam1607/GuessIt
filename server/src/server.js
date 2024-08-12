@@ -140,6 +140,10 @@ io.on("connection", (socket) => {
     gameStarted = true;
   });
 
+  socket.on("resetPoints", () => {
+    playerManager.resetPoints();
+  });
+
   socket.on("help", (data) => {
     const {suggestedMin, suggestedMax} = helperManager.computeSuggestedMinAndManx(getCurrentAnswer(), getCurrentMin(), getCurrentMax(), getCurrentStep());
     socket.emit("suggest", {suggestedMin: suggestedMin, suggestedMax: suggestedMax, step: getCurrentStep()} );
@@ -167,6 +171,8 @@ io.on("connection", (socket) => {
     to all      ---> newAnswer
   */
   socket.on("newAnswer", (data) => {
+    console.log("playerID: " + data.playerId);
+    console.log(playerManager.getPlayers());
     const name = playerManager.getPlayerName(data.playerId);
     console.log("new answer from: " + name + " " + data.answer)
 
@@ -208,6 +214,14 @@ io.on("connection", (socket) => {
   */
   socket.on("getQuestion", (data) => {
     socket.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit()});
+  });
+
+  socket.on("hasAnswered", (data) => {
+    const response = playerManager.getLastResponseFromPlayer(data.playerId);
+    if (response != undefined)
+      socket.emit("hasAnswered", { hasAnswered: true, response: response});
+    else
+      socket.emit("hasAnswered", { hasAnswered: false });
   });
 
   /*
