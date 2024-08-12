@@ -52,7 +52,7 @@ const questions = [
   //   answer: 6,
   // },
   {
-    question: "Quanto é alto il monto K2 in metri?",
+    question: "Quanto é alto il monte K2 in metri?",
     answer: 8611,
     min: 0,
     max: 20000,

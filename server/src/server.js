@@ -174,6 +174,12 @@ io.on("connection", (socket) => {
     console.log("playerID: " + data.playerId);
     console.log(playerManager.getPlayers());
     const name = playerManager.getPlayerName(data.playerId);
+
+    if (playerManager.getLastResponseFromPlayer(data.playerId) != undefined) {
+      console.log("player already answered");
+      return;
+    }
+
     console.log("new answer from: " + name + " " + data.answer)
 
     if (data.hasUsedHelp)
@@ -246,10 +252,13 @@ io.on("connection", (socket) => {
     });
 
     playersAnswersData.forEach(player => {
-      if (parseInt(player.answer + minDistance) === parseInt(answer) || parseInt(player.answer - minDistance) === parseInt(answer)) {
-        playerManager.addScore(player.playerId);
-        if (player.hasUsedX2) {
+      if (parseInt(parseInt(player.answer) + minDistance) === parseInt(answer) || parseInt(parseInt(player.answer) - minDistance) === parseInt(answer)) {
+
+        if (data.computeScore) {
           playerManager.addScore(player.playerId);
+          if (player.hasUsedX2) {
+            playerManager.addScore(player.playerId);
+          }
         }
 
         // todo

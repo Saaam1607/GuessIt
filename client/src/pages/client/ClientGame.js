@@ -22,6 +22,7 @@ const socket = io.connect(socketUrl);
 const ghost_icon = require('../../assets/images/ghost_icon.png');
 const x2_icon = require('../../assets/images/x2_icon.png');
 const help_icon = require('../../assets/images/help_icon.png');
+const win_icon = require('../../assets/images/win_icon.png');
 
 
 
@@ -444,21 +445,23 @@ function ClientGame() {
               Classifica
             </h3>
             {classificationData.map((playerData, index) => (
-              <div
-                key={index}
-                className={"m-1"}
-              >
-                <p
-                  className="p-0 m-0"
-                  style={{
-                    fontFamily: "customFont",
-                    fontSize: "1.4rem",
-                    letterSpacing: "0.1rem",
-                  }}
+              playerData?.isActive && playerData.name ? (
+                <div
+                  key={index}
+                  className="m-1"
                 >
-                  {playerData.name} : {playerData.score}
-                </p>
-              </div>
+                  <p
+                    className="p-0 m-0"
+                    style={{
+                      fontFamily: "customFont",
+                      fontSize: "1.4rem",
+                      letterSpacing: "0.1rem",
+                    }}
+                  >
+                    {playerData.name} : {playerData.score}
+                  </p>
+                </div>
+              ) : null
             ))}
           </div>
         )}
@@ -478,6 +481,7 @@ function ClientGame() {
               <div
                 key={index}
                 className={"m-1 d-flex flex-align-items-center justify-content-center"}
+                style={{height: "40px"}}
               >
 
                 <p
@@ -491,7 +495,7 @@ function ClientGame() {
                   {playerAnswerData.name} : {playerAnswerData.answer}
                 </p>
 
-                <div className="mx-2">
+                <div className="mx-2 d-flex align-items-center">
                   {playerAnswerData.hasUsedX2 && (
                     <img
                       src={x2_icon}
@@ -530,11 +534,24 @@ function ClientGame() {
                       }}
                     />
                   )}
+
+                  {playerAnswerData.hasWon && (
+                    <div className="image-container">
+                      <img
+                        src={win_icon}
+                        alt="win icon"
+                        className={`m-0 p-0 ms-3`}
+                        style={{
+                          width: "40px",
+                          height: "40px",
+                          borderRadius: "50%",
+                        }}
+                      />
+                    </div>
+                  )}
                 </div>
                 
-                {playerAnswerData.hasWon && (
-                  <i className="bi bi-emoji-sunglasses-fill p-0 m-0 ms-3"></i>
-                )}
+
 
               </div>
             ))}

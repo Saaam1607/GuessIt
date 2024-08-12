@@ -87,7 +87,7 @@ function WaitingRoom() {
         </div>
 
         <div
-          className="border border-danger"
+          className=""
           style={{
             width: "80%",
             height: "60%",

@@ -13,12 +13,19 @@ function HostConsole() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState(undefined);
 
+  const [hasSentResults, setHasSentResults] = useState(false);
+
   function getQuestion() {
     socket.emit("getQuestion", {});
   }
 
   function sendResults() {
-    socket.emit("results", { playersAnswersData: playersAnswersData });
+    if (!hasSentResults) {
+      socket.emit("results", { playersAnswersData: playersAnswersData, computeScore: true });
+      setHasSentResults(true);
+    }
+    else 
+      socket.emit("results", { playersAnswersData: playersAnswersData, computeScore: false });
   }
 
   function sendClassification() {
@@ -27,6 +34,7 @@ function HostConsole() {
 
   function sendNextQuestion() {
     socket.emit("nextQuestion", {});
+    setHasSentResults(false);
     setPlayersAnswersData([]);
   }
 
