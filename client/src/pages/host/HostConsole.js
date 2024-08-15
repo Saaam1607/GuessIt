@@ -50,6 +50,10 @@ function HostConsole() {
     socket.emit("resetPoints", {});
   }
 
+  function addPowers() {
+    socket.emit("addPower", {});
+  }
+
   useEffect(() => {
 
     getQuestion();
@@ -118,6 +122,14 @@ function HostConsole() {
           message={"Invia Classifica"}
           color={"#00b300"}
           onClickFunction={sendClassification}
+        />
+      </div>
+
+      <div className="m-1">
+        <CustomButtonSmaller
+          message={"Aggiungi poteri"}
+          color={"#0a6623"}
+          onClickFunction={addPowers}
         />
       </div>
 

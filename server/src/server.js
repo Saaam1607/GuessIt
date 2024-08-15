@@ -9,6 +9,7 @@ const playerManager = require("./game/players");
 const tokenManager = require("./components/tokenManager");
 const helperManager = require("./game/helperManager");
 const questionDb = require("./game/questions");
+const characters = require("./game/characters");
 
 const corsOptions = {
   origin: ["http://localhost:3000", "https://guessitclient.onrender.com"],
@@ -72,6 +73,10 @@ function updateQuestionIndex() {
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
 
+  socket.on("characters", (data) => {
+    socket.emit("characters", { characters: characters });
+  });
+
   /*
     on          <--- playersList
     to client   ---> playersList
@@ -101,14 +106,27 @@ io.on("connection", (socket) => {
       console.log("nuovo giocatore")
       const newPlayerId = tokenManager.generatePlayerId();
       socket.emit("newPlayerId", { newPlayerId });
+
+      var ghostPowersAvailable = 0;
+      var helpPowersAvailable = 0;
+      var x2PowersAvailable = 0;
+
+      characters.forEach(character => {
+        if (character.id == data.characterIndex) {
+          ghostPowersAvailable = character.ghostPowers;
+          helpPowersAvailable = character.helpPowers;
+          x2PowersAvailable = character.x2Powers;
+        }
+      });
+
       playerManager.addPlayer({
         name: data.name,
         playerId: newPlayerId,
         socketId: socket.id,
         active: true,
-        ghostPowersAvailable: 1,
-        helpPowersAvailable: 1,
-        x2PowersAvailable: 1,
+        ghostPowersAvailable: ghostPowersAvailable,
+        helpPowersAvailable: helpPowersAvailable,
+        x2PowersAvailable: x2PowersAvailable,
         score: 0
       });
       io.emit("playersList", { playersList: playerManager.getAllPlayersNames() });
@@ -138,6 +156,15 @@ io.on("connection", (socket) => {
     io.emit("gameStarted", {});
     io.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit()});
     gameStarted = true;
+  });
+
+  socket.on("addPower", () => {
+    const playersData = playerManager.getPlayers();
+    playersData.forEach(player => {
+      playerManager.addRandomPower(player.playerId);
+      const availableBonusesData = playerManager.getAvailableBonuses(player.playerId);
+      io.to(player.socketId).emit("bonus", availableBonusesData);
+    });
   });
 
   socket.on("resetPoints", () => {
@@ -243,6 +270,7 @@ io.on("connection", (socket) => {
     let maxDistance = 0;
 
     playersAnswersData.forEach(player => {
+      player.isAnswer = false;
       if (Math.abs(player.answer - answer) < minDistance) {
         minDistance = Math.abs(player.answer - answer);
       }
@@ -265,28 +293,28 @@ io.on("connection", (socket) => {
         // if (playerManager.getScore(player.playerId) >= 3) {
         // }
 
-        playerManager.addRandomPower(player.playerId);
+        // playerManager.addRandomPower(player.playerId);
 
         player.hasWon = true;
       }
-      if (parseInt(player.answer + maxDistance) === parseInt(answer) || parseInt(player.answer - maxDistance) === parseInt(answer)) {
-        playerManager.addRandomPower(player.playerId);
-      }
+      // if (parseInt(player.answer + maxDistance) === parseInt(answer) || parseInt(player.answer - maxDistance) === parseInt(answer)) {
+      //   playerManager.addRandomPower(player.playerId);
+      // }
     });
 
+    playersAnswersData.push({ answer: answer, isAnswer: true });
+
     playersAnswersData.sort((a, b) => {
-      return a.answer - b.answer;
+      return b.answer - a.answer;
     });
 
     console.log("Logging players answers data: ");
     console.log(data.playersAnswersData);
 
-    io.emit("results", { playersAnswersData: data.playersAnswersData });
+    io.emit("results", { playersAnswersData: data.playersAnswersData, });
   });
 
   socket.on("classification", () => {
-
-    console.log("players: ")
     io.emit("classification", { classificationData: playerManager.getPlayers() });
   });
 

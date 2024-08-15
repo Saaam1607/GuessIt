@@ -65,7 +65,7 @@ function ClientGame() {
   }, [hasAnswered]);
 
   function joinGame() {
-    socket.emit("join", { name: "", playerId: localStorage.getItem('playerId') });
+    socket.emit("join", { name: "", playerId: localStorage.getItem('playerId'), characterIndex: localStorage.getItem('characterIndex') });
   }
 
   function getQuestion() {
@@ -194,16 +194,13 @@ function ClientGame() {
     }
 
     function handleResults(data) {
-      const unsortedPlayersAnswersData = data.playersAnswersData;
-      const sortedPlayersAnswersData = unsortedPlayersAnswersData.sort((a, b) => {
-        return a.answer - b.answer;
-      });
-      setPlayersAnswersData(sortedPlayersAnswersData);
+      setPlayersAnswersData(data.playersAnswersData);
       setShowClassification(false);
       setShowResults(true);
     }
 
     function handleClassification(data) {
+      console.log(data.classificationData);
       setClassificationData(data.classificationData);
       setShowResults(false);
       setShowClassification(true);
@@ -445,7 +442,7 @@ function ClientGame() {
               Classifica
             </h3>
             {classificationData.map((playerData, index) => (
-              playerData?.isActive && playerData.name ? (
+              playerData?.active && playerData.name ? (
                 <div
                   key={index}
                   className="m-1"
@@ -474,87 +471,96 @@ function ClientGame() {
                 fontSize: "2rem",
                 letterSpacing: "0.1rem",
               }}
+            >Risultati</h3>
+            
+            <div
+              className={"m-1 d-flex flex-column flex-align-items-center justify-content-center"}
+              // style={{height: "40px"}}
             >
-              Risultati
-            </h3>
-            {playersAnswersData.map((playerAnswerData, index) => (
-              <div
-                key={index}
-                className={"m-1 d-flex flex-align-items-center justify-content-center"}
-                style={{height: "40px"}}
-              >
-
-                <p
-                  className="p-0 m-0"
-                  style={{
-                    fontFamily: "customFont",
-                    fontSize: "1.4rem",
-                    letterSpacing: "0.1rem",
-                  }}
-                >
-                  {playerAnswerData.name} : {playerAnswerData.answer}
-                </p>
-
-                <div className="mx-2 d-flex align-items-center">
-                  {playerAnswerData.hasUsedX2 && (
-                    <img
-                      src={x2_icon}
-                      alt="X2 icon"
-                      className={`m-0 p-0`}
+              {playersAnswersData.map((playerAnswerData, index) => (
+                playerAnswerData.isAnswer ? (
+                  <p
+                    className="p-0 m-0"
+                    style={{
+                      fontFamily: "customFont",
+                      fontSize: "1.4rem",
+                      letterSpacing: "0.1rem",
+                      color: "green"
+                    }}
+                  >{playerAnswerData.answer} - RISPOSTA CORRETTA</p>
+                ) : (
+                  <div key={index} className="d-flex" >
+                    <p
+                      className="p-0 m-0"
                       style={{
-                        width: "30px",
-                        height: "30px",
-                        borderRadius: "50%",
+                        fontFamily: "customFont",
+                        fontSize: "1.4rem",
+                        letterSpacing: "0.1rem",
                       }}
-                    />
-                  )}
+                    >{playerAnswerData.answer} - {playerAnswerData.name}</p>
 
-                  {playerAnswerData.hasUsedHelp && (
-                    <img
-                      src={help_icon}
-                      alt="help icon"
-                      className={`m-0 p-0`}
-                      style={{
-                        width: "30px",
-                        height: "30px",
-                        borderRadius: "50%",
-                      }}
-                    />
-                  )}
+                    <div className="mx-2 d-flex align-items-center">
+                      {playerAnswerData.hasUsedX2 && (
+                        <img
+                          src={x2_icon}
+                          alt="X2 icon"
+                          className={`m-0 p-0`}
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      )}
 
-                  {playerAnswerData.hasUsedGhost && (
-                    <img
-                      src={ghost_icon}
-                      alt="ghost icon"
-                      className={`m-0 p-0`}
-                      style={{
-                        width: "30px",
-                        height: "30px",
-                        borderRadius: "50%",
-                      }}
-                    />
-                  )}
+                      {playerAnswerData.hasUsedHelp && (
+                        <img
+                          src={help_icon}
+                          alt="help icon"
+                          className={`m-0 p-0`}
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      )}
 
-                  {playerAnswerData.hasWon && (
-                    <div className="image-container">
-                      <img
-                        src={win_icon}
-                        alt="win icon"
-                        className={`m-0 p-0 ms-3`}
-                        style={{
-                          width: "40px",
-                          height: "40px",
-                          borderRadius: "50%",
-                        }}
-                      />
+                      {playerAnswerData.hasUsedGhost && (
+                        <img
+                          src={ghost_icon}
+                          alt="ghost icon"
+                          className={`m-0 p-0`}
+                          style={{
+                            width: "30px",
+                            height: "30px",
+                            borderRadius: "50%",
+                          }}
+                        />
+                      )}
+
+                      {playerAnswerData.hasWon && (
+                        <div className="image-container">
+                          <img
+                            src={win_icon}
+                            alt="win icon"
+                            className={`m-0 p-0 ms-3`}
+                            style={{
+                              width: "40px",
+                              height: "40px",
+                              borderRadius: "50%",
+                            }}
+                          />
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-                
+                    
+                  </div>
 
+                )
 
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         )}
 

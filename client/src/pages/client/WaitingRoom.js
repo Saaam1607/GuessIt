@@ -16,7 +16,7 @@ function WaitingRoom() {
   const navigate = useNavigate();
 
   function joinGame() {
-    socket.emit("join", { name: playerName, playerId: localStorage.getItem('playerId') });
+    socket.emit("join", { name: playerName, playerId: localStorage.getItem('playerId'), characterIndex: localStorage.getItem('characterIndex') });
   }
 
   function getPlayersList() {

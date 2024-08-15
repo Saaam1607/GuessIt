@@ -7,13 +7,15 @@ import CustomDiv from "../../components/CustomDiv.js";
 
 import CharacterPicker from "../../components/CharacterPicker.js";
 
-const backendUrl = process.env.REACT_APP_BACKEND_URL || "https://guessitserver.onrender.com";
+const SoundManager = require('../../components/SoundManager.js');
 
 
 
 function ClientPage() {
 
   const [name, setName] = useState("");
+  const [characterIndex, setCharacterIndex] = useState(0);
+
   const [showError, setShowError] = useState(false);
   const navigate = useNavigate();
 
@@ -22,6 +24,8 @@ function ClientPage() {
       setShowError(true);
       return;
     }
+    SoundManager.playMenuSelect();
+    localStorage.setItem('characterIndex', characterIndex);
     navigate("/client/game", { state: { name: name } });
   }
 
@@ -45,10 +49,8 @@ function ClientPage() {
       </CustomDiv>
 
       <CustomDiv>
-        <CharacterPicker />
+        <CharacterPicker characterIndex={characterIndex} setCharacterIndex={setCharacterIndex} />
       </CustomDiv>
-
-
 
       <CustomDiv>
         <CustomButton
