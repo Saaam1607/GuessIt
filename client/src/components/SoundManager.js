@@ -6,6 +6,9 @@ import extremeClockUrl from "../assets/sounds/extremeClock.mp3";
 import menu_swoosh from "../assets/sounds/menu_swoosh.mp3";
 import menu_select from "../assets/sounds/menu_select.mp3";
 
+import powerSelection from "../assets/sounds/powerSelection.mp3";
+import ghost from "../assets/sounds/ghost.mp3";
+
 
 
 const newQuestion = new Audio(newQuestionUrl);
@@ -15,6 +18,9 @@ const extremeClock = new Audio(extremeClockUrl);
 
 const menuSwoosh = new Audio(menu_swoosh);
 const menuSelect = new Audio(menu_select);
+
+const powerSelectionSound = new Audio(powerSelection);
+const ghostSound = new Audio(ghost);
 
 
 
@@ -44,6 +50,18 @@ function playMenuSelect() {
   menuSelect.play();
 }
 
+function playPowerSelection() {
+  powerSelectionSound.currentTime = 0;
+  powerSelectionSound.play();
+}
+
+function playGhost() {
+  ghostSound.currentTime = 0;
+  ghostSound.play();
+}
 
 
-export { playNewQuestionSound, playAnswerSentSound, playClockSound, playExtremeClockSound, playMenuSwoosh, playMenuSelect };
+
+
+
+export { playNewQuestionSound, playAnswerSentSound, playClockSound, playExtremeClockSound, playMenuSwoosh, playMenuSelect, playPowerSelection, playGhost };

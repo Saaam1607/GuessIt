@@ -10,7 +10,12 @@ import withReactContent from 'sweetalert2-react-content'
 import CustomButton from "../../components/CustomButton.js";
 import CustomBoundaryButton from "../../components/CustomBoundaryButton.js";
 
+import QuestionBox from "../../components/QuestionBox.js";
+import AnswerBox from "../../components/AnswerBox.js";
+import PowerSelector from "../../components/PowerSelector.js";
 import GhostModal from "../../components/GhostModal.js";
+import Results from "../../components/Results.js";
+import Classification from "../../components/Classification.js";
 
 import './clientGame.css';
 
@@ -45,7 +50,7 @@ function ClientGame() {
   const [showResults, setShowResults] = useState(false);
   const [showClassification, setShowClassification] = useState(false);
 
-  const [playersAnswersData, setPlayersAnswersData] = useState([]);
+  const [results, setResults] = useState([]);
   const [classificationData, setClassificationData] = useState([]);
 
   const [ghostPowerAvailableBonuses, setGhostPowerAvailableBonuses] = useState(0);
@@ -134,12 +139,15 @@ function ClientGame() {
 
   function handleGhostIconClick() {
     if (ghostPowerAvailableBonuses && !ghostIconClicked) {
+      SoundManager.playPowerSelection();
+      SoundManager.playGhost();
       socket.emit("ghost", {});
     }
   }
 
   function handleHelpIconClick() {
     if (helpPowerAvailableBonuses && !helpIconClicked) {
+      SoundManager.playPowerSelection();
       socket.emit("help", { playerId: localStorage.getItem('playerId') });
     }
   }
@@ -154,6 +162,7 @@ function ClientGame() {
 
   function handleX2IconClick() {
     if (x2PowerAvailableBonuses && !x2IconClicked) {
+      SoundManager.playPowerSelection();
       setX2IconClicked(true);
     }
   }
@@ -194,13 +203,12 @@ function ClientGame() {
     }
 
     function handleResults(data) {
-      setPlayersAnswersData(data.playersAnswersData);
+      setResults(data.playersAnswersData);
       setShowClassification(false);
       setShowResults(true);
     }
 
     function handleClassification(data) {
-      console.log(data.classificationData);
       setClassificationData(data.classificationData);
       setShowResults(false);
       setShowClassification(true);
@@ -268,10 +276,7 @@ function ClientGame() {
   return (
     <div
       className="d-flex flex-column align-items-center justify-content-center  border-4"
-      style={{
-        height: "90%",
-        width: "100%",
-      }}
+      style={{ height: "90%", width: "100%" }}
     >
 
       <GhostModal
@@ -284,144 +289,46 @@ function ClientGame() {
 
       <div
         className={"d-flex flex-column align-items-center justify-content-start bg-light m-3 p-2"}
-        style={{
-          borderRadius: "30px",
-          width: "80%",
-          height: "100%",
-        }}
+        style={{ borderRadius: "30px", width: "80%", height: "100%" }}
       >
-        <h1
-          style={{
-            fontFamily: "customFont",
-            fontSize: "2rem",
-            letterSpacing: "0.1rem",
-          }}
-        >
-          Domanda
-        </h1>
-        <h3 className="p-3">
-          {question}
-        </h3>
+
+        <QuestionBox question={question} />
 
         { !hasAnswered && !showResults && !showClassification && (
           <form
             className=" border-4 d-flex flex-column align-items-center justify-content-center p-3"
-            style={{
-              height: "100%",
-            }}
+            style={{ height: "100%"}}
             onSubmit={(e) => {
               e.preventDefault();
               sendAnswer();
             }}
           >
-            <div
-              className="d-flex justify-content-center align-items-center"
-              style={{ width: '100%' }}
 
-            >
-              <CustomBoundaryButton isMin={true} message={min} helperUsed={helpIconClicked} prevMessage={previousMinMax.min} color="rgb(87, 169, 221)" />
-              <input
-                type="number"
-                className="form-control"
-                id="answerInput"
-                value={answer || ''}
-                onChange={(e) => {
-                  setAnswer(e.target.value);
-                  setShowError(false);
-                }}
-                style={{ fontSize: '1.3rem', padding: '10px', width: '60%' }}
-              />
-              <CustomBoundaryButton isMin={false} message={max} helperUsed={helpIconClicked} prevMessage={previousMinMax.max} color="rgb(87, 169, 221)" />
-            </div>
-            <input 
-              type="range"
-              className="form-range d-flex justify-content-center"
-              min={min}
-              max={max}
-              step={step}
-              id="answerSlider"
-              value={answer}
-              onChange={(e) => {
-                setAnswer(e.target.value);
-                setShowError(false);
-              }}
-              style={{ 
-                height: '80px', 
-              }}
+            <AnswerBox
+              answer={answer} setAnswer={setAnswer} sendAnswer={sendAnswer}
+              min={min} max={max} step={step}
+              helpIconClicked={helpIconClicked}
+              prevMin={previousMinMax.min} prevMax={previousMinMax.max}
+              setShowError={setShowError}
             />
+
             <div
               className=" d-flex flex-column align-items-center justify-content-center"
-              style={{
-                width: "100%",
-                height: "100%",
-              }}
+              style={{ width: "100%", height: "100%" }}
             >
-              <CustomButton
-                message="Invia"
-                color="rgb(87, 169, 221)"
-                type="submit"
-              />
+              <CustomButton message="Invia" color="rgb(87, 169, 221)" type="submit" />
 
               <p className="text-danger m-1">
                 {showError && "Please enter a valid answer!"}
               </p>
 
-              <div className="mt-5 d-flex">
-                
-                <div className="d-flex flex-column align-items-center">
-                  <img
-                    src={ghost_icon}
-                    alt="Ghost icon"
-                    className={`m-0 p-0 mx-3 ${ghostIconClicked ? 'box' : ''}`}
-                    style={{
-                      width: "80px",
-                      height: "80px",
-                      borderRadius: "50%",
-                      opacity: ghostPowerAvailableBonuses > 0 ? "1" : "0.2",
-                    }}
-                    onClick={handleGhostIconClick}
-                  />
-                  <p style={{fontSize: "1.2em"}}>x {ghostPowerAvailableBonuses}</p>
-                </div>
-
-                <div className="d-flex flex-column align-items-center">
-                  <img
-                    src={help_icon}
-                    alt="Help icon"
-                    className={`m-0 p-0 mx-3 ${helpIconClicked ? 'box' : ''}`}
-                    style={{
-                      width: "80px",
-                      height: "80px",
-                      borderRadius: "50%",
-                      opacity: helpPowerAvailableBonuses > 0 ? "1" : "0.2",
-                    }}
-                    onClick={handleHelpIconClick}
-                  />
-                  <p style={{fontSize: "1.2em"}}>x {helpPowerAvailableBonuses}</p>
-                </div>
-
-                <div className="d-flex flex-column align-items-center">
-                  <img
-                    src={x2_icon}
-                    alt="X2 icon"
-                    className={`m-0 p-0 mx-3 ${x2IconClicked ? 'box' : ''}`}
-                    style={{
-                      width: "80px",
-                      height: "80px",
-                      borderRadius: "50%",
-                      opacity: x2PowerAvailableBonuses > 0 ? "1" : "0.2",
-                    }}
-                    onClick={handleX2IconClick}
-                  />
-                  <p style={{fontSize: "1.2em"}}>x {x2PowerAvailableBonuses}</p>
-                </div>
-
-
-
-              </div>
+              <PowerSelector
+                ghostIconClicked={ghostIconClicked} ghostPowerAvailableBonuses={ghostPowerAvailableBonuses} handleGhostIconClick={handleGhostIconClick}
+                x2IconClicked={x2IconClicked} x2PowerAvailableBonuses={x2PowerAvailableBonuses} handleX2IconClick={handleX2IconClick}
+                helpIconClicked={helpIconClicked} helpPowerAvailableBonuses={helpPowerAvailableBonuses} handleHelpIconClick={handleHelpIconClick}
+              />
 
             </div>
-            
 
           </form>
         )}
@@ -431,140 +338,12 @@ function ClientGame() {
         )}
 
         { showClassification && (
-          <div>
-            <h3
-              style={{
-                fontFamily: "customFont",
-                fontSize: "2rem",
-                letterSpacing: "0.1rem",
-              }}
-            >
-              Classifica
-            </h3>
-            {classificationData.map((playerData, index) => (
-              playerData?.active && playerData.name ? (
-                <div
-                  key={index}
-                  className="m-1"
-                >
-                  <p
-                    className="p-0 m-0"
-                    style={{
-                      fontFamily: "customFont",
-                      fontSize: "1.4rem",
-                      letterSpacing: "0.1rem",
-                    }}
-                  >
-                    {playerData.name} : {playerData.score}
-                  </p>
-                </div>
-              ) : null
-            ))}
-          </div>
+          <Classification classificationData={classificationData} />
         )}
 
         { showResults && (
-          <div>
-            <h3
-              style={{
-                fontFamily: "customFont",
-                fontSize: "2rem",
-                letterSpacing: "0.1rem",
-              }}
-            >Risultati</h3>
-            
-            <div
-              className={"m-1 d-flex flex-column flex-align-items-center justify-content-center"}
-              // style={{height: "40px"}}
-            >
-              {playersAnswersData.map((playerAnswerData, index) => (
-                playerAnswerData.isAnswer ? (
-                  <p
-                    className="p-0 m-0"
-                    style={{
-                      fontFamily: "customFont",
-                      fontSize: "1.4rem",
-                      letterSpacing: "0.1rem",
-                      color: "green"
-                    }}
-                  >{playerAnswerData.answer} - RISPOSTA CORRETTA</p>
-                ) : (
-                  <div key={index} className="d-flex" >
-                    <p
-                      className="p-0 m-0"
-                      style={{
-                        fontFamily: "customFont",
-                        fontSize: "1.4rem",
-                        letterSpacing: "0.1rem",
-                      }}
-                    >{playerAnswerData.answer} - {playerAnswerData.name}</p>
-
-                    <div className="mx-2 d-flex align-items-center">
-                      {playerAnswerData.hasUsedX2 && (
-                        <img
-                          src={x2_icon}
-                          alt="X2 icon"
-                          className={`m-0 p-0`}
-                          style={{
-                            width: "30px",
-                            height: "30px",
-                            borderRadius: "50%",
-                          }}
-                        />
-                      )}
-
-                      {playerAnswerData.hasUsedHelp && (
-                        <img
-                          src={help_icon}
-                          alt="help icon"
-                          className={`m-0 p-0`}
-                          style={{
-                            width: "30px",
-                            height: "30px",
-                            borderRadius: "50%",
-                          }}
-                        />
-                      )}
-
-                      {playerAnswerData.hasUsedGhost && (
-                        <img
-                          src={ghost_icon}
-                          alt="ghost icon"
-                          className={`m-0 p-0`}
-                          style={{
-                            width: "30px",
-                            height: "30px",
-                            borderRadius: "50%",
-                          }}
-                        />
-                      )}
-
-                      {playerAnswerData.hasWon && (
-                        <div className="image-container">
-                          <img
-                            src={win_icon}
-                            alt="win icon"
-                            className={`m-0 p-0 ms-3`}
-                            style={{
-                              width: "40px",
-                              height: "40px",
-                              borderRadius: "50%",
-                            }}
-                          />
-                        </div>
-                      )}
-                    </div>
-                    
-                  </div>
-
-                )
-
-              ))}
-            </div>
-          </div>
+          <Results results={results} />
         )}
-
-
 
       </div>
     </div>
