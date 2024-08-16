@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 
-import CustomButton, { CustomButtonSmaller } from "../../components/CustomButton.js";
+import CustomButton from "../../components/CustomButton.js";
 import ControllerButton from "../../components/ControllerButton.js";
 
 import Results from "../../components/Results.js";
@@ -138,17 +138,9 @@ function HostConsole() {
     <div className="d-flex flex-column align-items-center justify-content-center">
       <h3>Host Console</h3>
 
-      <div>
+      <div style={{width: "90%"}}>
         <h3>{question}</h3>
         <h4>{answer}</h4>
-        {playersAnswersData !== undefined && playersAnswersData.map((playerAnswerData, index) => (
-          <div
-            key={index}
-            className={"m-1"}
-          >
-            <p className="m-0 p-0">{playerAnswerData.name} : {playerAnswerData.answer}</p>
-          </div>
-        ))}
       </div>
 
       <div className="d-flex flex-wrap justify-content-center m-1" style={{gap: "15px"}}>
@@ -160,6 +152,12 @@ function HostConsole() {
         <ControllerButton icon={"bi bi-alarm-fill"} color={"#ff0000"} onClick={extremeHurryUp} />
         <ControllerButton icon={"bi bi-eraser-fill"} color={"#4f2020"} onClick={resetPoints} />
       </div>
+
+      {playersAnswersData !== undefined && playersAnswersData.map((playerAnswerData, index) => (
+        <div key={index} className={"m-1"} >
+          <p className="m-0 p-0">{playerAnswerData.name} : {playerAnswerData.answer}</p>
+        </div>
+      ))}
 
       { showClassification && (
         <Classification classificationData={classificationData} />

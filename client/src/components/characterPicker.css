@@ -3,6 +3,15 @@
     margin-right: 0.5em;
     font-size: 3em;
     color: grey;
+    cursor: pointer;
+}
+
+.arrow:hover {
+  color: silver;
+}
+
+.arrow:active {
+  color: lightgrey;
 }
 
 
@@ -51,3 +60,4 @@
     inherits: true;
     initial-value: 0turn;
   }
+

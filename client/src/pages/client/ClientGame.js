@@ -116,10 +116,18 @@ function ClientGame() {
     })
   }
 
+  function showGhostResponseEmptySwal() {
+    Swal.fire({
+      title: "Nessun fantasma ha risposto",
+      timer: 1500,
+      showConfirmButton: false,
+    })
+  }
+
   function showGhostResponseNotReadySwal() {
     Swal.fire({
       title: "Non ha ancora risposto",
-      timer: 2000,
+      timer: 1500,
       showConfirmButton: false,
     })
   }
@@ -154,6 +162,7 @@ function ClientGame() {
 
 
   function handleSuggest(data) {
+    SoundManager.playHelp();
     setHelpIconClicked(true);
     setMin(data.suggestedMin);
     setMax(data.suggestedMax);
@@ -163,6 +172,7 @@ function ClientGame() {
   function handleX2IconClick() {
     if (x2PowerAvailableBonuses && !x2IconClicked) {
       SoundManager.playPowerSelection();
+      SoundManager.playX2();
       setX2IconClicked(true);
     }
   }
@@ -179,7 +189,6 @@ function ClientGame() {
     getQuestion();
 
     function handleNextQuestion(data) {
-      SoundManager.playNewQuestionSound();
       setQuestion(data.question);
       setMin(data.min);
       setMax(data.max);
@@ -198,6 +207,8 @@ function ClientGame() {
 
       setGhostData([]);
 
+      SoundManager.playNewQuestionSound();
+
       socket.emit("getBonus", { playerId: localStorage.getItem('playerId') });
 
     }
@@ -215,15 +226,23 @@ function ClientGame() {
     }
 
     function handleBonus(data) {
-      console.log(data)
       setGhostPowerAvailableBonuses(data.ghostAvailableBonuses);
       setHelpPowerAvailableBonuses(data.helpAvailableBonuses);
       setX2PowerAvailableBonuses(data.x2AvailableBonuses);
     }
 
     function handleGhostData(data) {
+      var playersData = data.playersData;
+      playersData = playersData.filter(player => player.playerId != localStorage.getItem('playerId'));
+      playersData = playersData.filter(player => player.active == true);
+      
+      if (playersData.length == 0) {
+        showGhostResponseEmptySwal();
+        return;
+      }
+
       setGhostIconClicked(true);
-      setGhostData(data.playersData);
+      setGhostData(playersData);
       setShowGhostModal(true);
     }
 
@@ -275,7 +294,7 @@ function ClientGame() {
 
   return (
     <div
-      className="d-flex flex-column align-items-center justify-content-center  border-4"
+      className="d-flex flex-column align-items-center justify-content-center border-4"
       style={{ height: "90%", width: "100%" }}
     >
 
@@ -289,7 +308,7 @@ function ClientGame() {
 
       <div
         className={"d-flex flex-column align-items-center justify-content-start bg-light m-3 p-2"}
-        style={{ borderRadius: "30px", width: "80%", height: "100%" }}
+        style={{ borderRadius: "30px", width: "90%", height: "100%" }}
       >
 
         <QuestionBox question={question} />

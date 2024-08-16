@@ -1,0 +1,11 @@
+.table > :not(caption) > * > * {
+    background-color: transparent !important;
+}
+
+td {
+    border: 1px solid red !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}

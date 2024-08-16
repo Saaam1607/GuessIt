@@ -232,6 +232,7 @@ io.on("connection", (socket) => {
     updateQuestionIndex();
     const answer = getCurrentAnswer();
     playerManager.resetLastPlayersResponses();
+    io.emit("gameStarted", {});
     io.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit()});
     io.emit("nextAnswer", {answer: answer});
   });
@@ -246,7 +247,9 @@ io.on("connection", (socket) => {
     to client   ---> nextQuestion
   */
   socket.on("getQuestion", (data) => {
+    const answer = getCurrentAnswer();
     socket.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit()});
+    io.emit("nextAnswer", {answer: answer});
   });
 
   socket.on("hasAnswered", (data) => {

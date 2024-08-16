@@ -8,6 +8,8 @@ import menu_select from "../assets/sounds/menu_select.mp3";
 
 import powerSelection from "../assets/sounds/powerSelection.mp3";
 import ghost from "../assets/sounds/ghost.mp3";
+import x2 from "../assets/sounds/x2.mp3";
+import help from "../assets/sounds/help.mp3";
 
 
 
@@ -21,11 +23,15 @@ const menuSelect = new Audio(menu_select);
 
 const powerSelectionSound = new Audio(powerSelection);
 const ghostSound = new Audio(ghost);
+const x2Sound = new Audio(x2);
+const helpSound = new Audio(help);
 
 
 
 function playNewQuestionSound() {
-  newQuestion.play();
+  newQuestion.play().catch(error => {
+    console.error('Playback failed:', error);
+  });
 }
 
 function playAnswerSentSound() {
@@ -52,7 +58,9 @@ function playMenuSelect() {
 
 function playPowerSelection() {
   powerSelectionSound.currentTime = 0;
-  powerSelectionSound.play();
+  powerSelectionSound.play().catch(error => {
+    console.error('Playback failed:', error);
+  });
 }
 
 function playGhost() {
@@ -60,8 +68,16 @@ function playGhost() {
   ghostSound.play();
 }
 
+function playX2() {
+  x2Sound.currentTime = 0;
+  x2Sound.play();
+}
+
+function playHelp() {
+  helpSound.currentTime = 0;
+  helpSound.play();
+}
 
 
 
-
-export { playNewQuestionSound, playAnswerSentSound, playClockSound, playExtremeClockSound, playMenuSwoosh, playMenuSelect, playPowerSelection, playGhost };
+export { playNewQuestionSound, playAnswerSentSound, playClockSound, playExtremeClockSound, playMenuSwoosh, playMenuSelect, playPowerSelection, playGhost, playX2, playHelp }; 
