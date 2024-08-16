@@ -140,7 +140,7 @@ const questions = [
     unit: "anni",
   },
   {
-    question: "Quando si é tenuto il primo modiale di calcio?",
+    question: "Quando si é tenuto il primo mondiale di calcio?",
     answer: 1930,
     min: 1800,
     max: 2000,
