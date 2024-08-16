@@ -27,7 +27,6 @@ function GhostModal({ ghostData, playerId, showGhostModal, setShowGhostModal, ha
           </Modal.Header> */}
           <Modal.Body className="d-flex flex-column align-items-center">
           {ghostData.map((player) => (
-            player.name !== "" && player.playerId != playerId && player.isActive && (
               <div key={player.playerId} className="mb-2">
                 <button
                   className={`px-6 py-2 ${selectedPlayerId == player.playerId ? 'glow-on-hover' : ''}`}
@@ -43,7 +42,6 @@ function GhostModal({ ghostData, playerId, showGhostModal, setShowGhostModal, ha
                   {player.name}
                 </button>
               </div>
-            )
           ))}
           </Modal.Body>
           

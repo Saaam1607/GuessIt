@@ -42,7 +42,7 @@ function Results({results}) {
                 <td>{playerAnswerData.answer}</td>
                 <td>{playerAnswerData.name}</td>
                 <td>
-                  <div className="mx-2 d-flex align-items-center">
+                  <div className="mx-2 d-flex align-items-center" style={{width: "100%", height: "100%"}}>
                     {playerAnswerData.hasUsedX2 && (
                       <img
                         src={x2_icon}

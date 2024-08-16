@@ -109,14 +109,12 @@ function HostConsole() {
       setResults(data.playersAnswersData);
       setShowClassification(false);
       setShowResults(true);
-      SoundManager.playResults();
     }
 
     function handleClassification(data) {
       setClassificationData(data.classificationData);
       setShowResults(false);
       setShowClassification(true);
-      SoundManager.playClassification();
     }
   
     socket.on("nextQuestion", handleNextQuestion);

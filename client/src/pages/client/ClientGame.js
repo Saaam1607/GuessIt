@@ -224,6 +224,7 @@ function ClientGame() {
       setClassificationData(data.classificationData);
       setShowResults(false);
       setShowClassification(true);
+      SoundManager.playClassification();
     }
 
     function handleBonus(data) {
@@ -234,6 +235,7 @@ function ClientGame() {
 
     function handleGhostData(data) {
       var playersData = data.playersData;
+
       playersData = playersData.filter(player => player.playerId != localStorage.getItem('playerId'));
       playersData = playersData.filter(player => player.active == true);
       
