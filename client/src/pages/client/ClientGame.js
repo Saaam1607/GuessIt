@@ -217,6 +217,7 @@ function ClientGame() {
       setResults(data.playersAnswersData);
       setShowClassification(false);
       setShowResults(true);
+      SoundManager.playResults();
     }
 
     function handleClassification(data) {

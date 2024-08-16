@@ -11,6 +11,9 @@ import ghost from "../assets/sounds/ghost.mp3";
 import x2 from "../assets/sounds/x2.mp3";
 import help from "../assets/sounds/help.mp3";
 
+import results from "../assets/sounds/results.mp3";
+import classification from "../assets/sounds/classification.mp3";
+
 
 
 const newQuestion = new Audio(newQuestionUrl);
@@ -25,6 +28,9 @@ const powerSelectionSound = new Audio(powerSelection);
 const ghostSound = new Audio(ghost);
 const x2Sound = new Audio(x2);
 const helpSound = new Audio(help);
+
+const resultsSound = new Audio(results);
+const classificationSound = new Audio(classification);
 
 
 
@@ -78,6 +84,20 @@ function playHelp() {
   helpSound.play();
 }
 
+function playResults() {
+  resultsSound.currentTime = 0;
+  resultsSound.play().catch(error => {
+    console.error('Playback failed:', error);
+  });
+}
+
+function playClassification() {
+  classificationSound.currentTime = 0;
+  classificationSound.play().catch(error => {
+    console.error('Playback failed:', error);
+  });
+}
 
 
-export { playNewQuestionSound, playAnswerSentSound, playClockSound, playExtremeClockSound, playMenuSwoosh, playMenuSelect, playPowerSelection, playGhost, playX2, playHelp }; 
+
+export { playNewQuestionSound, playAnswerSentSound, playClockSound, playExtremeClockSound, playMenuSwoosh, playMenuSelect, playPowerSelection, playGhost, playX2, playHelp, playResults, playClassification }; 
