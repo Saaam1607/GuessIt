@@ -8,7 +8,7 @@ const cors = require("cors");
 const playerManager = require("./game/players");
 const tokenManager = require("./components/tokenManager");
 const helperManager = require("./game/helperManager");
-const questionDb = require("./game/questions");
+var questionDb = require("./game/questions");
 const characters = require("./game/characters");
 
 const corsOptions = {
@@ -28,6 +28,14 @@ const io = socketIO(server, {
   },
 });
 
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
 app.use(bodyParser());
 app.use(cors(corsOptions));
 
@@ -35,6 +43,9 @@ app.use(routes);
 
 let gameStarted = false;
 let questionIndex = 0;
+
+questionDb = shuffleArray(questionDb);
+
 const maxQuestionIndex = questionDb.length - 1;
 
 function getCurrentQuestion() {

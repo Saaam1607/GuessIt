@@ -1,56 +1,108 @@
 const questions = [
-  // {
-  //   question: "In quale anno é stata inventata la bicicletta?",
-  //   answer: 1817,
-  // },
-  // {
-  //   question: "Quanti pianeti ha il nostro sistema solare?",
-  //   answer: 8,
-  // },
-  // {
-  //   question: "Quante nazioni ci sono in tutto il mondo? (solo stati sovrani)",
-  //   answer: 195,
-  // },
-  // {
-  //   question: "A quale velocitá (in km/h) é necessario vaggiare per percorrere 287 km in 2 ore e 56 minuti?",
-  //   answer: 98,
-  // },
-  // {
-  //   question: "In che anno é nato Benito Mussolini (a.k.a. il puzzone)?",
-  //   answer: 1883,
-  // },
-  // {
-  //   question: "Quante banane sono necessarie per apportare il giusto quantitativo di calore per camminare per 10 km considerando un uomo di peso 70 kg?",
-  //   answer: 5,
-  // },
-  // {
-  //   question: "Quanti abitanti ha la Thailandia in milioni (anno 2023/2024)?",
-  //   answer: 70,
-  // },
-  // {
-  //   question: "Quanti hanni ha la statua della libertá (considerando come anno di nascita l''anno di fine costruzione e e 2024 come ultimo anno?",
-  //   answer: 140,
-  // },
-  // {
-  //   question: "Quanti ponti ha Venezia?",
-  //   answer: 435,
-  // },
-  // {
-  //   question: "Qual-é la temperattura piú alta mai registrata?",
-  //   answer: 57,
-  // },
-  // {
-  //   question: "Quanti anni aveva Michael Jackson quando é morto?",
-  //   answer: 50,
-  // },
-  // {
-  //   question: "Quante ossa ci sono nel corpo umano?",
-  //   answer: 206,
-  // },
-  // {
-  //   question: "Con quanti stati confina l'Italia?",
-  //   answer: 6,
-  // },
+  {
+    question: "In quale anno é stata inventata la bicicletta?",
+    answer: 1817,
+    min: 1500,
+    max: 2000,
+    step: 1,
+    unit: "",
+  },
+  {
+    question: "Quanti pianeti ha il nostro sistema solare?",
+    answer: 8,
+    min: 5,
+    max: 10,
+    step: 1,
+    unit: "",
+  },
+  {
+    question: "Quante nazioni ci sono in tutto il mondo? (solo stati sovrani)",
+    answer: 195,
+    min: 100,
+    max: 200,
+    step: 1,
+    unit: "",
+  },
+  {
+    question: "A quale velocitá (in km/h) é necessario vaggiare per percorrere 287 km in 2 ore e 56 minuti?",
+    answer: 98,
+    min: 50,
+    max: 200,
+    step: 1,
+    unit: "km/h",
+  },
+  {
+    question: "In che anno é nato Benito Mussolini (a.k.a. il puzzone)?",
+    answer: 1883,
+    min: 1800,
+    max: 1900,
+    step: 1,
+    unit: "km/h",
+  },
+  {
+    question: "Quante banane sono necessarie per apportare il giusto quantitativo di calore per camminare 10 km considerando un uomo di peso 70 kg?",
+    answer: 5,
+    min: 1,
+    max: 100,
+    step: 1,
+    unit: "banane",
+  },
+  {
+    question: "Quanti abitanti ha la Thailandia in milioni (anno 2023/2024)?",
+    answer: 70,
+    min: 1,
+    max: 100,
+    step: 1,
+    unit: "milioni",
+  },
+  {
+    question: "Quanti anni ha la statua della libertá (considerando come anno di nascita l'anno di fine costruzione e 2024 come ultimo anno?",
+    answer: 140,
+    min: 100,
+    max: 200,
+    step: 1,
+    unit: "anni",
+  },
+  {
+    question: "Quanti ponti ha Venezia?",
+    answer: 435,
+    min: 100,
+    max: 500,
+    step: 1,
+    unit: "ponti",
+  },
+  {
+    question: "Qual'é la temperatura piú alta mai registrata (in °C)?",
+    answer: 57,
+    min: 50,
+    max: 100,
+    step: 1,
+    unit: "°C",
+  },
+  {
+    question: "Quanti anni aveva Michael Jackson quando é morto?",
+    answer: 50,
+    min: 30,
+    max: 70,
+    step: 1,
+    unit: "anni",
+  },
+  {
+    question: "Quante ossa ci sono nel corpo umano?",
+    answer: 206,
+    min: 50,
+    max: 500,
+    step: 1,
+    unit: "ossa",
+  },
+  {
+    question: "Con quanti stati confina l'Italia?",
+    answer: 6,
+    min: 2,
+    max: 10,
+    step: 1,
+    unit: "stati",
+  },
   {
     question: "Quanto é alto il monte K2 in metri?",
     answer: 8611,
@@ -163,18 +215,30 @@ const questions = [
     step: 1,
     unit: "",
   },
-  // {
-  //   question: "",
-  //   answer:,
-  // },
-  // {
-  //   question: "",
-  //   answer:,
-  // },
-  // {
-  //   question: "",
-  //   answer:,
-  // },
+  {
+    question: "Quanti milioni di visualizzazioni ha il videoclip della nota canzone 'Gangnam Style' di PSY?",
+    answer: 132,
+    min: 1,
+    max: 300,
+    step: 1,
+    unit: "milioni"
+  },
+  {
+    question: "Quanti album hanno pubblicato i Pink Floyd?",
+    answer: 15,
+    min: 1,
+    max: 30,
+    step: 1,
+    unit: "album"
+  },
+  {
+    question: "In che anno è uscita il brano 'Never Gonna Give You Up' di Rick Astley?",
+    answer: 1987,
+    min: 1950,
+    max: 2000,
+    step: 1,
+    unit: ""
+  },
   // {
   //   question: "",
   //   answer:,
