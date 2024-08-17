@@ -7,7 +7,7 @@ function Title() {
     <img
       src={logoImage}
       alt="logo"
-      className={"m-2"}
+      className={"my-2"}
       style={{ width: "40%", maxWidth: "300px" }}
     />
   </div>

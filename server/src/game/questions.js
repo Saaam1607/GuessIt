@@ -239,49 +239,93 @@ const questions = [
     step: 1,
     unit: ""
   },
+  {
+    question: "Quanti km devono essere percorsi in macchina per arrivare a Belluno partendo da Treviso? (prendendo la A27)",
+    answer: 77,
+    min: 20,
+    max: 200,
+    step: 1,
+    unit: "km"
+  },
+  {
+    question: "Quante province ci sono in Italia?",
+    answer: 110,
+    min: 20,
+    max: 150,
+    step: 1,
+    unit: ""
+  },
   // {
   //   question: "",
   //   answer:,
-  // },
-  // {
-  //   question: "",
-  //   answer:,
-  // },
-    // {
-  //   question: "",
-  //   answer:,
-  // },
-  // {
-  //   question: "",
-  //   answer:,
-  // },
-  // {
-  //   question: "",
-  //   answer:,
-  // },
-    // {
-  //   question: "",
-  //   answer:,
-  // },
-  // {
-  //   question: "",
-  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: ""
   // },
   // {
   //   question: "",
   //   answer:,
-  // },
-    // {
-  //   question: "",
-  //   answer:,
-  // },
-  // {
-  //   question: "",
-  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: ""
   // },
   // {
   //   question: "",
   //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: ""
   // },
 ];
 

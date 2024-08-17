@@ -4,7 +4,7 @@ import "./customFont.css";
 
 
 
-function CustomButton({ message, color, onClickFunction }) {
+function CustomButton({ message, color, onClickFunction, icon }) {
 
   function handleClick() {
     if (onClickFunction) {
@@ -27,6 +27,7 @@ function CustomButton({ message, color, onClickFunction }) {
       onClick={handleClick}
     >
       {message}
+      {icon && <img src={icon} alt="icon" style={{ width: "2rem", marginLeft: "0.3rem" }} />}
     </button>
   );
 

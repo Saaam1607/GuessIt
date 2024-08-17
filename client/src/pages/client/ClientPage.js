@@ -7,6 +7,8 @@ import CustomDiv from "../../components/CustomDiv.js";
 
 import CharacterPicker from "../../components/CharacterPicker.js";
 
+
+
 const SoundManager = require('../../components/SoundManager.js');
 
 
@@ -32,10 +34,7 @@ function ClientPage() {
   return (
     <div
       className="d-flex flex-column align-items-center justify-content-center"
-      style={{
-        height: "100%",
-        width: "100%",
-      }}
+      style={{ height: "100%", width: "100%" }}
     >
 
       <CustomDiv>

@@ -19,6 +19,9 @@ import Classification from "../../components/Classification.js";
 
 import './clientGame.css';
 
+import answer_icon from '../../assets/images/answer_icon.png';
+
+
 const SoundManager = require('../../components/SoundManager.js');
 
 const socketUrl = process.env.REACT_APP_SOCKET_URL || "https://guessitserver.onrender.com";
@@ -299,8 +302,8 @@ function ClientGame() {
 
   return (
     <div
-      className="d-flex flex-column align-items-center justify-content-center border-4"
-      style={{ height: "90%", width: "100%" }}
+      className="d-flex flex-column align-items-center justify-content-center"
+      style={{ height: "95%", width: "100%" }}
     >
 
       <GhostModal
@@ -312,15 +315,15 @@ function ClientGame() {
       />
 
       <div
-        className={"d-flex flex-column align-items-center justify-content-start bg-light m-3 p-2"}
-        style={{ borderRadius: "30px", width: "90%", height: "100%" }}
+        className={"d-flex flex-column align-items-center justify-content-start bg-light p-2"}
+        style={{ borderRadius: "10px", width: "90%", height: "100%", backgroundColor: "#78d7ff", overflowY: "auto" }}
       >
 
         <QuestionBox question={question} />
 
         { !hasAnswered && !showResults && !showClassification && (
           <form
-            className=" border-4 d-flex flex-column align-items-center justify-content-center p-3"
+            className="d-flex flex-column align-items-center justify-content-center p-3"
             style={{ height: "100%"}}
             onSubmit={(e) => {
               e.preventDefault();
@@ -340,7 +343,7 @@ function ClientGame() {
               className=" d-flex flex-column align-items-center justify-content-center"
               style={{ width: "100%", height: "100%" }}
             >
-              <CustomButton message="Invia" color="rgb(87, 169, 221)" type="submit" />
+              <CustomButton message="Invia" color="rgb(87, 169, 221)" type="submit" icon={answer_icon} />
 
               <p className="text-danger m-1">
                 {showError && "Please enter a valid answer!"}
