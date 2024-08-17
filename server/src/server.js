@@ -43,6 +43,7 @@ app.use(routes);
 
 let gameStarted = false;
 let questionIndex = 0;
+let prevClassification = null;
 
 questionDb = shuffleArray(questionDb);
 
@@ -276,7 +277,6 @@ io.on("connection", (socket) => {
     to all      ---> results
   */
   socket.on("results", (data) => {
-
     const answer = getCurrentAnswer();
     const playersAnswersData = data.playersAnswersData;
 
@@ -329,7 +329,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("classification", () => {
-    io.emit("classification", { classificationData: playerManager.getPlayers() });
+    const classificationData = playerManager.getClassification(prevClassification);
+    prevClassification = JSON.parse(JSON.stringify(classificationData));
+    io.emit("classification", { classificationData: classificationData });
   });
 
   /*

@@ -175,6 +175,34 @@ function checkIfAllPlayersOffline() {
   return players.every(player => player.active === false);
 }
 
+function getClassification(prevClassification) {
+
+  console.log("classification");
+  console.log(prevClassification)
+  console.log(getPlayers());
+
+
+  let players = getPlayers();
+  if (prevClassification) {
+    for (let i = 0; i < players.length; i++) {
+      for (let j = 0; j < prevClassification.length; j++) {
+        if (players[i].playerId == prevClassification[j].playerId) {
+          if (i == j) {
+            players[i].isMovedUp = false;
+            players[i].isMovedDown = false;
+          } else if (i < j) {
+            players[i].isMovedUp = true;
+          } else if (i > j) {
+            players[i].isMovedDown = true;
+          }
+        }
+      }
+    }
+  }
+  return players;
+}
+
+
 module.exports = {
   getPlayers,
   resetLastPlayersResponses,
@@ -196,5 +224,6 @@ module.exports = {
   addRandomPower,
   updatePlayerActive,
   updatePlayerLeft,
-  checkIfAllPlayersOffline
+  checkIfAllPlayersOffline,
+  getClassification
 };

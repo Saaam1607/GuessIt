@@ -32,13 +32,13 @@ function Results({results}) {
         >
           {results.map((playerAnswerData, index) => (
             playerAnswerData.isAnswer ? (
-              <tr>
+              <tr key={index}>
                 <td style={{color: "green"}}>{playerAnswerData.answer}</td>
                 <td style={{color: "green"}}>RISPOSTA CORRETTA</td>
                 <td></td>
               </tr>
             ) : (
-              <tr>
+              <tr key={index}>
                 <td>{playerAnswerData.answer}</td>
                 <td>{playerAnswerData.name}</td>
                 <td>

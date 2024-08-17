@@ -225,6 +225,8 @@ function ClientGame() {
       setShowResults(false);
       setShowClassification(true);
       SoundManager.playClassification();
+      console.log(data.classificationData);
+
     }
 
     function handleBonus(data) {

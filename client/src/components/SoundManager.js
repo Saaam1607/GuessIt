@@ -35,67 +35,59 @@ const classificationSound = new Audio(classification);
 
 
 function playNewQuestionSound() {
-  newQuestion.play().catch(error => {
-    console.error('Playback failed:', error);
-  });
+  newQuestion.play().catch(error => {});
 }
 
 function playAnswerSentSound() {
-  answerSent.play();
+  answerSent.play().catch(error => {});
 }
 
 function playClockSound() {
-  clock.play();
+  clock.play().catch(error => {});
 }
 
 function playExtremeClockSound() {
-  extremeClock.play();
+  extremeClock.play().catch(error => {});
 }
 
 function playMenuSwoosh() {
   menuSwoosh.currentTime = 0;
-  menuSwoosh.play();
+  menuSwoosh.play().catch(error => {});
 }
 
 function playMenuSelect() {
   menuSelect.currentTime = 0;
-  menuSelect.play();
+  menuSelect.play().catch(error => {});
 }
 
 function playPowerSelection() {
   powerSelectionSound.currentTime = 0;
-  powerSelectionSound.play().catch(error => {
-    console.error('Playback failed:', error);
-  });
+  powerSelectionSound.play().catch(error => {});
 }
 
 function playGhost() {
   ghostSound.currentTime = 0;
-  ghostSound.play();
+  ghostSound.play().catch(error => {});
 }
 
 function playX2() {
   x2Sound.currentTime = 0;
-  x2Sound.play();
+  x2Sound.play().catch(error => {});
 }
 
 function playHelp() {
   helpSound.currentTime = 0;
-  helpSound.play();
+  helpSound.play().catch(error => {});
 }
 
 function playResults() {
   resultsSound.currentTime = 0;
-  resultsSound.play().catch(error => {
-    console.error('Playback failed:', error);
-  });
+  resultsSound.play().catch(error => {});
 }
 
 function playClassification() {
   classificationSound.currentTime = 0;
-  classificationSound.play().catch(error => {
-    console.error('Playback failed:', error);
-  });
+  classificationSound.play().catch(error => {});
 }
 
 

@@ -16,7 +16,7 @@ function Classification({ classificationData }) {
         playerData?.active && playerData.name ? (
           <div
             key={index}
-            className="m-1"
+            className="d-flex align-items-center m-1"
           >
             <p
               className="p-0 m-0"
@@ -28,6 +28,12 @@ function Classification({ classificationData }) {
             >
               {playerData.name} : {playerData.score}
             </p>
+            {playerData?.isMovedUp && (
+              <i style={{color: "green"}} className="bi bi-caret-up-fill ms-2"></i>
+            )}
+            {playerData?.isMovedDown && (
+              <i style={{color: "red"}} className="bi bi-caret-down-fill ms-2"></i>
+            )}
           </div>
         ) : null
       ))}
