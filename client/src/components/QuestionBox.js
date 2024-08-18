@@ -1,21 +1,23 @@
 import React from 'react';
+import './questionBox.css';
 
+function QuestionBox({ question, image }) {
+  let imagePath;
+  if (image && typeof image === 'string' && image.trim() !== '') {
+    try {
+      imagePath = require(`../assets/images/questionImages/${image}.png`);
+    } catch (error) {
+    }
+  }
 
-
-function QuestionBox({ question }) {
   return (
-    <div className="d-flex flex-column align-items-center mb-2">
-      <h1
-        className="m-0"
-        style={{
-          fontFamily: "customFont",
-          fontSize: "2rem",
-          letterSpacing: "0.1rem",
-        }}
-      >Domanda</h1>
-      <h3 className="p-1" style={{ textAlign: "center" }}>{question}</h3>
+    <div className="question-box">
+      <h1 className="question-text">{question}</h1>
+      {imagePath &&
+        <img className="question-image" src={imagePath} alt="question" />
+      }
     </div>
   );
-};
+}
 
 export default QuestionBox;

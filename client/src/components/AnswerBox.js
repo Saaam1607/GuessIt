@@ -6,11 +6,9 @@ import CustomBoundaryButton from "./CustomBoundaryButton.js";
 
 function AnswerBox({ answer, setAnswer, min, max, step, helpIconClicked, prevMin, prevMax, sendAnswer, setShowError}) {
   return (
-    <>
+    <div style={{ width: '80%', maxWidth: '600px' }}>
       <div
         className="d-flex justify-content-center align-items-center"
-        style={{ width: '100%' }}
-
       >
         <CustomBoundaryButton isMin={true} message={min} helperUsed={helpIconClicked} prevMessage={prevMin} color="rgb(87, 169, 221)" />
         <input
@@ -26,6 +24,7 @@ function AnswerBox({ answer, setAnswer, min, max, step, helpIconClicked, prevMin
         />
         <CustomBoundaryButton isMin={false} message={max} helperUsed={helpIconClicked} prevMessage={prevMax} color="rgb(87, 169, 221)" />
       </div>
+
       <input 
         type="range"
         className="form-range d-flex justify-content-center"
@@ -38,11 +37,10 @@ function AnswerBox({ answer, setAnswer, min, max, step, helpIconClicked, prevMin
           setAnswer(e.target.value);
           setShowError(false);
         }}
-        style={{ 
-          height: '80px', 
-        }}
+        style={{ height: '60px' }}
       />
-    </>
+
+    </div>
   );
 };
 

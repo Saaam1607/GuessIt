@@ -21,7 +21,7 @@ function PowerSelector({
   handleHelpIconClick
 }) {
   return (
-    <div className="mt-5 d-flex">
+    <div className="mt-3 d-flex">
                 
       <div className="d-flex flex-column align-items-center">
         <img
@@ -29,14 +29,14 @@ function PowerSelector({
           alt="Ghost icon"
           className={`m-0 p-0 mx-3 ${ghostIconClicked ? 'box' : ''}`}
           style={{
-            width: "80px",
-            height: "80px",
+            width: "60px",
+            height: "60px",
             borderRadius: "50%",
             opacity: ghostPowerAvailableBonuses > 0 ? "1" : "0.2",
           }}
           onClick={handleGhostIconClick}
         />
-        <p style={{fontSize: "1.2em"}}>x {ghostPowerAvailableBonuses}</p>
+        <p className="mb-1" style={{fontSize: "1em"}}>x {ghostPowerAvailableBonuses}</p>
       </div>
 
       <div className="d-flex flex-column align-items-center">
@@ -45,14 +45,14 @@ function PowerSelector({
           alt="Help icon"
           className={`m-0 p-0 mx-3 ${helpIconClicked ? 'box' : ''}`}
           style={{
-            width: "80px",
-            height: "80px",
+            width: "60px",
+            height: "60px",
             borderRadius: "50%",
             opacity: helpPowerAvailableBonuses > 0 ? "1" : "0.2",
           }}
           onClick={handleHelpIconClick}
         />
-        <p style={{fontSize: "1.2em"}}>x {helpPowerAvailableBonuses}</p>
+        <p className="mb-1" style={{fontSize: "1em"}}>x {helpPowerAvailableBonuses}</p>
       </div>
 
       <div className="d-flex flex-column align-items-center">
@@ -61,14 +61,14 @@ function PowerSelector({
           alt="X2 icon"
           className={`m-0 p-0 mx-3 ${x2IconClicked ? 'box' : ''}`}
           style={{
-            width: "80px",
-            height: "80px",
+            width: "60px",
+            height: "60px",
             borderRadius: "50%",
             opacity: x2PowerAvailableBonuses > 0 ? "1" : "0.2",
           }}
           onClick={handleX2IconClick}
         />
-        <p style={{fontSize: "1.2em"}}>x {x2PowerAvailableBonuses}</p>
+        <p className="mb-1" style={{fontSize: "1em"}}>x {x2PowerAvailableBonuses}</p>
       </div>
 
     </div>

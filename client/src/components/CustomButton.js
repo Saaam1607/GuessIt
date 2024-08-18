@@ -27,7 +27,7 @@ function CustomButton({ message, color, onClickFunction, icon }) {
       onClick={handleClick}
     >
       {message}
-      {icon && <img src={icon} alt="icon" style={{ width: "2rem", marginLeft: "0.3rem" }} />}
+      {icon && <img src={icon} alt="icon" style={{ width: "2.3rem", marginLeft: "0.3rem" }} />}
     </button>
   );
 

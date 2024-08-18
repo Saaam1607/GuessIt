@@ -16,7 +16,8 @@ function App() {
     <div
       className={"d-flex flex-column align-items-center justify-content-start"}
       style={{
-        height: "100svh",
+        minHeight: "100svh",
+        height: "fit-content",
         width: "100%",
         backgroundColor: "#b2d0f0",
         backgroundImage: `url(${require("./assets/images/texture.png")})`,
@@ -26,7 +27,7 @@ function App() {
 
       <Title />
 
-      <div style={{ height: "100%", width: "100%" }} >
+      <div style={{ minHeight: "100%", height: "85svh", width: "100%" }} >
         <Router>
           <Routes>
             <Route path="/" exact element={<HomePage />} />

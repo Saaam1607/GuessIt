@@ -14,22 +14,22 @@ input[type=number] {
 /***** Chrome, Safari, Opera, and Edge Chromium *****/
 input[type="range"]::-webkit-slider-runnable-track {
   background: #c3c3c3;
-  height: 1.2rem;
+  height: 0.8rem;
 }
 
 /******** Firefox ********/
 input[type="range"]::-moz-range-track {
   background: #c3c3c3;
-  height: 1.2rem;
+  height: 0.8rem;
 }
 
 input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none; /* Override default look */
   appearance: none;
-  margin-top: -0.4rem; /* Centers thumb on the track */
+  margin-top: -0.5rem; /* Centers thumb on the track */
   background-color: #1484ca;
-  height: 2rem;
-  width: 2rem;    
+  height: 1.7rem;
+  width: 1.7rem;    
 }
 
 

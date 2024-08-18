@@ -16,10 +16,10 @@ import PowerSelector from "../../components/PowerSelector.js";
 import GhostModal from "../../components/GhostModal.js";
 import Results from "../../components/Results.js";
 import Classification from "../../components/Classification.js";
+import GuessButton from "../../components/GuessButton.js";
 
 import './clientGame.css';
 
-import answer_icon from '../../assets/images/answer_icon.png';
 
 
 const SoundManager = require('../../components/SoundManager.js');
@@ -42,6 +42,7 @@ function ClientGame() {
   const [max, setMax] = useState(0);
   const [step, setStep] = useState(0);
   const [unit, setUnit] = useState("");
+  const [image, setImage] = useState("");
   const [answer, setAnswer] = useState("");
   const [showError, setShowError] = useState(false);
   const [hasAnswered, setHasAnswered] = useState(false);
@@ -67,6 +68,10 @@ function ClientGame() {
   const [showGhostModal, setShowGhostModal] = useState(false);
   const [ghostData, setGhostData] = useState([]);
   const [ghostResponse, setGhostResponse] = useState(null);
+
+
+  
+
 
   useEffect(() => {
     hasAnsweredRef.current = hasAnswered;
@@ -198,6 +203,7 @@ function ClientGame() {
       setPreviousMinMax({ min: data.min, max: data.max });
       setStep(data.step);
       setUnit(data.unit);
+      setImage(data.image);
       computeTempAnswer(data.min, data.max, data.step);
       setShowError(false);
       setHasAnswered(false);
@@ -262,6 +268,8 @@ function ClientGame() {
 
     function handleGhostAnswerNotReady(data) {
       showGhostResponseNotReadySwal();
+      setGhostIconClicked(false);
+      setShowGhostModal(false);
     }
 
     function handleHasAnswered(data) {
@@ -303,7 +311,7 @@ function ClientGame() {
   return (
     <div
       className="d-flex flex-column align-items-center justify-content-center"
-      style={{ height: "95%", width: "100%" }}
+      style={{ height: "100%", width: "100%" }}
     >
 
       <GhostModal
@@ -315,35 +323,37 @@ function ClientGame() {
       />
 
       <div
-        className={"d-flex flex-column align-items-center justify-content-start bg-light p-2"}
+        className={"d-flex flex-column align-items-center justify-content-start bg-light p-2  "}
         style={{ borderRadius: "10px", width: "90%", height: "100%", backgroundColor: "#78d7ff", overflowY: "auto" }}
       >
 
-        <QuestionBox question={question} />
+        <QuestionBox question={question} image={image} />
 
         { !hasAnswered && !showResults && !showClassification && (
           <form
-            className="d-flex flex-column align-items-center justify-content-center p-3"
-            style={{ height: "100%"}}
+            className="d-flex flex-column align-items-center justify-content-center"
+            style={{ width: "100%", height: "100%"}}
             onSubmit={(e) => {
               e.preventDefault();
               sendAnswer();
             }}
           >
 
-            <AnswerBox
-              answer={answer} setAnswer={setAnswer} sendAnswer={sendAnswer}
-              min={min} max={max} step={step}
-              helpIconClicked={helpIconClicked}
-              prevMin={previousMinMax.min} prevMax={previousMinMax.max}
-              setShowError={setShowError}
-            />
+            <div className="d-flex justify-content-center align-items-center" style={{ height:"100%" }}>
+              <AnswerBox
+                answer={answer} setAnswer={setAnswer} sendAnswer={sendAnswer}
+                min={min} max={max} step={step}
+                helpIconClicked={helpIconClicked}
+                prevMin={previousMinMax.min} prevMax={previousMinMax.max}
+                setShowError={setShowError}
+              />
+            </div>
 
             <div
-              className=" d-flex flex-column align-items-center justify-content-center"
-              style={{ width: "100%", height: "100%" }}
+              className="d-flex flex-column align-items-center justify-content-end mt-4"
+              style={{ width: "100%", height: "fit-content" }}
             >
-              <CustomButton message="Invia" color="rgb(87, 169, 221)" type="submit" icon={answer_icon} />
+              <GuessButton type="submit" />
 
               <p className="text-danger m-1">
                 {showError && "Please enter a valid answer!"}
@@ -354,7 +364,6 @@ function ClientGame() {
                 x2IconClicked={x2IconClicked} x2PowerAvailableBonuses={x2PowerAvailableBonuses} handleX2IconClick={handleX2IconClick}
                 helpIconClicked={helpIconClicked} helpPowerAvailableBonuses={helpPowerAvailableBonuses} handleHelpIconClick={handleHelpIconClick}
               />
-
             </div>
 
           </form>

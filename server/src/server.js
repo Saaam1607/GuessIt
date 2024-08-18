@@ -54,6 +54,11 @@ function getCurrentQuestion() {
   return nextQuestion;
 }
 
+function getCurrentImagePath() {
+  const imagePath = questionDb[questionIndex].image;
+  return imagePath;
+}
+
 function getCurrentMin() {
   return questionDb[questionIndex].min;
 }
@@ -166,7 +171,7 @@ io.on("connection", (socket) => {
   */
   socket.on("startGame", (data) => {
     io.emit("gameStarted", {});
-    io.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit()});
+    io.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit(), image: getCurrentImagePath()});
     gameStarted = true;
   });
 
@@ -245,7 +250,7 @@ io.on("connection", (socket) => {
     const answer = getCurrentAnswer();
     playerManager.resetLastPlayersResponses();
     io.emit("gameStarted", {});
-    io.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit()});
+    io.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit(), image: getCurrentImagePath()});
     io.emit("nextAnswer", {answer: answer});
   });
 
@@ -260,7 +265,7 @@ io.on("connection", (socket) => {
   */
   socket.on("getQuestion", (data) => {
     const answer = getCurrentAnswer();
-    socket.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit()});
+    socket.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit(), image: getCurrentImagePath()});
     io.emit("nextAnswer", {answer: answer});
   });
 
