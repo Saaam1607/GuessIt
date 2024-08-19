@@ -449,6 +449,249 @@ const questions = [
     unit: "",
     image: "50"
   },
+  {
+    question: "A quale livello Dragonair evolve in Dragonite?",
+    answer: 55,
+    min: 36,
+    max: 71,
+    step: 1,
+    unit: "",
+    image: "51"
+  },
+  {
+    question: "Quante colonne ha ci sono nella fronte del duomo di Treviso?",
+    answer: 6,
+    min: 1,
+    max: 12,
+    step: 1,
+    unit: "",
+    image: "52"
+  },
+  {
+    question: "Qual'è il record di velocità di picco raggiunta da Usaian Bolt?",
+    answer: 45,
+    min: 30,
+    max: 50,
+    step: 1,
+    unit: "",
+    image: "53"
+  },
+  {
+    question: "Quanti ora ha vinto l'Italia alle ultime Olimpiadi?",
+    answer: 12,
+    min: 3,
+    max: 31,
+    step: 1,
+    unit: "",
+    image: "54"
+  },
+  {
+    question: "In quale anno si è conclusa la transizione definitiva al Digitale Terrestre in Italia?",
+    answer: 2012,
+    min: 2004,
+    max: 2017,
+    step: 1,
+    unit: "",
+    image: "55"
+  },
+  {
+    question: "Quanti gironi ci sono nell'Inferno di Dante?",
+    answer: 9,
+    min: 3,
+    max: 33,
+    step: 1,
+    unit: "",
+    image: "56"
+  },
+  {
+    question: "Quanti sono i giganti multiforma in 'Attack on Titan'?",
+    answer: 9,
+    min: 3,
+    max: 20,
+    step: 1,
+    unit: "",
+    image: "57"
+  },
+  {
+    question: "Quante sono le isole principali delle Hawaii?",
+    answer: 8,
+    min: 5,
+    max: 25,
+    step: 1,
+    unit: "",
+    image: "58"
+  },
+  {
+    question: "Quanti stati compongono l'Oceania?",
+    answer: 14,
+    min: 2,
+    max: 16,
+    step: 1,
+    unit: "",
+    image: "59"
+  },
+  {
+    question: "A quando risale la prima edizione animata di 'Yu-Gi-Oh!'? (in Giappone)",
+    answer: 1998,
+    min: 1983,
+    max: 2007,
+    step: 1,
+    unit: "",
+    image: "60"
+  },
+  {
+    question: "Quante evoluzioni possibili ha ad oggi Eevee?",
+    answer: 8,
+    min: 3,
+    max: 14,
+    step: 1,
+    unit: "",
+    image: "61"
+  },
+  {
+    question: "In quale hanno venne disegnata la 'Trollface'?",
+    answer: 2008,
+    min: 1990,
+    max: 2014,
+    step: 1,
+    unit: "",
+    image: "62"
+  },
+  {
+    question: "Quanti livelli di municipio ci sono in 'Clash of Clans' attualmente?",
+    answer: 16,
+    min: 8,
+    max: 23,
+    step: 1,
+    unit: "",
+    image: "63"
+  },
+  {
+    question: "Quanti sono in totale i film di 'Harry Potter'?",
+    answer: 8,
+    min: 4,
+    max: 13,
+    step: 1,
+    unit: "",
+    image: "64"
+  },
+  {
+    question: "In quale anno è uscito il film 'Il Padrino'?",
+    answer: 1972,
+    min: 1970,
+    max: 200,
+    step: 1,
+    unit: "",
+    image: "65"
+  },
+  {
+    question: "In quale anno è caduto il muro di Berlino?",
+    answer: 1989,
+    min: 1970,
+    max: 1999,
+    step: 1,
+    unit: "",
+    image: "66"
+  },
+  {
+    question: "In che anno è morto Chester Bennington, frontman dei Linking Park?",
+    answer: 2017,
+    min: 2009,
+    max: 2021,
+    step: 1,
+    unit: "",
+    image: "67"
+  },
+  {
+    question: "Quanti giorni durano i 74esimi Hunger Games (primo film)?",
+    answer: 18,
+    min: 2,
+    max: 19,
+    step: 1,
+    unit: "",
+    image: "68"
+  },
+  {
+    question: "Quanti anni ha Shawn Frost in 'Inazuma Eleven' (prima apparizione)?",
+    answer: 13,
+    min: 9,
+    max: 19,
+    step: 1,
+    unit: "",
+    image: "69"
+  },
+  {
+    question: "Quanto pesa una Fiat Panda del '98",
+    answer: 790,
+    min: 300,
+    max: 1800,
+    step: 10,
+    unit: "",
+    image: "70"
+  },
+  {
+    question: "Quanti hanno ha Scorza, la tartaruga di 'Alla ricerca di Nemo'?",
+    answer: 150,
+    min: 10,
+    max: 300,
+    step: 10,
+    unit: "",
+    image: "71"
+  },
+  {
+    question: "Quanto è lungo il giardino della Reggia di Caserta? (in metri)",
+    answer: 3000,
+    min: 1000,
+    max: 10000,
+    step: 500,
+    unit: "",
+    image: "72"
+  },
+  {
+    question: "Secondo l'Eneide, in quale anno risale l'inganno del cavallo di Troia? (a.C.)",
+    answer: 1184,
+    min: 200,
+    max: 1200,
+    step: 1,
+    unit: "",
+    image: "73"
+  },
+  {
+    question: "Quanti romanzi ha scritto Luigi Pirandello?",
+    answer: 7,
+    min: 3,
+    max: 25,
+    step: 1,
+    unit: "",
+    image: "74"
+  },
+  {
+    question: "Quando avvenne la 'Strage di Bologna'?",
+    answer: 1980,
+    min: 1950,
+    max: 2000,
+    step: 1,
+    unit: "",
+    image: "75"
+  },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: "",
+  //   image: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: "",
+  //   image: ""
+  // },
   // {
   //   question: "",
   //   answer:,

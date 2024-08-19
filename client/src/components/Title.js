@@ -7,7 +7,7 @@ import logoImage3 from '../assets/images/logo3.png';
 function Title() {
 
   const [currentImage, setCurrentImage] = useState(logoImage);
-  const imageSequence = [logoImage2, logoImage3, logoImage2, logoImage]; 
+  const imageSequence = [logoImage2, logoImage3, logoImage2, logoImage3, logoImage2, logoImage]; 
 
   const [intervalTime, setIntervalTime] = useState(5000);
 
