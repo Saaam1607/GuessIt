@@ -6,6 +6,7 @@ import ControllerButton from "../../components/ControllerButton.js";
 
 import Results from "../../components/Results.js";
 import Classification from "../../components/Classification.js";
+import QuestionBox from "../../components/QuestionBox.js";
 
 
 
@@ -24,8 +25,12 @@ const win_icon = require('../../assets/images/win_icon.png');
 function HostConsole() {
 
   const [playersAnswersData, setPlayersAnswersData] = useState([]);
+  
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState(undefined);
+  const [min, setMin] = useState(null);
+  const [max, setMax] = useState(null);
+  const [image, setImage] = useState("");
 
   const [hasSentResults, setHasSentResults] = useState(false);
 
@@ -81,6 +86,11 @@ function HostConsole() {
     socket.emit("resetPoints", {});
   }
 
+  function resetPlayers() {
+    SoundManager.playPowerSelection();
+    socket.emit("resetPlayers", {});
+  }
+
   function addPowers() {
     SoundManager.playPowerSelection();
     socket.emit("addPower", {});
@@ -99,6 +109,9 @@ function HostConsole() {
 
     function handleNextQuestion(data) {
       setQuestion(data.question);
+      setMin(data.min);
+      setMax(data.max);
+      setImage(data.image);
     }
 
     function handleNextAnswer(data) {
@@ -135,12 +148,11 @@ function HostConsole() {
   }, [socket]);
 
   return (
-    <div className="d-flex flex-column align-items-center justify-content-center">
-      <h3>Host Console</h3>
-
-      <div style={{width: "90%"}}>
-        <h3>{question}</h3>
+    <div className="d-flex flex-column align-items-center justify-content-center" style={{ height: "100%", width: "100%", overflowY: "auto" }}>
+      <div className="d-flex flex-column align-items-center justify-content-center p-2" style={{width: "100%" }}>
+        <QuestionBox question={question} image={image} />
         <h4>{answer}</h4>
+        <h4>min: {min}, max: {max}</h4>
       </div>
 
       <div className="d-flex flex-wrap justify-content-center m-1" style={{gap: "15px"}}>
@@ -150,7 +162,8 @@ function HostConsole() {
         <ControllerButton icon={"bi bi-magic"} color={"#edc71a"} onClick={addPowers} />
         <ControllerButton icon={"bi bi-alarm"} color={"#ff6600"} onClick={hurryUp} />
         <ControllerButton icon={"bi bi-alarm-fill"} color={"#ff0000"} onClick={extremeHurryUp} />
-        <ControllerButton icon={"bi bi-eraser-fill"} color={"#4f2020"} onClick={resetPoints} />
+        <ControllerButton icon={"bi bi-eraser"} color={"#4f2020"} onClick={resetPoints} />
+        <ControllerButton icon={"bi bi-eraser-fill"} color={"#260a0a"} onClick={resetPlayers} />
       </div>
 
       {playersAnswersData !== undefined && playersAnswersData.map((playerAnswerData, index) => (

@@ -48,9 +48,7 @@ function addPlayer(player) {
 }
 
 function removePlayer(id) {
-  console.log(players);
   players.pop(player => player.id === id);
-  console.log(players);
 }
 
 function getAllPlayersNames() {
@@ -93,6 +91,24 @@ function getScore(playerId) {
 function resetPoints() {
   players.forEach(player => {
     player.score = 0;
+  });
+}
+
+function resetPlayers() {
+  players.forEach(player => {
+    if (player.x2PowersAvailable > 0) {
+      player.x2PowersAvailable = 0;
+    }
+    if (player.ghostPowersAvailable > 0) {
+      player.ghostPowersAvailable = 0;
+    }
+    if (player.helpPowersAvailable > 0) {
+      player.helpPowersAvailable = 0;
+    }
+    if (player.active === false) {
+      removePlayer(player.playerId);
+    }
+    resetPoints();
   });
 }
 
@@ -220,6 +236,7 @@ module.exports = {
   consumeHelpPower,
   getScore,
   resetPoints,
+  resetPlayers,
   getAvailableBonuses,
   addRandomPower,
   updatePlayerActive,

@@ -188,6 +188,10 @@ io.on("connection", (socket) => {
     playerManager.resetPoints();
   });
 
+  socket.on("resetPlayers", () => {
+    playerManager.resetPlayers();
+  });
+
   socket.on("help", (data) => {
     const {suggestedMin, suggestedMax} = helperManager.computeSuggestedMinAndManx(getCurrentAnswer(), getCurrentMin(), getCurrentMax(), getCurrentStep());
     socket.emit("suggest", {suggestedMin: suggestedMin, suggestedMax: suggestedMax, step: getCurrentStep()} );

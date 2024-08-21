@@ -7,6 +7,8 @@ function QuestionBox({ question, image }) {
     try {
       imagePath = require(`../assets/images/questionImages/${image}.png`);
     } catch (error) {
+      console.error("Image not found:", error);
+
     }
   }
 

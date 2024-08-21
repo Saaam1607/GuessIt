@@ -674,6 +674,222 @@ const questions = [
     unit: "",
     image: "75"
   },
+  {
+    question: "Dei 1223 siti riconosciuti dall'UNESCO come patrimoni dell'umanità, quanti sono in Italia?",
+    answer: 60,
+    min: 53,
+    max: 349,
+    step: 1,
+    unit: "",
+    image: "76"
+  },
+  {
+    question: "Quanti km è lungo il fiume Po?",
+    answer: 652,
+    min: 333,
+    max: 652,
+    step: 1,
+    unit: "",
+    image: "77"
+  },
+  {
+    question: "Per quanti dollari è stata venduta 'The One Ring', la carta di Magic edizione unica e speciale rappresentante l'Anello di Sauron?",
+    answer: 2000000,
+    min: 10000,
+    max: 2700000,
+    step: 10000,
+    unit: "",
+    image: "78"
+  },
+  {
+    question: "Quante canzoni ad oggi fanno parte del 'Billions Club' di Spotify?",
+    answer: 708,
+    min: 500,
+    max: 1400,
+    step: 1,
+    unit: "",
+    image: "79"
+  },
+  {
+    question: "Qual'è il costo medio al metro quadro di un immobile residenziale in Veneto (Luglio 2024)?",
+    answer: 1971,
+    min: 1000,
+    max: 10000,
+    step: 1,
+    unit: "",
+    image: "80"
+  },
+  {
+    question: "Quanti milioni ha speso il Real Madrid per l'acquisto di Kylian Mbappé dal PSG? (senza considerare lo stipendio)",
+    answer: 0,
+    min: 0,
+    max: 300,
+    step: 1,
+    unit: "",
+    image: "81"
+  },
+  {
+    question: "Quanti giocatori sono in campo per squadra nella pallamano",
+    answer: 7,
+    min: 4,
+    max: 11,
+    step: 1,
+    unit: "",
+    image: "82"
+  },
+  {
+    question: "Tirando un dado tre volte, con quale percentuale la somma dei tre numeri sarà minore o uguale a 5",
+    answer: 5,
+    min: 1,
+    max: 100,
+    step: 1,
+    unit: "",
+    image: "83"
+  },
+  {
+    question: "Quanti km è lungo il cammino di Santiago di Compostela?",
+    answer: 760,
+    min: 800,
+    max: 1,
+    step: ,
+    unit: "",
+    image: "84"
+  },
+  {
+    question: "Quante sono le vaccinazioni attualmente obbligatorie in Italia?",
+    answer: 10,
+    min: 3,
+    max: 13,
+    step: 1,
+    unit: "",
+    image: "85"
+  },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: "",
+  //   image: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: "",
+  //   image: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: "",
+  //   image: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: "",
+  //   image: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: "",
+  //   image: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: "",
+  //   image: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: "",
+  //   image: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: "",
+  //   image: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: "",
+  //   image: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: "",
+  //   image: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: "",
+  //   image: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: "",
+  //   image: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: "",
+  //   image: ""
+  // },
+  // {
+  //   question: "",
+  //   answer:,
+  //   min: ,
+  //   max: ,
+  //   step: ,
+  //   unit: "",
+  //   image: ""
+  // },
   // {
   //   question: "",
   //   answer:,
