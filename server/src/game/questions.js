@@ -751,7 +751,7 @@ const questions = [
     answer: 760,
     min: 800,
     max: 1,
-    step: ,
+    step: 1,
     unit: "",
     image: "84"
   },
