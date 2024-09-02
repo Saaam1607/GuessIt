@@ -243,12 +243,12 @@ const questions = [
     image: "27"
   },
   {
-    question: "Quanti milioni di visualizzazioni ha il videoclip della nota canzone 'Gangnam Style' di PSY?",
-    answer: 132,
+    question: "Quanti miliardi di visualizzazioni ha il videoclip della nota canzone 'Gangnam Style' di PSY?",
+    answer: 5,
     min: 1,
-    max: 300,
+    max: 40,
     step: 1,
-    unit: "milioni",
+    unit: "miliardi",
     image: "28"
   },
   {
@@ -288,7 +288,7 @@ const questions = [
     image: "32"
   },
   {
-    question: "In quale hanno è nato Albrecht Dürer (pittore e incisore tedesco)?",
+    question: "In quale anno è nato Albrecht Dürer (pittore e incisore tedesco)?",
     answer: 1471,
     min: 1200,
     max: 2000,
@@ -549,7 +549,7 @@ const questions = [
     image: "61"
   },
   {
-    question: "In quale hanno venne disegnata la 'Trollface'?",
+    question: "In quale anno venne disegnata la 'Trollface'?",
     answer: 2008,
     min: 1990,
     max: 2014,
@@ -579,7 +579,7 @@ const questions = [
     question: "In quale anno è uscito il film 'Il Padrino'?",
     answer: 1972,
     min: 1970,
-    max: 200,
+    max: 2000,
     step: 1,
     unit: "",
     image: "65"
@@ -693,7 +693,7 @@ const questions = [
     image: "77"
   },
   {
-    question: "Per quanti dollari è stata venduta 'The One Ring', la carta di Magic edizione unica e speciale rappresentante l'Anello di Sauron?",
+    question: "Per quante migliaia di dollari è stata venduta 'The One Ring', la carta di Magic edizione unica e speciale rappresentante l'Anello di Sauron?",
     answer: 2000000,
     min: 10000,
     max: 2700000,
@@ -749,8 +749,8 @@ const questions = [
   {
     question: "Quanti km è lungo il cammino di Santiago di Compostela?",
     answer: 760,
-    min: 800,
-    max: 1,
+    min: 1,
+    max: 800,
     step: 1,
     unit: "",
     image: "84"
@@ -764,51 +764,51 @@ const questions = [
     unit: "",
     image: "85"
   },
-  // {
-  //   question: "",
-  //   answer:,
-  //   min: ,
-  //   max: ,
-  //   step: ,
-  //   unit: "",
-  //   image: ""
-  // },
-  // {
-  //   question: "",
-  //   answer:,
-  //   min: ,
-  //   max: ,
-  //   step: ,
-  //   unit: "",
-  //   image: ""
-  // },
-  // {
-  //   question: "",
-  //   answer:,
-  //   min: ,
-  //   max: ,
-  //   step: ,
-  //   unit: "",
-  //   image: ""
-  // },
-  // {
-  //   question: "",
-  //   answer:,
-  //   min: ,
-  //   max: ,
-  //   step: ,
-  //   unit: "",
-  //   image: ""
-  // },
-  // {
-  //   question: "",
-  //   answer:,
-  //   min: ,
-  //   max: ,
-  //   step: ,
-  //   unit: "",
-  //   image: ""
-  // },
+  {
+    question: "Quanti milioni di copie ha venduto il gioco 'GTA V'?",
+    answer: 200,
+    min: 10,
+    max: 250,
+    step: 5,
+    unit: "milioni",
+    image: "86"
+  },
+  {
+    question: "Quandi mondi ci sono nel gioco 'Super Mario Bros'?",
+    answer: 8,
+    min: 3,
+    max: 15,
+    step: 1,
+    unit: "",
+    image: "87"
+  },
+  {
+    question: "Quanto pesa in grammi il Nintendo DS",
+    answer: 275,
+    min: 100,
+    max: 1000,
+    step: 5,
+    unit: "grammi",
+    image: "88"
+  },
+  {
+    question: "Quanti anni ha Francesco Totti",
+    answer: 47,
+    min: 35,
+    max: 60,
+    step: 1,
+    unit: "",
+    image: "89"
+  },
+  {
+    question: "Quante tipologie di pokemon esistono?",
+    answer: 18,
+    min: 8,
+    max: 30,
+    step: 1,
+    unit: "",
+    image: "90"
+  },
   // {
   //   question: "",
   //   answer:,
