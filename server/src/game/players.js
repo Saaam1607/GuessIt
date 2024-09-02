@@ -1,10 +1,15 @@
-const players = [];
+let players = [];
 
 function getPlayers() {
   players.sort((a, b) => {
     return b.score - a.score;
   });
-  return players;
+  const playersCopy = [...players];
+  return playersCopy;
+}
+
+function setPlayers(playersData) {
+  players = playersData;
 }
 
 function resetLastPlayersResponses() {
@@ -27,8 +32,6 @@ function getLastResponseFromPlayer(playerId) {
   console.log(players);
   for (let player of players) {
     if (player.playerId == playerId) {
-      console.log("GETTING LAST RESPONSE");
-      console.log(player.lastResponse);
       if (player.lastResponse) {
         console.log("RETURNING LAST RESPONSE: " + player.lastResponse);
         return player.lastResponse;
@@ -74,6 +77,14 @@ function addScore(playerId) {
   players.forEach(player => {
     if (player.playerId == playerId) {
       player.score += 1;
+    }
+  });
+}
+
+function setPlayerWon(playerId) {
+  players.forEach(player => {
+    if (player.playerId == playerId) {
+      player.hasWon = true;
     }
   });
 }
@@ -193,34 +204,37 @@ function checkIfAllPlayersOffline() {
 
 function getClassification(prevClassification) {
 
-  console.log("classification");
-  console.log(prevClassification)
-  console.log(getPlayers());
+  players.sort((a, b) => {
+    return b.score - a.score;
+  });
 
+  let tmpPlayers = players;
 
-  let players = getPlayers();
   if (prevClassification) {
-    for (let i = 0; i < players.length; i++) {
+    for (let i = 0; i < tmpPlayers.length; i++) {
       for (let j = 0; j < prevClassification.length; j++) {
-        if (players[i].playerId == prevClassification[j].playerId) {
+        if (tmpPlayers[i].playerId == prevClassification[j].playerId) {
           if (i == j) {
-            players[i].isMovedUp = false;
-            players[i].isMovedDown = false;
+            tmpPlayers[i].isMovedUp = false;
+            tmpPlayers[i].isMovedDown = false;
           } else if (i < j) {
-            players[i].isMovedUp = true;
+            tmpPlayers[i].isMovedUp = true;
           } else if (i > j) {
-            players[i].isMovedDown = true;
+            tmpPlayers[i].isMovedDown = true;
           }
         }
       }
     }
   }
-  return players;
+  return tmpPlayers;
 }
+
+
 
 
 module.exports = {
   getPlayers,
+  setPlayers,
   resetLastPlayersResponses,
   setLastResponseFromPlayer,
   getLastResponseFromPlayer,
@@ -231,6 +245,7 @@ module.exports = {
   printPlayers,
   getPlayerName,
   addScore,
+  setPlayerWon,
   consumeX2Power,
   consumeGhostPower,
   consumeHelpPower,

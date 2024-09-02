@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon -r ./src/index.js"
+    "start": "nodemon -r ./src/index.js --ignore ./src/logs/playerDatabase.json"
   },
   "keywords": [],
   "author": "",

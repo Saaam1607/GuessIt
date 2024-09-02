@@ -96,6 +96,16 @@ function HostConsole() {
     socket.emit("addPower", {});
   }
 
+  function recoverPlayers() {
+    SoundManager.playPowerSelection();
+    socket.emit("recoverPlayers", {});
+    setPlayersAnswersData([]);
+    setClassificationData([]);
+    setShowClassification(false);
+    setResults([]);
+    setShowResults(false);
+  }
+
   useEffect(() => {
 
     getQuestion();
@@ -134,12 +144,14 @@ function HostConsole() {
     socket.on("nextAnswer", handleNextAnswer);
     socket.on("newAnswer", handleNewAnswer);
 
+
     socket.on("results", handleResults);
     socket.on("classification", handleClassification);
   
     return () => {
       socket.off("newAnswer", handleNewAnswer);
       socket.off("nextQuestion", handleNextQuestion);
+
 
       socket.off("results", handleResults);
       socket.off("classification", handleClassification);
@@ -164,6 +176,7 @@ function HostConsole() {
         <ControllerButton icon={"bi bi-alarm-fill"} color={"#ff0000"} onClick={extremeHurryUp} />
         <ControllerButton icon={"bi bi-eraser"} color={"#4f2020"} onClick={resetPoints} />
         <ControllerButton icon={"bi bi-eraser-fill"} color={"#260a0a"} onClick={resetPlayers} />
+        <ControllerButton icon={"bi bi-database-exclamation"} color={"grey"} onClick={recoverPlayers} />
       </div>
 
       {playersAnswersData !== undefined && playersAnswersData.map((playerAnswerData, index) => (

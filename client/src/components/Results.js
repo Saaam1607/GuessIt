@@ -9,6 +9,8 @@ const win_icon = require('../assets/images/win_icon.png');
 
 
 function Results({results}) {
+
+  console.log(results);
   
   return (
     <div>
@@ -39,7 +41,7 @@ function Results({results}) {
               </tr>
             ) : (
               <tr key={index}>
-                <td>{playerAnswerData.answer}</td>
+                <td>{playerAnswerData.lastResponse}</td>
                 <td>{playerAnswerData.name}</td>
                 <td>
                   <div className="mx-2 d-flex align-items-center" style={{width: "100%", height: "100%"}}>

@@ -8,6 +8,7 @@ const cors = require("cors");
 const playerManager = require("./game/players");
 const tokenManager = require("./components/tokenManager");
 const helperManager = require("./game/helperManager");
+const logsManager = require("./game/logsManager");
 var questionDb = require("./game/questions");
 const characters = require("./game/characters");
 
@@ -44,8 +45,6 @@ app.use(routes);
 let gameStarted = false;
 let questionIndex = 0;
 let prevClassification = null;
-
-questionDb = shuffleArray(questionDb);
 
 const maxQuestionIndex = questionDb.length - 1;
 
@@ -128,6 +127,7 @@ io.on("connection", (socket) => {
       var helpPowersAvailable = 0;
       var x2PowersAvailable = 0;
 
+
       characters.forEach(character => {
         if (character.id == data.characterIndex) {
           ghostPowersAvailable = character.ghostPowers;
@@ -190,6 +190,8 @@ io.on("connection", (socket) => {
 
   socket.on("resetPlayers", () => {
     playerManager.resetPlayers();
+    questionDb = shuffleArray(questionDb);
+    questionIndex = 0;
   });
 
   socket.on("help", (data) => {
@@ -220,6 +222,24 @@ io.on("connection", (socket) => {
   */
   socket.on("newAnswer", (data) => {
     console.log("playerID: " + data.playerId);
+
+    console.log("data.name: " + data.name);
+
+    if (data.name == undefined) {
+      console.log("H")
+      const prevName = playerManager.getPlayerName(data.playerId);
+
+      console.log(playerManager.getPlayers());
+
+      console.log("prevName: " + prevName);
+      if (prevName != undefined) {
+        playerManager.updatePlayerActive(data.playerId, socket.id);
+        socket.emit("updateName", {name: prevName});
+        console.log("OsK")
+      }
+    }
+
+
     console.log(playerManager.getPlayers());
     const name = playerManager.getPlayerName(data.playerId);
 
@@ -239,7 +259,7 @@ io.on("connection", (socket) => {
     if (data.hasUsedX2)
       playerManager.consumeX2Power(data.playerId);
 
-    playerManager.setLastResponseFromPlayer(data.playerId, data.answer);
+    playerManager.setLastResponseFromPlayer(data.playerId, parseInt(data.answer));
 
     io.emit("newAnswer", {name: name, answer: data.answer, playerId: data.playerId, hasUsedX2: data.hasUsedX2, hasUsedHelp: data.hasUsedHelp, hasUsedGhost: data.hasUsedGhost});
   });
@@ -250,9 +270,12 @@ io.on("connection", (socket) => {
                 ---> nextAnswer
   */
   socket.on("nextQuestion", (data) => {
+
     updateQuestionIndex();
+    logsManager.writeQuestionIndexLog(questionIndex)
     const answer = getCurrentAnswer();
     playerManager.resetLastPlayersResponses();
+    logsManager.writePlayersLog( playerManager.getPlayers())
     io.emit("gameStarted", {});
     io.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit(), image: getCurrentImagePath()});
     io.emit("nextAnswer", {answer: answer});
@@ -285,25 +308,24 @@ io.on("connection", (socket) => {
     on          <--- results
     to all      ---> results
   */
-  socket.on("results", (data) => {
+  socket.on("results", async (data) =>  {
     const answer = getCurrentAnswer();
-    const playersAnswersData = data.playersAnswersData;
+    const playersAnswersData = playerManager.getPlayers();
 
-    let minDistance = Math.abs(playersAnswersData[0]?.answer - answer);
+    let minDistance = Math.abs(playersAnswersData[0]?.lastResponse - answer);
     let maxDistance = 0;
 
     playersAnswersData.forEach(player => {
-      player.isAnswer = false;
-      if (Math.abs(player.answer - answer) < minDistance) {
-        minDistance = Math.abs(player.answer - answer);
+      if (Math.abs(player.lastResponse - answer) < minDistance) {
+        minDistance = Math.abs(player.lastResponse - answer);
       }
-      if (Math.abs(player.answer - answer) > maxDistance) {
-        maxDistance = Math.abs(player.answer - answer);
+      if (Math.abs(player.lastResponse - answer) > maxDistance) {
+        maxDistance = Math.abs(player.lastResponse - answer);
       }
     });
 
     playersAnswersData.forEach(player => {
-      if (parseInt(parseInt(player.answer) + minDistance) === parseInt(answer) || parseInt(parseInt(player.answer) - minDistance) === parseInt(answer)) {
+      if (parseInt(parseInt(player.lastResponse) + minDistance) === parseInt(answer) || parseInt(parseInt(player.lastResponse) - minDistance) === parseInt(answer)) {
 
         if (data.computeScore) {
           playerManager.addScore(player.playerId);
@@ -311,36 +333,44 @@ io.on("connection", (socket) => {
             playerManager.addScore(player.playerId);
           }
         }
-
-        // todo
-        // if (playerManager.getScore(player.playerId) >= 3) {
-        // }
-
-        // playerManager.addRandomPower(player.playerId);
-
-        player.hasWon = true;
+        playerManager.setPlayerWon(player.playerId);
       }
-      // if (parseInt(player.answer + maxDistance) === parseInt(answer) || parseInt(player.answer - maxDistance) === parseInt(answer)) {
-      //   playerManager.addRandomPower(player.playerId);
-      // }
     });
 
-    playersAnswersData.push({ answer: answer, isAnswer: true });
+    logsManager.writePlayersLog(playersAnswersData)
+      .then(() => {
+        playersAnswersData.push({ answer: answer, isAnswer: true });
 
-    playersAnswersData.sort((a, b) => {
-      return b.answer - a.answer;
-    });
-
-    console.log("Logging players answers data: ");
-    console.log(data.playersAnswersData);
-
-    io.emit("results", { playersAnswersData: data.playersAnswersData, });
+        playersAnswersData.sort((a, b) => {
+          return b.answer - a.answer;
+        });
+    
+        console.log("Logging players answers data: ");
+        console.log(playersAnswersData);
+    
+        io.emit("results", { playersAnswersData: playersAnswersData, });
+      })
   });
 
   socket.on("classification", () => {
     const classificationData = playerManager.getClassification(prevClassification);
     prevClassification = JSON.parse(JSON.stringify(classificationData));
     io.emit("classification", { classificationData: classificationData });
+  });
+
+  socket.on("recoverPlayers", async () => {
+    const playersData = await logsManager.readPlayersLog();
+    questionIndex = await logsManager.readQuestionsLog();
+    
+    playersData.forEach(player => {
+      player.lastResponse = "";
+    });
+    playerManager.setPlayers(playersData);
+    console.log("")
+    console.log("recovering players...")
+    console.log(playerManager.getPlayers());
+
+
   });
 
   /*

@@ -116,7 +116,6 @@ function ClientGame() {
   }
 
   function showGhostResponseSwal(response) {
-    console.log(response)
     Swal.fire({
       title: "La risposta del fantasma è...",
       html: `<p style="font-size: 40px;"><strong>${response}</strong></p>`, // Styling inline
@@ -279,8 +278,18 @@ function ClientGame() {
       }
     }
 
+    // function handleUpdateName(data) {
+    //   localStorage.setItem('playerId', data.playerId);
+    // }
+
+    function recover() {
+      alert("A")
+      window.location.reload();
+    }
+
     socket.on("nextQuestion", handleNextQuestion);
     socket.on("hasAnswered", handleHasAnswered);
+    // socket.on("updateName", handleHasAnswered);
 
     socket.on("bonus", handleBonus);
     socket.on("suggest", handleSuggest);
@@ -293,10 +302,13 @@ function ClientGame() {
     socket.on("classification", handleClassification);
     socket.on("clock", handleClockSound);
     socket.on("extremeClock", handleExtremeClockSound);
-  
+
+    socket.on("recover", recover);
+
     return () => {
       socket.off("nextQuestion", handleNextQuestion);
       socket.off("hasAnswered", handleHasAnswered);
+      // socket.off("updateName", handleUpdateName);
       socket.off("bonus", handleBonus);
       socket.off("suggest", handleSuggest);
       socket.off("ghostData", handleGhostData);
@@ -304,6 +316,8 @@ function ClientGame() {
       socket.off("classification", handleClassification);
       socket.off("clock", handleClockSound);
       socket.off("extremeClock", handleExtremeClockSound);
+      socket.off("recover", recover);
+
     };
 
   }, [socket]);
