@@ -6,11 +6,11 @@ import CustomBoundaryButton from "./CustomBoundaryButton.js";
 
 function AnswerBox({ answer, setAnswer, min, max, step, helpIconClicked, prevMin, prevMax, sendAnswer, setShowError}) {
   return (
-    <div style={{ width: '80%', maxWidth: '600px' }}>
+    <div className="mt-2" style={{ width: '100%', maxWidth: '600px' }}>
       <div
         className="d-flex justify-content-center align-items-center"
       >
-        <CustomBoundaryButton isMin={true} message={min} helperUsed={helpIconClicked} prevMessage={prevMin} color="rgb(87, 169, 221)" />
+        <CustomBoundaryButton isMin={true} message={min} helperUsed={helpIconClicked} prevMessage={prevMin} color="#489bd4" />
         <input
           type="number"
           className="form-control"
@@ -20,9 +20,9 @@ function AnswerBox({ answer, setAnswer, min, max, step, helpIconClicked, prevMin
             setAnswer(e.target.value);
             setShowError(false);
           }}
-          style={{ fontSize: '1.3rem', padding: '10px', width: '60%' }}
+          style={{ fontSize: '1.3rem', padding: '10px', width: '100%', height: '50px', borderRadius: '0', textAlign: 'center' }}
         />
-        <CustomBoundaryButton isMin={false} message={max} helperUsed={helpIconClicked} prevMessage={prevMax} color="rgb(87, 169, 221)" />
+        <CustomBoundaryButton isMin={false} message={max} helperUsed={helpIconClicked} prevMessage={prevMax} color="#489bd4" />
       </div>
 
       <input 

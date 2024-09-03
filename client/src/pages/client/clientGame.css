@@ -27,7 +27,7 @@ input[type="range"]::-webkit-slider-thumb {
   -webkit-appearance: none; /* Override default look */
   appearance: none;
   margin-top: -0.5rem; /* Centers thumb on the track */
-  background-color: #1484ca;
+  background-color: #489bd4;
   height: 1.7rem;
   width: 1.7rem;    
 }
@@ -57,7 +57,7 @@ input[type="range"]::-webkit-slider-thumb {
   --gradient-border: conic-gradient(from var(--border-angle), lightblue 25%, rgb(60, 105, 209), rgb(147, 173, 234) 99%, lightblue);
 
   border: solid 5px transparent;
-  border-radius: 2em;
+  /* border-radius: 15px; */
 
   background: 
     var(--main-bg) padding-box,
@@ -106,9 +106,6 @@ input[type="range"]::-webkit-slider-thumb {
 .margin {
   margin: 0 10px 0 0;
 }
-
-
-
 
 .image-container {
   perspective: 1000px;

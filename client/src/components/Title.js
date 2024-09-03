@@ -33,13 +33,24 @@ function Title() {
 
 
   return (
-    <div className={"container-fluid d-flex flex-column align-items-center"}>
+    <div className={"container-fluid d-flex flex-column align-items-center"} style={{ position: "relative" }}>
     <img
       src={currentImage}
       alt="logo"
       className={"my-2"}
-      style={{ width: "40%", maxWidth: "300px" }}
+      style={{ width: "55%", maxWidth: "300px", display: "block" }}
     />
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "#489bd4",
+          mixBlendMode: "color",
+        }}
+      />
   </div>
   );
 };

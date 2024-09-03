@@ -337,11 +337,16 @@ function ClientGame() {
       />
 
       <div
-        className={"d-flex flex-column align-items-center justify-content-start bg-light p-2  "}
-        style={{ borderRadius: "10px", width: "90%", height: "100%", backgroundColor: "#78d7ff", overflowY: "auto" }}
+        className={"d-flex flex-column align-items-center justify-content-start "}
+        style={{ borderRadius: "10px", width: "100%", height: "100%", overflowY: "auto" }}
       >
 
         <QuestionBox question={question} image={image} />
+        <PowerSelector
+          ghostIconClicked={ghostIconClicked} ghostPowerAvailableBonuses={ghostPowerAvailableBonuses} handleGhostIconClick={handleGhostIconClick}
+          x2IconClicked={x2IconClicked} x2PowerAvailableBonuses={x2PowerAvailableBonuses} handleX2IconClick={handleX2IconClick}
+          helpIconClicked={helpIconClicked} helpPowerAvailableBonuses={helpPowerAvailableBonuses} handleHelpIconClick={handleHelpIconClick}
+        />
 
         { !hasAnswered && !showResults && !showClassification && (
           <form
@@ -353,7 +358,7 @@ function ClientGame() {
             }}
           >
 
-            <div className="d-flex justify-content-center align-items-center" style={{ height:"100%" }}>
+            <div className="d-flex justify-content-center align-items-center" style={{ width: "100%", height:"100%" }}>
               <AnswerBox
                 answer={answer} setAnswer={setAnswer} sendAnswer={sendAnswer}
                 min={min} max={max} step={step}
@@ -373,11 +378,6 @@ function ClientGame() {
                 {showError && "Please enter a valid answer!"}
               </p>
 
-              <PowerSelector
-                ghostIconClicked={ghostIconClicked} ghostPowerAvailableBonuses={ghostPowerAvailableBonuses} handleGhostIconClick={handleGhostIconClick}
-                x2IconClicked={x2IconClicked} x2PowerAvailableBonuses={x2PowerAvailableBonuses} handleX2IconClick={handleX2IconClick}
-                helpIconClicked={helpIconClicked} helpPowerAvailableBonuses={helpPowerAvailableBonuses} handleHelpIconClick={handleHelpIconClick}
-              />
             </div>
 
           </form>

@@ -13,11 +13,19 @@ function QuestionBox({ question, image }) {
   }
 
   return (
-    <div className="question-box">
-      <h1 className="question-text">{question}</h1>
+    <div
+      className="question-box p-0 m-0 p-4"
+      style={{
+        backgroundColor: "#489bd4",
+        backgroundImage: `url(${require("../assets/images/texture.png")})`,
+        backgroundSize: "75%" 
+      }}
+    >
       {imagePath &&
         <img className="question-image" src={imagePath} alt="question" />
       }
+      <h1 className="question-text lead">{question}</h1>
+
     </div>
   );
 }

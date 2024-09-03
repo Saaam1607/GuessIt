@@ -12,7 +12,7 @@ function CustomBoundaryButton({ isMin, message, helperUsed, prevMessage, color }
         <div className="d-flex flex-column">
             {helperUsed && (
             <p
-                className="btn p-0 py-1 mb-1"
+                className="btn d-flex align-items-center justify-content-center p-0 py-1 mb-1"
                 style={{
                     backgroundColor: "gold",
                     color: "black",
@@ -21,6 +21,7 @@ function CustomBoundaryButton({ isMin, message, helperUsed, prevMessage, color }
                     fontSize: "0.8rem",
                     letterSpacing: "0.05rem",
                     width: "60px",
+                    height: '50px',
                     cursor: "default",
                     margin: isMin ? "0 10px 0 0" : "0 0 0 10px",
                 }}
@@ -29,17 +30,21 @@ function CustomBoundaryButton({ isMin, message, helperUsed, prevMessage, color }
             </p>
             )}
             <p
-                className={`btn p-0 py-2 ${helperUsed ? 'strikethrough margin' : ''}`}
+                className={`btn d-flex align-items-center justify-content-center p-0 py-2 ${helperUsed ? 'strikethrough margin' : ''}`}
                 style={{
                     backgroundColor: color,
                     color: "white",
-                    borderRadius: "10px",
+                    borderTopLeftRadius: isMin ? "10px" : "0px",
+                    borderBottomLeftRadius: isMin ? "10px" : "0px",
+                    borderTopRightRadius: isMin ? "0px" : "10px",
+                    borderBottomRightRadius: isMin ? "0px" : "10px",
                     fontFamily: "customFont",
                     fontSize: "0.8rem",
                     letterSpacing: "0.05rem",
                     width: "60px",
+                    height: '50px',
                     cursor: "default",
-                    margin: isMin ? "0 10px 0 0" : "0 0 0 10px",
+                    margin: isMin ? "0 0 0 0" : "0 0 0 0",
                     textDecoration: helperUsed ? 'line-through' : "",
                     // opacity: helperUsed ? '0.3' : "1",
 

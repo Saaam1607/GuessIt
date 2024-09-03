@@ -1,13 +1,13 @@
 [
   {
-    "name": "sam",
-    "playerId": 1725313889067,
-    "socketId": "kCzvZLzNYRcDuuZqAAAb",
+    "name": "a",
+    "playerId": 1725398761423,
+    "socketId": "NmRT9YxD0p5IAk8vAAAV",
     "active": true,
     "ghostPowersAvailable": 4,
     "helpPowersAvailable": 0,
     "x2PowersAvailable": 2,
-    "score": 2,
+    "score": 1,
     "lastResponse": null,
     "hasWon": true
   }

@@ -19,15 +19,15 @@ function App() {
         minHeight: "100svh",
         height: "fit-content",
         width: "100%",
-        backgroundColor: "#b2d0f0",
-        backgroundImage: `url(${require("./assets/images/texture.png")})`,
-        backgroundSize: "50%" 
+        // backgroundColor: "#b2d0f0",
+        // backgroundImage: `url(${require("./assets/images/texture.png")})`,
+        // backgroundSize: "50%" 
       }}
     >
 
       <Title />
 
-      <div style={{ minHeight: "100%", height: "85svh", width: "100%" }} >
+      <div className="" style={{ minHeight: "100%", height: "90svh", width: "95%" }} >
         <Router>
           <Routes>
             <Route path="/" exact element={<HomePage />} />
