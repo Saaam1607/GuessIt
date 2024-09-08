@@ -7,8 +7,10 @@ import withReactContent from 'sweetalert2-react-content'
 import CustomButton from "../../components/CustomButton.js";
 import CustomBoundaryButton from "../../components/CustomBoundaryButton.js";
 
-import QuestionBox from "../../components/QuestionBox.js";
 import AnswerBox from "../../components/AnswerBox.js";
+import ChoiceAnswerBox from "../../components/ChoiceAnswerBox.js";
+
+import QuestionBox from "../../components/QuestionBox.js";
 import PowerSelector from "../../components/PowerSelector.js";
 import GhostModal from "../../components/GhostModal.js";
 import Results from "../../components/Results.js";
@@ -34,18 +36,25 @@ const win_icon = require('../../assets/images/win_icon.png');
 
 function ClientGame() {
 
+  const [questionType, setQuestionType] = useState("");
+
   const [question, setQuestion] = useState("");
+  const [image, setImage] = useState("");
+
   const [min, setMin] = useState(0);
   const [max, setMax] = useState(0);
   const [step, setStep] = useState(0);
   const [unit, setUnit] = useState("");
-  const [image, setImage] = useState("");
   const [answer, setAnswer] = useState("");
   const [hasAnswered, setHasAnswered] = useState(false);
 
+  const [previousMinMax, setPreviousMinMax] = useState({ min: 0, max: 0 });
+  const [fakeAnswers, setFakeAnswers] = useState([]);
+
+  const [availableAnswers, setAvailableAnswers] = useState([]);
+
   const hasAnsweredRef = useRef(hasAnswered);
 
-  const [previousMinMax, setPreviousMinMax] = useState({ min: 0, max: 0 });
 
   const [showResults, setShowResults] = useState(false);
   const [showClassification, setShowClassification] = useState(false);
@@ -169,12 +178,19 @@ function ClientGame() {
   }
 
 
-  function handleSuggest(data) {
+  function handleMinMaxSuggest(data) {
     SoundManager.playHelp();
     setHelpIconClicked(true);
     setMin(data.suggestedMin);
     setMax(data.suggestedMax);
     computeTempAnswer(data.suggestedMin, data.suggestedMax, data.step);
+  }
+
+  function handleFakeAnswersSuggest(data) {
+    SoundManager.playHelp();
+    setHelpIconClicked(true);
+    setFakeAnswers(data.fakeAnswers);
+    console.log(data.fakeAnswers);
   }
 
   function handleX2IconClick() {
@@ -198,14 +214,28 @@ function ClientGame() {
     getBonus();
 
     function handleNextQuestion(data) {
+      setAnswer("");
+
+      setQuestionType(data.questionType);
       setQuestion(data.question);
-      setMin(data.min);
-      setMax(data.max);
-      setPreviousMinMax({ min: data.min, max: data.max });
-      setStep(data.step);
-      setUnit(data.unit);
       setImage(data.image);
-      computeTempAnswer(data.min, data.max, data.step);
+
+      switch (data.questionType) {
+        case 0:
+          setMin(data.min);
+          setMax(data.max);
+          setPreviousMinMax({ min: data.min, max: data.max });
+          setStep(data.step);
+          setUnit(data.unit);
+          computeTempAnswer(data.min, data.max, data.step);
+          break;
+        case 1:
+          setAvailableAnswers(data.availableAnswers);
+          break;
+        default:
+          break;
+      }
+
       setHasAnswered(false);
       setShowResults(false);
       setShowClassification(false);
@@ -290,21 +320,17 @@ function ClientGame() {
       }
     }
 
-    // function handleUpdateName(data) {
-    //   localStorage.setItem('playerId', data.playerId);
-    // }
-
     function recover() {
-      alert("A")
       window.location.reload();
     }
 
     socket.on("nextQuestion", handleNextQuestion);
     socket.on("hasAnswered", handleHasAnswered);
-    // socket.on("updateName", handleHasAnswered);
 
     socket.on("bonus", handleBonus);
-    socket.on("suggest", handleSuggest);
+    socket.on("minMaxSuggest", handleMinMaxSuggest);
+    socket.on("fakeAnswersSuggest", handleFakeAnswersSuggest);
+
     socket.on("ghostData", handleGhostData);
 
     socket.on("ghostAnswer", handleGhostAnswer);
@@ -320,9 +346,9 @@ function ClientGame() {
     return () => {
       socket.off("nextQuestion", handleNextQuestion);
       socket.off("hasAnswered", handleHasAnswered);
-      // socket.off("updateName", handleUpdateName);
       socket.off("bonus", handleBonus);
-      socket.off("suggest", handleSuggest);
+      socket.off("minMaxSuggest", handleMinMaxSuggest);
+      socket.off("fakeAnswersSuggest", handleFakeAnswersSuggest);
       socket.off("ghostData", handleGhostData);
       socket.off("results", handleResults);
       socket.off("classification", handleClassification);
@@ -372,14 +398,27 @@ function ClientGame() {
             }}
           >
 
-            <div className="d-flex justify-content-center align-items-center" style={{ width: "100%" }}>
-              <AnswerBox
-                answer={answer} setAnswer={setAnswer} sendAnswer={sendAnswer}
-                min={min} max={max} step={step}
-                helpIconClicked={helpIconClicked}
-                prevMin={previousMinMax.min} prevMax={previousMinMax.max}
-              />
-            </div>
+            { questionType === 0 && (
+              <div className="d-flex justify-content-center align-items-center" style={{ width: "100%" }}>
+                <AnswerBox
+                  answer={answer} setAnswer={setAnswer} sendAnswer={sendAnswer}
+                  min={min} max={max} step={step}
+                  helpIconClicked={helpIconClicked}
+                  prevMin={previousMinMax.min} prevMax={previousMinMax.max}
+                />
+              </div>
+            )}
+            
+            { questionType === 1 && (
+              <div className="d-flex justify-content-center align-items-center" style={{ width: "100%" }}>
+                <ChoiceAnswerBox
+                  answer={answer} setAnswer={setAnswer} sendAnswer={sendAnswer}
+                  availableAnswers={availableAnswers}
+                  fakeAnswers={fakeAnswers}
+                  helpIconClicked={helpIconClicked}
+                />
+              </div>
+            )}
 
             <div
               className="d-flex flex-column align-items-center justify-content-end"

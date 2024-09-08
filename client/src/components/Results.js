@@ -78,7 +78,7 @@ function Results({ results, classificationData }) {
                           </div>
                         )}
                       </td>
-                    <td style={{ width: "75px", color: "#605e5c" }}>{playerAnswerData.answer}</td>
+                    <td style={{ width: "fit-content", maxWidth: "400px", color: "#605e5c" }}>{playerAnswerData.answer}</td>
                     <td style={{ color: "#605e5c" }}>{playerAnswerData.name}</td>
                     <td>
                       <div className="mx-2 d-flex align-items-center" style={{width: "100%", height: "100%"}}>

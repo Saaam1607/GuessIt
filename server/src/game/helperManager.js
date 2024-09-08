@@ -54,7 +54,25 @@ function computeSuggestedMinAndManx(currentAnswer, currentMin, currentMax, curre
     return { suggestedMin, suggestedMax };
 }
 
+function getFakeAnswers(answerList, rightAnswer) {
+    const fakeAnswers = [];
+    const fakeAnswersToRemove = answerList.length / 2;
+    answerList.forEach((answer) => {
+        if (answer !== rightAnswer) {
+            fakeAnswers.push(answer.answer);
+        };
+    });
+
+    for (let i = fakeAnswers.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [fakeAnswers[i], fakeAnswers[j]] = [fakeAnswers[j], fakeAnswers[i]];
+    }
+
+    return fakeAnswers.slice(0, fakeAnswersToRemove);
+}
+
 
 module.exports = {
     computeSuggestedMinAndManx,
+    getFakeAnswers,
 };

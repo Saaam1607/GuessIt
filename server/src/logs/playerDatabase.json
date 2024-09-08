@@ -1,19 +1,16 @@
 [
   {
-    "name": "sam",
-    "playerId": 1725808250311,
-    "socketId": "GVeL-bJzlKRVCuzzAAGL",
+    "name": "sa",
+    "playerId": 1725830835541,
+    "socketId": "FVRgCSr0rHdqgmMsAAAb",
     "active": true,
     "ghostPowersAvailable": 4,
     "helpPowersAvailable": 0,
     "x2PowersAvailable": 2,
-    "score": 16,
-    "hasUsedX2": false,
+    "score": 0,
     "answer": null,
-    "hasWon": true,
-    "isMovedUp": false,
-    "isMovedDown": false,
     "hasUsedHelp": false,
+    "hasUsedX2": false,
     "hasUsedGhost": false
   }
 ]

@@ -16,7 +16,7 @@ function setPlayers(playersData) {
   players = playersData;
 }
 
-function resetLastPlayersResponses() {
+function resetLastPlayersAnswers() {
   players.forEach(player => {
     player.answer = null;
     player.hasUsedHelp = false;
@@ -25,7 +25,7 @@ function resetLastPlayersResponses() {
   });
 }
 
-function setLastResponseFromPlayer(playerId, answer) {
+function setLastAnswerFromPlayer(playerId, answer) {
   players.forEach(player => {
     if (player.playerId == playerId) {
       player.answer = answer;
@@ -269,8 +269,8 @@ module.exports = {
   getPlayers,
   getActivePlayers,
   setPlayers,
-  resetLastPlayersResponses,
-  setLastResponseFromPlayer,
+  resetLastPlayersAnswers,
+  setLastAnswerFromPlayer,
   getLastResponseFromPlayer,
   checkIfAlreadyJoined,
   addPlayer,

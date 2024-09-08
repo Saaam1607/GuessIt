@@ -48,6 +48,10 @@ let prevClassification = null;
 
 const maxQuestionIndex = questionDb.length - 1;
 
+function getCurrentQuestionType() {
+  return  questionDb[questionIndex].questionType;
+}
+
 function getCurrentQuestion() {
   const nextQuestion = questionDb[questionIndex].question;
   return nextQuestion;
@@ -78,11 +82,44 @@ function getCurrentAnswer() {
   return questionDb[questionIndex].answer;
 }
 
+function getAvailableAnswers() {
+  return questionDb[questionIndex].availableAnswers;
+}
+
+
 function updateQuestionIndex() {
   if (questionIndex >= maxQuestionIndex) {
     questionIndex = 0;
   } else {
     questionIndex++;
+  }
+}
+
+function ioEmitNextQuestion() {
+  var questionType = getCurrentQuestionType();
+  switch (questionType) {
+    case 0:
+      io.emit("nextQuestion", {questionType: questionType, question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit(), image: getCurrentImagePath()});
+      break;
+    case 1: 
+      io.emit("nextQuestion", {questionType: questionType, question: getCurrentQuestion(), availableAnswers: getAvailableAnswers(), image: getCurrentImagePath()});
+      break;
+    default:
+      break;
+  }
+}
+
+function socketEmitNextQuestion(socket) {
+  var questionType = getCurrentQuestionType();
+  switch (questionType) {
+    case 0:
+      socket.emit("nextQuestion", {questionType: questionType, question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit(), image: getCurrentImagePath()});
+      break;
+    case 1: 
+      socket.emit("nextQuestion", {questionType: questionType, question: getCurrentQuestion(), availableAnswers: getAvailableAnswers(), image: getCurrentImagePath()});
+      break;
+    default:
+      break;
   }
 }
 
@@ -171,7 +208,7 @@ io.on("connection", (socket) => {
   */
   socket.on("startGame", (data) => {
     io.emit("gameStarted", {});
-    io.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit(), image: getCurrentImagePath()});
+    ioEmitNextQuestion();
     gameStarted = true;
   });
 
@@ -196,8 +233,18 @@ io.on("connection", (socket) => {
   });
 
   socket.on("help", (data) => {
-    const {suggestedMin, suggestedMax} = helperManager.computeSuggestedMinAndManx(getCurrentAnswer(), getCurrentMin(), getCurrentMax(), getCurrentStep());
-    socket.emit("suggest", {suggestedMin: suggestedMin, suggestedMax: suggestedMax, step: getCurrentStep()} );
+    switch(getCurrentQuestionType()) {
+      case 0:
+        const {suggestedMin, suggestedMax} = helperManager.computeSuggestedMinAndManx(getCurrentAnswer(), getCurrentMin(), getCurrentMax(), getCurrentStep());
+        socket.emit("minMaxSuggest", {suggestedMin: suggestedMin, suggestedMax: suggestedMax, step: getCurrentStep()} );
+        break;
+      case 1:
+        const fakeAnswers = helperManager.getFakeAnswers(getAvailableAnswers(), getCurrentAnswer());
+        socket.emit("fakeAnswersSuggest", {fakeAnswers: fakeAnswers} );
+        break;
+      default:
+        break;
+    }
   });
 
   socket.on("ghost", (data) => {
@@ -260,7 +307,10 @@ io.on("connection", (socket) => {
     if (data.hasUsedX2)
       playerManager.consumeX2Power(data.playerId);
 
-    playerManager.setLastResponseFromPlayer(data.playerId, parseInt(data.answer));
+    if (getCurrentQuestionType() === 0)
+      data.answer = parseInt(data.answer);
+
+    playerManager.setLastAnswerFromPlayer(data.playerId, data.answer);
 
     io.emit("newAnswer", {name: name, answer: data.answer, playerId: data.playerId, hasUsedX2: data.hasUsedX2, hasUsedHelp: data.hasUsedHelp, hasUsedGhost: data.hasUsedGhost});
   });
@@ -271,14 +321,13 @@ io.on("connection", (socket) => {
                 ---> nextAnswer
   */
   socket.on("nextQuestion", (data) => {
-
     updateQuestionIndex();
     logsManager.writeQuestionIndexLog(questionIndex)
     const answer = getCurrentAnswer();
-    playerManager.resetLastPlayersResponses();
+    playerManager.resetLastPlayersAnswers();
     logsManager.writePlayersLog( playerManager.getPlayers())
     io.emit("gameStarted", {});
-    io.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit(), image: getCurrentImagePath()});
+    ioEmitNextQuestion();
     io.emit("nextAnswer", {answer: answer});
   });
 
@@ -293,7 +342,7 @@ io.on("connection", (socket) => {
   */
   socket.on("getQuestion", (data) => {
     const answer = getCurrentAnswer();
-    socket.emit("nextQuestion", {question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit(), image: getCurrentImagePath()});
+    socketEmitNextQuestion(socket);
     io.emit("nextAnswer", {answer: answer});
   });
 
@@ -314,30 +363,52 @@ io.on("connection", (socket) => {
     const answer = getCurrentAnswer();
     var playersAnswersData = playerManager.getPlayers();
 
-    let minDistance = Math.abs(playersAnswersData[0]?.answer - answer);
-    let maxDistance = 0;
-
-    playersAnswersData.forEach(player => {
-      if (Math.abs(player.answer - answer) < minDistance) {
-        minDistance = Math.abs(player.answer - answer);
-      }
-      if (Math.abs(player.answer - answer) > maxDistance) {
-        maxDistance = Math.abs(player.answer - answer);
-      }
-    });
-
-    playersAnswersData.forEach(player => {
-      if (parseInt(parseInt(player.answer) + minDistance) === parseInt(answer) || parseInt(parseInt(player.answer) - minDistance) === parseInt(answer)) {
-
-        if (data.computeScore) {
-          playerManager.addScore(player.playerId);
-          if (player.hasUsedX2) {
-            playerManager.addScore(player.playerId);
+    switch (getCurrentQuestionType()) {
+      
+      case 0:
+        let minDistance = Math.abs(playersAnswersData[0]?.answer - answer);
+        let maxDistance = 0;
+    
+        playersAnswersData.forEach(player => {
+          if (Math.abs(player.answer - answer) < minDistance) {
+            minDistance = Math.abs(player.answer - answer);
           }
-        }
-        playerManager.setPlayerWon(player.playerId);
-      }
-    });
+          if (Math.abs(player.answer - answer) > maxDistance) {
+            maxDistance = Math.abs(player.answer - answer);
+          }
+        });
+    
+        playersAnswersData.forEach(player => {
+          if (parseInt(parseInt(player.answer) + minDistance) === parseInt(answer) || parseInt(parseInt(player.answer) - minDistance) === parseInt(answer)) {
+    
+            if (data.computeScore) {
+              playerManager.addScore(player.playerId);
+              if (player.hasUsedX2) {
+                playerManager.addScore(player.playerId);
+              }
+            }
+            playerManager.setPlayerWon(player.playerId);
+          }
+        });
+        break;
+
+      case 1:
+        playersAnswersData.forEach(player => {
+          if (player.answer === answer) {
+            if (data.computeScore) {
+              playerManager.addScore(player.playerId);
+              if (player.hasUsedX2) {
+                playerManager.addScore(player.playerId);
+              }
+            }
+            playerManager.setPlayerWon(player.playerId);
+          }
+        });
+        break;
+
+      default:
+        break;
+    }
 
     logsManager.writePlayersLog(playersAnswersData)
       .then(() => {
@@ -359,12 +430,6 @@ io.on("connection", (socket) => {
       })
   });
 
-  // socket.on("classification", () => {
-  //   const classificationData = playerManager.getClassification(prevClassification);
-  //   prevClassification = JSON.parse(JSON.stringify(classificationData));
-  //   io.emit("classification", { classificationData: classificationData });
-  // });
-
   socket.on("recoverPlayers", async () => {
     const playersData = await logsManager.readPlayersLog();
     questionIndex = await logsManager.readQuestionsLog();
@@ -373,10 +438,6 @@ io.on("connection", (socket) => {
       player.answer = "";
     });
     playerManager.setPlayers(playersData);
-    console.log("")
-    console.log("recovering players...")
-    console.log(playerManager.getPlayers());
-
 
   });
 
