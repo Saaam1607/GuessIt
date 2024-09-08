@@ -57,7 +57,7 @@ function WaitingRoom() {
 
   return (
     <div
-      className="d-flex flex-column align-items-center border"
+      className="d-flex flex-column align-items-center"
       style={{
         height: "100%",
         width: "100%",
@@ -77,7 +77,7 @@ function WaitingRoom() {
             className={"m-0 mt-2 mb-4"}
             style={{
               fontFamily: "customFont",
-              fontSize: "2.5rem",
+              fontSize: "1.5rem",
               letterSpacing: "0.05rem",
               color: "rgb(112,128,144)",
             }}

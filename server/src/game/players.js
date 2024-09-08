@@ -8,6 +8,10 @@ function getPlayers() {
   return playersCopy;
 }
 
+function getActivePlayers() {
+  return getPlayers().filter(player => player.active === true);
+}
+
 function setPlayers(playersData) {
   players = playersData;
 }
@@ -15,6 +19,9 @@ function setPlayers(playersData) {
 function resetLastPlayersResponses() {
   players.forEach(player => {
     player.answer = null;
+    player.hasUsedHelp = false;
+    player.hasUsedX2 = false;
+    player.hasUsedGhost = false;
   });
 }
 
@@ -127,6 +134,7 @@ function consumeX2Power(playerId) {
   players.forEach(player => {
     if (player.playerId == playerId) {
       player.x2PowersAvailable --;
+      player.hasUsedX2 = true;
     }
   });
 }
@@ -135,6 +143,7 @@ function consumeGhostPower(playerId) {
   players.forEach(player => {
     if (player.playerId == playerId) {
       player.ghostPowersAvailable --;
+      player.hasUsedGhost = true;
     }
   });
 }
@@ -143,6 +152,7 @@ function consumeHelpPower(playerId) {
   players.forEach(player => {
     if (player.playerId == playerId) {
       player.helpPowersAvailable --;
+      player.hasUsedHelp = true;
     }
   });
 }
@@ -162,6 +172,7 @@ function getAvailableBonuses(playerId) {
 }
 
 function addRandomPower(playerId) {
+  var powerIndex = -1;
   players.forEach(player => {
     if (player.playerId == playerId) {
       var hasGivenPower = false;
@@ -176,24 +187,28 @@ function addRandomPower(playerId) {
             if (player.x2PowersAvailable < 4) {
               player.x2PowersAvailable ++;
               hasGivenPower = true;
+              powerIndex = 2;
             }
             break;
           case 1:
             if (player.ghostPowersAvailable < 4) {
               player.ghostPowersAvailable ++;
               hasGivenPower = true;
+              powerIndex = 0;
             }
             break;
           case 2:
             if (player.helpPowersAvailable < 4) {
               player.helpPowersAvailable ++;
               hasGivenPower = true;
+              powerIndex = 1;
             }
             break;
         }
       }
     }
   });
+  return powerIndex;
 }
 
 function updatePlayerActive(playerId, newSocketId) {
@@ -213,6 +228,8 @@ function updatePlayerLeft(socketId) {
     }
   });
 }
+
+
 
 function checkIfAllPlayersOffline() {
   return players.every(player => player.active === false);
@@ -250,6 +267,7 @@ function getClassification(prevClassification) {
 
 module.exports = {
   getPlayers,
+  getActivePlayers,
   setPlayers,
   resetLastPlayersResponses,
   setLastResponseFromPlayer,

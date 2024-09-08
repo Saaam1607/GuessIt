@@ -83,6 +83,10 @@ function ClientGame() {
     socket.emit("getQuestion", {});
   }
 
+  function getBonus() {
+    socket.emit("getBonus", { playerId: localStorage.getItem('playerId') });
+  }
+
   function checkIfAlreadyAnswered() {
     socket.emit("hasAnswered", { playerId: localStorage.getItem('playerId') });
   }
@@ -191,6 +195,7 @@ function ClientGame() {
 
     joinGame();
     getQuestion();
+    getBonus();
 
     function handleNextQuestion(data) {
       setQuestion(data.question);
@@ -213,7 +218,7 @@ function ClientGame() {
 
       SoundManager.playNewQuestionSound();
 
-      socket.emit("getBonus", { playerId: localStorage.getItem('playerId') });
+      getBonus();
 
     }
 
@@ -235,11 +240,14 @@ function ClientGame() {
     }
 
     function handleBonus(data) {
-      if (ghostPowerAvailableBonuses < data.ghostAvailableBonuses)
+
+      console.log(data);
+
+      if (data.powerIndex == 0)
         setIsGhostIconGlowing(true);
-      if (helpPowerAvailableBonuses < data.helpAvailableBonuses)
+      else if (data.powerIndex == 1) 
         setIsHelpIconGlowing(true);
-      if (x2PowerAvailableBonuses < data.x2AvailableBonuses)
+      else if (data.powerIndex == 2)
         setIsX2IconGlowing(true);
 
       setGhostPowerAvailableBonuses(data.ghostAvailableBonuses);
@@ -345,21 +353,18 @@ function ClientGame() {
         style={{ borderRadius: "10px", width: "100%", height: "100%", overflowY: "auto" }}
       >
 
-        <QuestionBox question={question} image={image} showImage={!showResults && !showClassification} />
-
-        { !showResults && !showClassification && (
-          <PowerSelector
-            ghostIconClicked={ghostIconClicked} ghostPowerAvailableBonuses={ghostPowerAvailableBonuses} handleGhostIconClick={handleGhostIconClick}
-            x2IconClicked={x2IconClicked} x2PowerAvailableBonuses={x2PowerAvailableBonuses} handleX2IconClick={handleX2IconClick}
-            helpIconClicked={helpIconClicked} helpPowerAvailableBonuses={helpPowerAvailableBonuses} handleHelpIconClick={handleHelpIconClick}
-            isGhostIconGlowing={isGhostIconGlowing} isHelpIconGlowing={isHelpIconGlowing} isX2IconGlowing={isX2IconGlowing}
-            setIsGhostIconGlowing={setIsGhostIconGlowing} setIsHelpIconGlowing={setIsHelpIconGlowing} setIsX2IconGlowing={setIsX2IconGlowing}
-          />
-        )}
+        <QuestionBox
+          question={question} image={image} showImage={!showResults && !showClassification}
+          ghostIconClicked={ghostIconClicked} ghostPowerAvailableBonuses={ghostPowerAvailableBonuses} handleGhostIconClick={handleGhostIconClick}
+          x2IconClicked={x2IconClicked} x2PowerAvailableBonuses={x2PowerAvailableBonuses} handleX2IconClick={handleX2IconClick}
+          helpIconClicked={helpIconClicked} helpPowerAvailableBonuses={helpPowerAvailableBonuses} handleHelpIconClick={handleHelpIconClick}
+          isGhostIconGlowing={isGhostIconGlowing} isHelpIconGlowing={isHelpIconGlowing} isX2IconGlowing={isX2IconGlowing}
+          setIsGhostIconGlowing={setIsGhostIconGlowing} setIsHelpIconGlowing={setIsHelpIconGlowing} setIsX2IconGlowing={setIsX2IconGlowing}
+        />
 
         { !hasAnswered && !showResults && !showClassification && (
           <form
-            className="d-flex flex-column align-items-center justify-content-center"
+            className="d-flex flex-column align-items-center justify-content-around"
             style={{ width: "100%", height: "100%"}}
             onSubmit={(e) => {
               e.preventDefault();
@@ -367,7 +372,7 @@ function ClientGame() {
             }}
           >
 
-            <div className="d-flex justify-content-center align-items-center" style={{ width: "100%", height:"100%" }}>
+            <div className="d-flex justify-content-center align-items-center" style={{ width: "100%" }}>
               <AnswerBox
                 answer={answer} setAnswer={setAnswer} sendAnswer={sendAnswer}
                 min={min} max={max} step={step}
@@ -377,7 +382,7 @@ function ClientGame() {
             </div>
 
             <div
-              className="d-flex flex-column align-items-center justify-content-end mt-2 mb-4"
+              className="d-flex flex-column align-items-center justify-content-end"
               style={{ width: "100%", height: "fit-content" }}
             >
               <GuessButton type="submit" />

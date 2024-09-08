@@ -1,0 +1,54 @@
+.power-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    width: 55px;
+    height: 55px;
+    border: 3px solid transparent;
+    box-shadow: 0 0 0 0 rgba(255, 255, 0, 0); /* Nessun effetto */
+    transition: box-shadow 0.5s ease-in-out;
+}
+
+.box {
+    animation: border-color-change 1s linear infinite; 
+}
+
+@keyframes border-color-change {
+    0% { border-color: white; }
+    33% { border-color: yellow; }
+    66% { border-color: orange; }
+    100% { border-color: yellow; }
+}
+
+.power-container img {
+    width: 30px;
+    height: 30px;
+    margin: 0;
+    padding: 0;
+    margin-left: 1rem;
+    margin-right: 1rem;
+}
+
+.unavailable {
+    opacity: 0.5;
+}
+
+.power-indicators-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.power-indicators-container img {
+    width: 8px;
+    height: 8px;
+    margin: 1px;
+}
+
+.glow {
+    box-shadow: 0 0 15px 10px rgba(255, 255, 0, 0.8);
+    transition: box-shadow 0.5s ease-in-out; 
+}

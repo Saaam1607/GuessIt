@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { io } from 'socket.io-client';
 
+import Power from './Power';
+
 import "./characterPicker.css";
 
 const socketUrl = process.env.REACT_APP_SOCKET_URL || "https://guessitserver.onrender.com";
@@ -102,46 +104,25 @@ function CharacterPicker({ characterIndex, setCharacterIndex }) {
         >
           
           <div className="d-flex flex-column align-items-center">
-            <img
-              src={ghost_icon}
-              alt={ghost_icon}
-              className={`m-0 p-0`}
-              style={{
-                width: "50px",
-                height: "50px",
-                borderRadius: "50%",
-              }}
+            <Power
+              powerAvailableBonuses={characters[characterIndex]?.ghostPowers}
+              backgroundColor="#4f4f4f" image={ghost_icon}
             />
-            <p>x {characters[characterIndex]?.ghostPowers}</p>
           </div>
 
           <div className="d-flex flex-column align-items-center">
-            <img
-              src={x2_icon}
-              alt={x2_icon}
-              className={`m-0 p-0`}
-              style={{
-                width: "50px",
-                height: "50px",
-                borderRadius: "50%",
-              }}
+            <Power
+              powerAvailableBonuses={characters[characterIndex]?.helpPowers}
+              backgroundColor="#93d681" image={help_icon}
             />
-            <p>x {characters[characterIndex]?.x2Powers}</p>
-            </div>
+          </div>
 
           <div className="d-flex flex-column align-items-center">
-            <img
-              src={help_icon}
-              alt={help_icon}
-              className={`m-0 p-0`}
-              style={{
-                width: "50px",
-                height: "50px",
-                borderRadius: "50%",
-              }}
+            <Power
+              powerAvailableBonuses={characters[characterIndex]?.x2Powers}
+              backgroundColor="#d6c481" image={x2_icon}
             />
-            <p>x {characters[characterIndex]?.helpPowers}</p>
-            </div>
+          </div>
 
         </div>
       </div>

@@ -35,6 +35,7 @@ function Results({ results, classificationData }) {
   };
 
   useEffect(() => {
+    console.log(results);
     results.forEach((playerData) => {
       if (playerData.playerId == localStorage.getItem("playerId") && playerData?.hasWon == true) {
         setTimeout(() => {
@@ -81,9 +82,21 @@ function Results({ results, classificationData }) {
                     <td style={{ color: "#605e5c" }}>{playerAnswerData.name}</td>
                     <td>
                       <div className="mx-2 d-flex align-items-center" style={{width: "100%", height: "100%"}}>
-                        {playerAnswerData.hasUsedX2 && ( <img src={x2_icon} alt="X2 icon" /> )}
-                        {playerAnswerData.hasUsedHelp && ( <img src={help_icon} alt="help icon" /> )}
-                        {playerAnswerData.hasUsedGhost && ( <img src={ghost_icon} alt="ghost icon" /> )}
+                        {playerAnswerData.hasUsedGhost && (
+                          <div className="power-icon-container" style={{backgroundColor: "#4f4f4f"}} >
+                            <img src={ghost_icon} alt="ghost icon" /> 
+                          </div>
+                        )}
+                        {playerAnswerData.hasUsedHelp && (
+                          <div className="power-icon-container" style={{backgroundColor: "#93d681"}} >
+                            <img src={help_icon} alt="help icon" />
+                          </div>
+                        )}
+                        {playerAnswerData.hasUsedHelp && (
+                          <div className="power-icon-container" style={{backgroundColor: "#d6c481"}}>
+                            {playerAnswerData.hasUsedX2 && ( <img src={x2_icon} alt="X2 icon" /> )}
+                          </div>
+                        )}
                       </div>
                     </td>
                   </tr>

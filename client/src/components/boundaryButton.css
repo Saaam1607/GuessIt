@@ -1,0 +1,64 @@
+@font-face {
+    font-family: 'CustomFont';
+    src: url('../assets/fonts/Chewy.ttf') format('truetype');
+    font-weight: normal; 
+    font-style: normal; 
+}
+
+
+.boundary-container {
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #489bd4;
+    color: white;
+    font-family: 'CustomFont', sans-serif;
+    font-size: 0.8rem;
+    letter-spacing: 0.05rem;
+    height: 50px;
+    min-width: 50px;
+    width: fit-content;
+    max-width: 150px;
+    cursor: default;
+}
+
+.boundary-container p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    margin: 0;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.helper {
+    color: black;
+    font-size: 1rem;
+}
+
+.gold {
+    background-color: gold;
+    transition: background-color .7s ease-in-out;
+
+}
+
+.crossed {
+    text-decoration: line-through;
+}
+
+.min {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+.max {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}

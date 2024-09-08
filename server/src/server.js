@@ -178,9 +178,10 @@ io.on("connection", (socket) => {
   socket.on("addPower", () => {
     const playersData = playerManager.getPlayers();
     playersData.forEach(player => {
-      playerManager.addRandomPower(player.playerId);
-      const availableBonusesData = playerManager.getAvailableBonuses(player.playerId);
-      io.to(player.socketId).emit("bonus", availableBonusesData);
+      const powerIndex = playerManager.addRandomPower(player.playerId);
+      var bonusData = playerManager.getAvailableBonuses(player.playerId);
+      bonusData.powerIndex = powerIndex;
+      io.to(player.socketId).emit("bonus", bonusData);
     });
   });
 
@@ -200,7 +201,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("ghost", (data) => {
-    const playersData = playerManager.getPlayers();
+    const playersData = playerManager.getActivePlayers();
     socket.emit("ghostData", {playersData: playersData} );
   });
 
@@ -309,6 +310,7 @@ io.on("connection", (socket) => {
     to all      ---> results
   */
   socket.on("results", async (data) =>  {
+
     const answer = getCurrentAnswer();
     var playersAnswersData = playerManager.getPlayers();
 
