@@ -5,7 +5,6 @@ import CustomButton from "../../components/CustomButton.js";
 import ControllerButton from "../../components/ControllerButton.js";
 
 import Results from "../../components/Results.js";
-import Classification from "../../components/Classification.js";
 import QuestionBox from "../../components/QuestionBox.js";
 
 
@@ -35,7 +34,6 @@ function HostConsole() {
   const [hasSentResults, setHasSentResults] = useState(false);
 
   const [showResults, setShowResults] = useState(false);
-  const [showClassification, setShowClassification] = useState(false);
 
   const [results, setResults] = useState([]);
   const [classificationData, setClassificationData] = useState([]);
@@ -57,13 +55,7 @@ function HostConsole() {
       socket.emit("results", { playersAnswersData: playersAnswersData, computeScore: false });
   }
 
-  function sendClassification() {
-    SoundManager.playPowerSelection();
-    socket.emit("classification", {});
-  }
-
   function sendNextQuestion() {
-    setShowClassification(false);
     setShowResults(false);
     SoundManager.playPowerSelection();
     socket.emit("nextQuestion", {});
@@ -101,7 +93,6 @@ function HostConsole() {
     socket.emit("recoverPlayers", {});
     setPlayersAnswersData([]);
     setClassificationData([]);
-    setShowClassification(false);
     setResults([]);
     setShowResults(false);
   }
@@ -130,31 +121,21 @@ function HostConsole() {
 
     function handleResults(data) {
       setResults(data.playersAnswersData);
-      setShowClassification(false);
+      setClassificationData(data.classificationData);
       setShowResults(true);
     }
 
-    function handleClassification(data) {
-      setClassificationData(data.classificationData);
-      setShowResults(false);
-      setShowClassification(true);
-    }
-  
     socket.on("nextQuestion", handleNextQuestion);
     socket.on("nextAnswer", handleNextAnswer);
     socket.on("newAnswer", handleNewAnswer);
 
-
     socket.on("results", handleResults);
-    socket.on("classification", handleClassification);
   
     return () => {
       socket.off("newAnswer", handleNewAnswer);
       socket.off("nextQuestion", handleNextQuestion);
 
-
       socket.off("results", handleResults);
-      socket.off("classification", handleClassification);
     };
 
   }, [socket]);
@@ -170,7 +151,6 @@ function HostConsole() {
       <div className="d-flex flex-wrap justify-content-center m-1" style={{gap: "15px"}}>
         <ControllerButton icon={"bi bi-patch-question"} color={"rgb(87, 169, 221)"} onClick={sendNextQuestion} />
         <ControllerButton icon={"bi bi-trophy"} color={"#00b300"} onClick={sendResults} />
-        <ControllerButton icon={"bi bi-trophy-fill"} color={"#0c7518"} onClick={sendClassification} />
         <ControllerButton icon={"bi bi-magic"} color={"#edc71a"} onClick={addPowers} />
         <ControllerButton icon={"bi bi-alarm"} color={"#ff6600"} onClick={hurryUp} />
         <ControllerButton icon={"bi bi-alarm-fill"} color={"#ff0000"} onClick={extremeHurryUp} />
@@ -185,12 +165,8 @@ function HostConsole() {
         </div>
       ))}
 
-      { showClassification && (
-        <Classification classificationData={classificationData} />
-      )}
-
       { showResults && (
-        <Results results={results} />
+        <Results results={results} classificationData={classificationData} />
       )}
 
     </div>

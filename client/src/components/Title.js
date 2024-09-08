@@ -38,7 +38,7 @@ function Title() {
       src={currentImage}
       alt="logo"
       className={"my-2"}
-      style={{ width: "55%", maxWidth: "300px", display: "block" }}
+      style={{ width: "55%", maxWidth: "250px", display: "block" }}
     />
       <div
         style={{

@@ -1,4 +1,6 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+
+import "./powerSelector.css";
 
 const ghost_icon = require('../assets/images/ghost_icon.png');
 const x2_icon = require('../assets/images/x2_icon.png');
@@ -6,6 +8,8 @@ const help_icon = require('../assets/images/help_icon.png');
 const win_icon = require('../assets/images/win_icon.png');
 
 const circle = require('../assets/images/circle.png');
+
+
 
 
 
@@ -20,24 +24,60 @@ function PowerSelector({
 
   helpIconClicked,
   helpPowerAvailableBonuses,
-  handleHelpIconClick
+  handleHelpIconClick,
+
+  isGhostIconGlowing,
+  isHelpIconGlowing,
+  isX2IconGlowing,
+
+  setIsGhostIconGlowing,
+  setIsHelpIconGlowing,
+  setIsX2IconGlowing,
 }) {
+
+  console.log(isGhostIconGlowing + " " + isHelpIconGlowing + " " + isX2IconGlowing);
+
+  useEffect(() => {
+    if (isGhostIconGlowing == true) {
+      setTimeout(() => {
+        setIsGhostIconGlowing(false);
+      }, 1000);
+    }
+  }, [isGhostIconGlowing]);
+
+  useEffect(() => {
+    if (isHelpIconGlowing == true) {
+      setTimeout(() => {
+        setIsHelpIconGlowing(false);
+      }, 1000);
+    }
+  }, [isHelpIconGlowing]);
+
+  useEffect(() => {
+    if (isX2IconGlowing == true) {
+      setTimeout(() => {
+        setIsX2IconGlowing(false);
+      }, 1000);
+    }
+  }
+, [isX2IconGlowing]);
+
   return (
-    <div className="mt-3 d-flex">
+    <div className="mt-2 d-flex">
 
         <div
-          className={`ms-1 me-1 ${ghostIconClicked ? 'box' : ''}`}
+          className={`ms-1 me-1 ${ghostIconClicked ? 'box' : 'empty-box'}`}
           style={{
             width: "fit-content",
             height: "fit-content",
-            borderRadius: "20px",
+            borderRadius: "15px",
           }}
         > 
         <div
           className="d-flex justify-content-center align-items-center"
           style={{
             backgroundColor: "#4f4f4f",
-            borderRadius: "15px",
+            borderRadius: "10px",
             width: "80px",
             height: "50px",
           }}
@@ -45,7 +85,7 @@ function PowerSelector({
           <img
             src={ghost_icon}
             alt="Ghost icon"
-            className={`m-0 p-0 mx-3`}
+            className={`m-0 p-0 mx-3 ${isGhostIconGlowing ? 'glow' : ''}`}
             style={{
               width: "33px",
               height: "33px",
@@ -77,18 +117,18 @@ function PowerSelector({
         </div>
 
         <div
-          className={`ms-1 me-1 ${helpIconClicked ? 'box' : ''}`}
+          className={`ms-1 me-1 ${helpIconClicked ? 'box' : 'empty-box'}`}
           style={{
             width: "fit-content",
             height: "fit-content",
-            borderRadius: "20px",
+            borderRadius: "15px",
           }}
         >
         <div
           className="d-flex justify-content-center align-items-center"
           style={{
             backgroundColor: "#93d681",
-            borderRadius: "15px",
+            borderRadius: "10px",
             width: "80px",
             height: "50px",
           }}
@@ -96,7 +136,7 @@ function PowerSelector({
           <img
             src={help_icon}
             alt="Help icon"
-            className={`m-0 p-0 mx-3`}
+            className={`m-0 p-0 mx-3 ${isHelpIconGlowing ? 'glow' : ''}`}
             style={{
               width: "33px",
               height: "33px",
@@ -128,18 +168,18 @@ function PowerSelector({
         </div>
 
         <div
-          className={`ms-1 me-1 ${x2IconClicked ? 'box' : ''}`}
+          className={`ms-1 me-1 ${x2IconClicked ? 'box' : 'empty-box'}`}
           style={{
             width: "fit-content",
             height: "fit-content",
-            borderRadius: "20px",
+            borderRadius: "15px",
           }}
         >
         <div
           className={`d-flex justify-content-center align-items-center  `}
           style={{
             backgroundColor: "#d6c481",
-            borderRadius: "15px",
+            borderRadius: "10px",
             width: "80px",
             height: "50px",
           }}
@@ -147,7 +187,7 @@ function PowerSelector({
           <img
             src={x2_icon}
             alt="X2 icon"
-            className={`m-0 p-0 mx-3`}
+            className={`m-0 p-0 mx-3 ${isX2IconGlowing ? 'glow' : ''}`}
             style={{
               width: "33px",
               height: "33px",

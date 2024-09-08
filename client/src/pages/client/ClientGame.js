@@ -4,9 +4,6 @@ import { io } from 'socket.io-client';
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
-
-
-
 import CustomButton from "../../components/CustomButton.js";
 import CustomBoundaryButton from "../../components/CustomBoundaryButton.js";
 
@@ -44,7 +41,6 @@ function ClientGame() {
   const [unit, setUnit] = useState("");
   const [image, setImage] = useState("");
   const [answer, setAnswer] = useState("");
-  const [showError, setShowError] = useState(false);
   const [hasAnswered, setHasAnswered] = useState(false);
 
   const hasAnsweredRef = useRef(hasAnswered);
@@ -65,11 +61,13 @@ function ClientGame() {
   const [helpIconClicked, setHelpIconClicked] = useState(false);
   const [x2IconClicked, setX2IconClicked] = useState(false);
 
+  const [isGhostIconGlowing, setIsGhostIconGlowing] = useState(false);
+  const [isHelpIconGlowing, setIsHelpIconGlowing] = useState(false);
+  const [isX2IconGlowing, setIsX2IconGlowing] = useState(false);
+
   const [showGhostModal, setShowGhostModal] = useState(false);
   const [ghostData, setGhostData] = useState([]);
   const [ghostResponse, setGhostResponse] = useState(null);
-
-
   
 
 
@@ -95,7 +93,6 @@ function ClientGame() {
     }
 
     if (answer === undefined || answer === "") {
-      setShowError(true);
       return;
     }
     setHasAnswered(true);
@@ -204,7 +201,6 @@ function ClientGame() {
       setUnit(data.unit);
       setImage(data.image);
       computeTempAnswer(data.min, data.max, data.step);
-      setShowError(false);
       setHasAnswered(false);
       setShowResults(false);
       setShowClassification(false);
@@ -223,6 +219,7 @@ function ClientGame() {
 
     function handleResults(data) {
       setResults(data.playersAnswersData);
+      setClassificationData(data.classificationData);
       setShowClassification(false);
       setShowResults(true);
       SoundManager.playResults();
@@ -238,6 +235,13 @@ function ClientGame() {
     }
 
     function handleBonus(data) {
+      if (ghostPowerAvailableBonuses < data.ghostAvailableBonuses)
+        setIsGhostIconGlowing(true);
+      if (helpPowerAvailableBonuses < data.helpAvailableBonuses)
+        setIsHelpIconGlowing(true);
+      if (x2PowerAvailableBonuses < data.x2AvailableBonuses)
+        setIsX2IconGlowing(true);
+
       setGhostPowerAvailableBonuses(data.ghostAvailableBonuses);
       setHelpPowerAvailableBonuses(data.helpAvailableBonuses);
       setX2PowerAvailableBonuses(data.x2AvailableBonuses);
@@ -341,12 +345,17 @@ function ClientGame() {
         style={{ borderRadius: "10px", width: "100%", height: "100%", overflowY: "auto" }}
       >
 
-        <QuestionBox question={question} image={image} />
-        <PowerSelector
-          ghostIconClicked={ghostIconClicked} ghostPowerAvailableBonuses={ghostPowerAvailableBonuses} handleGhostIconClick={handleGhostIconClick}
-          x2IconClicked={x2IconClicked} x2PowerAvailableBonuses={x2PowerAvailableBonuses} handleX2IconClick={handleX2IconClick}
-          helpIconClicked={helpIconClicked} helpPowerAvailableBonuses={helpPowerAvailableBonuses} handleHelpIconClick={handleHelpIconClick}
-        />
+        <QuestionBox question={question} image={image} showImage={!showResults && !showClassification} />
+
+        { !showResults && !showClassification && (
+          <PowerSelector
+            ghostIconClicked={ghostIconClicked} ghostPowerAvailableBonuses={ghostPowerAvailableBonuses} handleGhostIconClick={handleGhostIconClick}
+            x2IconClicked={x2IconClicked} x2PowerAvailableBonuses={x2PowerAvailableBonuses} handleX2IconClick={handleX2IconClick}
+            helpIconClicked={helpIconClicked} helpPowerAvailableBonuses={helpPowerAvailableBonuses} handleHelpIconClick={handleHelpIconClick}
+            isGhostIconGlowing={isGhostIconGlowing} isHelpIconGlowing={isHelpIconGlowing} isX2IconGlowing={isX2IconGlowing}
+            setIsGhostIconGlowing={setIsGhostIconGlowing} setIsHelpIconGlowing={setIsHelpIconGlowing} setIsX2IconGlowing={setIsX2IconGlowing}
+          />
+        )}
 
         { !hasAnswered && !showResults && !showClassification && (
           <form
@@ -364,20 +373,14 @@ function ClientGame() {
                 min={min} max={max} step={step}
                 helpIconClicked={helpIconClicked}
                 prevMin={previousMinMax.min} prevMax={previousMinMax.max}
-                setShowError={setShowError}
               />
             </div>
 
             <div
-              className="d-flex flex-column align-items-center justify-content-end mt-4"
+              className="d-flex flex-column align-items-center justify-content-end mt-2 mb-4"
               style={{ width: "100%", height: "fit-content" }}
             >
               <GuessButton type="submit" />
-
-              <p className="text-danger m-1">
-                {showError && "Please enter a valid answer!"}
-              </p>
-
             </div>
 
           </form>
@@ -387,12 +390,8 @@ function ClientGame() {
           <p>Aspettando le risposte degli altri giocatori...</p>
         )}
 
-        { showClassification && (
-          <Classification classificationData={classificationData} />
-        )}
-
         { showResults && (
-          <Results results={results} />
+          <Results results={results} classificationData={classificationData} />
         )}
 
       </div>

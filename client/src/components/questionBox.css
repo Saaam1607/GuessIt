@@ -3,14 +3,18 @@
     flex-direction: row;
     align-items: start;
     border-radius: 15px;
+    margin: 0;
+    padding: 1rem;
+    background-color: #489bd4;
+    background-size: 75%;
+    background-image: url('../assets/images/texture.png');
+
 }
 
 .question-text {
-    /* margin: 0.25rem; */
     margin: 0;
     padding: 0;
     margin: 0.5rem;
-    margin-top: 1rem;
     font-size: 1.5rem !important;
     color: #616161;
     text-align: left;
@@ -20,9 +24,10 @@
 
 .question-image {
     border-radius: 15px;
-    width: 210px;
-    height: 210px;
+    width: 200px;
+    height: 200px;
     border: 5px solid rgb(219, 237, 244);
+
 }
 
 @media only screen and (max-width: 760px) {
@@ -34,11 +39,10 @@
 
     .question-text {
         font-size: 1.5rem;
-        margin-top: 30px;
     }
-    .question-image {
+    /* .question-image {
         width: 275px;
         height: 275px;
         margin-top: 20px;
-    }
+    } */
 }

@@ -4,7 +4,7 @@ import CustomBoundaryButton from "./CustomBoundaryButton.js";
 
 
 
-function AnswerBox({ answer, setAnswer, min, max, step, helpIconClicked, prevMin, prevMax, sendAnswer, setShowError}) {
+function AnswerBox({ answer, setAnswer, min, max, step, helpIconClicked, prevMin, prevMax, sendAnswer }) {
   return (
     <div className="mt-2" style={{ width: '100%', maxWidth: '600px' }}>
       <div
@@ -18,7 +18,6 @@ function AnswerBox({ answer, setAnswer, min, max, step, helpIconClicked, prevMin
           value={answer || ''}
           onChange={(e) => {
             setAnswer(e.target.value);
-            setShowError(false);
           }}
           style={{ fontSize: '1.3rem', padding: '10px', width: '100%', height: '50px', borderRadius: '0', textAlign: 'center' }}
         />
@@ -35,7 +34,6 @@ function AnswerBox({ answer, setAnswer, min, max, step, helpIconClicked, prevMin
         value={answer}
         onChange={(e) => {
           setAnswer(e.target.value);
-          setShowError(false);
         }}
         style={{ height: '60px' }}
       />

@@ -14,16 +14,16 @@ function setPlayers(playersData) {
 
 function resetLastPlayersResponses() {
   players.forEach(player => {
-    player.lastResponse = null;
+    player.answer = null;
   });
 }
 
-function setLastResponseFromPlayer(playerId, response) {
+function setLastResponseFromPlayer(playerId, answer) {
   players.forEach(player => {
     if (player.playerId == playerId) {
-      player.lastResponse = response;
-      console.log("SETTING LAST RESPONSE");
-      console.log(player.lastResponse);
+      player.answer = answer;
+      console.log("SETTING LAST ANSWER");
+      console.log(player.answer);
     }
   });
 }
@@ -32,9 +32,9 @@ function getLastResponseFromPlayer(playerId) {
   console.log(players);
   for (let player of players) {
     if (player.playerId == playerId) {
-      if (player.lastResponse) {
-        console.log("RETURNING LAST RESPONSE: " + player.lastResponse);
-        return player.lastResponse;
+      if (player.answer) {
+        console.log("RETURNING LAST RESPONSE: " + player.answer);
+        return player.answer;
       }
     }
   }
@@ -162,19 +162,35 @@ function getAvailableBonuses(playerId) {
 }
 
 function addRandomPower(playerId) {
-  const randomPower = Math.floor(Math.random() * 3);
   players.forEach(player => {
     if (player.playerId == playerId) {
-      switch (randomPower) {
-        case 0:
-          player.x2PowersAvailable ++;
-          break;
-        case 1:
-          player.ghostPowersAvailable ++;
-          break;
-        case 2:
-          player.helpPowersAvailable ++;
-          break;
+      var hasGivenPower = false;
+
+      if (player.x2PowersAvailable == 4 && player.ghostPowersAvailable == 4 && player.helpPowersAvailable == 4)
+        hasGivenPower = true;
+
+      while (!hasGivenPower) {
+        const randomPower = Math.floor(Math.random() * 3);
+        switch (randomPower) {
+          case 0:
+            if (player.x2PowersAvailable < 4) {
+              player.x2PowersAvailable ++;
+              hasGivenPower = true;
+            }
+            break;
+          case 1:
+            if (player.ghostPowersAvailable < 4) {
+              player.ghostPowersAvailable ++;
+              hasGivenPower = true;
+            }
+            break;
+          case 2:
+            if (player.helpPowersAvailable < 4) {
+              player.helpPowersAvailable ++;
+              hasGivenPower = true;
+            }
+            break;
+        }
       }
     }
   });

@@ -310,22 +310,22 @@ io.on("connection", (socket) => {
   */
   socket.on("results", async (data) =>  {
     const answer = getCurrentAnswer();
-    const playersAnswersData = playerManager.getPlayers();
+    var playersAnswersData = playerManager.getPlayers();
 
-    let minDistance = Math.abs(playersAnswersData[0]?.lastResponse - answer);
+    let minDistance = Math.abs(playersAnswersData[0]?.answer - answer);
     let maxDistance = 0;
 
     playersAnswersData.forEach(player => {
-      if (Math.abs(player.lastResponse - answer) < minDistance) {
-        minDistance = Math.abs(player.lastResponse - answer);
+      if (Math.abs(player.answer - answer) < minDistance) {
+        minDistance = Math.abs(player.answer - answer);
       }
-      if (Math.abs(player.lastResponse - answer) > maxDistance) {
-        maxDistance = Math.abs(player.lastResponse - answer);
+      if (Math.abs(player.answer - answer) > maxDistance) {
+        maxDistance = Math.abs(player.answer - answer);
       }
     });
 
     playersAnswersData.forEach(player => {
-      if (parseInt(parseInt(player.lastResponse) + minDistance) === parseInt(answer) || parseInt(parseInt(player.lastResponse) - minDistance) === parseInt(answer)) {
+      if (parseInt(parseInt(player.answer) + minDistance) === parseInt(answer) || parseInt(parseInt(player.answer) - minDistance) === parseInt(answer)) {
 
         if (data.computeScore) {
           playerManager.addScore(player.playerId);
@@ -339,31 +339,36 @@ io.on("connection", (socket) => {
 
     logsManager.writePlayersLog(playersAnswersData)
       .then(() => {
-        playersAnswersData.push({ answer: answer, isAnswer: true });
 
+        playersAnswersData.push({ answer: answer, isAnswer: true });
         playersAnswersData.sort((a, b) => {
           return b.answer - a.answer;
         });
+
+        const classificationData = playerManager.getClassification(prevClassification);
+        prevClassification = JSON.parse(JSON.stringify(classificationData));
+
+        playersAnswersData = playersAnswersData.filter(player => (player.answer !== "" && player.answer !== null));
     
         console.log("Logging players answers data: ");
         console.log(playersAnswersData);
     
-        io.emit("results", { playersAnswersData: playersAnswersData, });
+        io.emit("results", { playersAnswersData: playersAnswersData, classificationData: prevClassification });
       })
   });
 
-  socket.on("classification", () => {
-    const classificationData = playerManager.getClassification(prevClassification);
-    prevClassification = JSON.parse(JSON.stringify(classificationData));
-    io.emit("classification", { classificationData: classificationData });
-  });
+  // socket.on("classification", () => {
+  //   const classificationData = playerManager.getClassification(prevClassification);
+  //   prevClassification = JSON.parse(JSON.stringify(classificationData));
+  //   io.emit("classification", { classificationData: classificationData });
+  // });
 
   socket.on("recoverPlayers", async () => {
     const playersData = await logsManager.readPlayersLog();
     questionIndex = await logsManager.readQuestionsLog();
     
     playersData.forEach(player => {
-      player.lastResponse = "";
+      player.answer = "";
     });
     playerManager.setPlayers(playersData);
     console.log("")

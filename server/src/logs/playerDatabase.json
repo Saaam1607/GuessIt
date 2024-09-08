@@ -1,14 +1,29 @@
 [
   {
-    "name": "a",
-    "playerId": 1725398761423,
-    "socketId": "NmRT9YxD0p5IAk8vAAAV",
+    "name": "sam",
+    "playerId": 1725723506742,
+    "socketId": "I_yNKqJ7omHhY1o9AALY",
     "active": true,
     "ghostPowersAvailable": 4,
-    "helpPowersAvailable": 0,
-    "x2PowersAvailable": 2,
-    "score": 1,
-    "lastResponse": null,
-    "hasWon": true
+    "helpPowersAvailable": 2,
+    "x2PowersAvailable": 1,
+    "score": 34,
+    "answer": null,
+    "hasWon": true,
+    "isMovedUp": false,
+    "isMovedDown": false
+  },
+  {
+    "name": "",
+    "playerId": 1725723410468,
+    "socketId": "3Zr4Gf-RdouSzdVVAAAb",
+    "active": false,
+    "ghostPowersAvailable": 4,
+    "helpPowersAvailable": 4,
+    "x2PowersAvailable": 4,
+    "score": 0,
+    "answer": null,
+    "isMovedDown": false,
+    "isMovedUp": false
   }
 ]

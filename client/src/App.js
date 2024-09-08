@@ -27,7 +27,7 @@ function App() {
 
       <Title />
 
-      <div className="" style={{ minHeight: "100%", height: "90svh", width: "95%" }} >
+      <div className="" style={{ minHeight: "100%", height: "84svh", width: "95%" }} >
         <Router>
           <Routes>
             <Route path="/" exact element={<HomePage />} />

@@ -34,7 +34,11 @@ input[type="range"]::-webkit-slider-thumb {
 
 
 
-
+.empty-box {
+  width: 60vmin;
+  height: 50vmin;
+  border: solid 5px transparent;
+}
 
 .box {
   width: 60vmin;

@@ -3,30 +3,19 @@ import React from 'react';
 function Classification({ classificationData }) {
   return (
     <div>
-      <h3
-        style={{
-          fontFamily: "customFont",
-          fontSize: "2rem",
-          letterSpacing: "0.1rem",
-        }}
-      >
-        Classifica
-      </h3>
       {classificationData.map((playerData, index) => (
         playerData?.active && playerData.name ? (
-          <div
-            key={index}
-            className="d-flex align-items-center m-1"
-          >
+          <div ey={index} className="d-flex align-items-center m-1" >
             <p
               className="p-0 m-0"
               style={{
                 fontFamily: "customFont",
                 fontSize: "1.4rem",
                 letterSpacing: "0.1rem",
+                color: "white",
               }}
             >
-              {playerData.name} : {playerData.score}
+              {playerData.score} - {playerData.name}
             </p>
             {playerData?.isMovedUp && (
               <i style={{color: "green"}} className="bi bi-caret-up-fill ms-2"></i>
