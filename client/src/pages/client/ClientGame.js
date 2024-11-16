@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { io } from 'socket.io-client';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
@@ -16,15 +16,16 @@ import GhostModal from "../../components/GhostModal.js";
 import Results from "../../components/Results.js";
 import Classification from "../../components/Classification.js";
 import GuessButton from "../../components/GuessButton.js";
+import AnswersStatus from "../../components/AnswersStatus.js";
+
+import socket from "../../assets/modules/socket";
 
 import './clientGame.css';
 
-
-
 const SoundManager = require('../../components/SoundManager.js');
 
-const socketUrl = process.env.REACT_APP_SOCKET_URL || "https://guessitserver.onrender.com";
-const socket = io.connect(socketUrl);
+
+console.log("AAA")
 
 const ghost_icon = require('../../assets/images/ghost_icon.png');
 const x2_icon = require('../../assets/images/x2_icon.png');
@@ -35,6 +36,8 @@ const win_icon = require('../../assets/images/win_icon.png');
 
 
 function ClientGame() {
+
+  const navigate = useNavigate();
 
   const [questionType, setQuestionType] = useState("");
 
@@ -55,6 +58,8 @@ function ClientGame() {
 
   const hasAnsweredRef = useRef(hasAnswered);
 
+  const [activePlayersCount, setActivePlayersCount] = useState(0);
+  const [answersCount, setAnswersCount] = useState(0);
 
   const [showResults, setShowResults] = useState(false);
   const [showClassification, setShowClassification] = useState(false);
@@ -83,6 +88,8 @@ function ClientGame() {
   useEffect(() => {
     hasAnsweredRef.current = hasAnswered;
   }, [hasAnswered]);
+
+
 
   function joinGame() {
     socket.emit("join", { name: "", playerId: localStorage.getItem('playerId'), characterIndex: localStorage.getItem('characterIndex') });
@@ -253,20 +260,15 @@ function ClientGame() {
     }
 
     function handleResults(data) {
+
+      setHasAnswered(true);
+
+      console.log(data)
       setResults(data.playersAnswersData);
-      setClassificationData(data.classificationData);
+      setClassificationData(data.playersAnswersData);
       setShowClassification(false);
       setShowResults(true);
       SoundManager.playResults();
-    }
-
-    function handleClassification(data) {
-      setClassificationData(data.classificationData);
-      setShowResults(false);
-      setShowClassification(true);
-      SoundManager.playClassification();
-      console.log(data.classificationData);
-
     }
 
     function handleBonus(data) {
@@ -324,8 +326,29 @@ function ClientGame() {
       window.location.reload();
     }
 
+    function handleAnswersStatus(data) {
+      console.log(data);
+      setActivePlayersCount(data.answersStatus.activePlayersCount)
+      setAnswersCount(data.answersStatus.answersCount)
+    }
+
+    function handleLostPlayer() {
+      Swal.fire({
+        title: "Sei stato disconnesso",
+        text: "Riesegui il login per continuare a giocare",
+        icon: "warning",
+        showConfirmButton: false,
+        timer: 5000,
+      }).then(() => {
+        navigate("/client");
+
+      });
+    }
+
+
     socket.on("nextQuestion", handleNextQuestion);
     socket.on("hasAnswered", handleHasAnswered);
+    socket.on("answersStatus", handleAnswersStatus);
 
     socket.on("bonus", handleBonus);
     socket.on("minMaxSuggest", handleMinMaxSuggest);
@@ -337,108 +360,136 @@ function ClientGame() {
     socket.on("ghostAnswerNotReady", handleGhostAnswerNotReady);
 
     socket.on("results", handleResults);
-    socket.on("classification", handleClassification);
     socket.on("clock", handleClockSound);
     socket.on("extremeClock", handleExtremeClockSound);
+
+    socket.on("lostPlayer", handleLostPlayer);
 
     socket.on("recover", recover);
 
     return () => {
       socket.off("nextQuestion", handleNextQuestion);
       socket.off("hasAnswered", handleHasAnswered);
+      socket.off("answersStatus", handleAnswersStatus);
       socket.off("bonus", handleBonus);
       socket.off("minMaxSuggest", handleMinMaxSuggest);
       socket.off("fakeAnswersSuggest", handleFakeAnswersSuggest);
       socket.off("ghostData", handleGhostData);
       socket.off("results", handleResults);
-      socket.off("classification", handleClassification);
       socket.off("clock", handleClockSound);
       socket.off("extremeClock", handleExtremeClockSound);
+      socket.off("lostPlayer", handleLostPlayer);
       socket.off("recover", recover);
 
     };
 
+
   }, [socket]);
 
   return (
+
+
+  //   <div
+  //   className="d-flex flex-column align-items-center justify-content-end"
+  //   style={{ width: "100%", height: "100%", position: "relative" }}
+  // >
+  //   <div className="d-flex align-items-center" style={{ width: "100%", height: "64px", position: "absolute" }}>
+  //     <AnswersStatus activePlayersCount={activePlayersCount} answersCount={answersCount} />
+  //   </div>
+  //   <div className="d-flex justify-content-center" style={{ width: "100%", position: "absolute" }}>
+  //     <GuessButton type="submit" />
+  //   </div>
+  // </div>
+
+
     <div
       className="d-flex flex-column align-items-center justify-content-center"
-      style={{ height: "100%", width: "100%" }}
+      style={{ height: "100%", width: "100%", position: "relative" }}
     >
-
-      <GhostModal
-        ghostData={ghostData}
-        playerId={localStorage.getItem('playerId')}
-        showGhostModal={showGhostModal}
-        setShowGhostModal={setShowGhostModal}
-        handleSendGhost={handleSendGhost}
-      />
-
       <div
-        className={"d-flex flex-column align-items-center justify-content-start "}
-        style={{ borderRadius: "10px", width: "100%", height: "100%", overflowY: "auto" }}
+        className="d-flex flex-column align-items-center justify-content-center"
+        style={{ height: "100%", width: "100%", position: "absolute" }}
       >
 
-        <QuestionBox
-          question={question} image={image} showImage={!showResults && !showClassification}
-          ghostIconClicked={ghostIconClicked} ghostPowerAvailableBonuses={ghostPowerAvailableBonuses} handleGhostIconClick={handleGhostIconClick}
-          x2IconClicked={x2IconClicked} x2PowerAvailableBonuses={x2PowerAvailableBonuses} handleX2IconClick={handleX2IconClick}
-          helpIconClicked={helpIconClicked} helpPowerAvailableBonuses={helpPowerAvailableBonuses} handleHelpIconClick={handleHelpIconClick}
-          isGhostIconGlowing={isGhostIconGlowing} isHelpIconGlowing={isHelpIconGlowing} isX2IconGlowing={isX2IconGlowing}
-          setIsGhostIconGlowing={setIsGhostIconGlowing} setIsHelpIconGlowing={setIsHelpIconGlowing} setIsX2IconGlowing={setIsX2IconGlowing}
+        <GhostModal
+          ghostData={ghostData}
+          playerId={localStorage.getItem('playerId')}
+          showGhostModal={showGhostModal}
+          setShowGhostModal={setShowGhostModal}
+          handleSendGhost={handleSendGhost}
         />
 
-        { !hasAnswered && !showResults && !showClassification && (
-          <form
-            className="d-flex flex-column align-items-center justify-content-around"
-            style={{ width: "100%", height: "100%"}}
-            onSubmit={(e) => {
-              e.preventDefault();
-              sendAnswer();
-            }}
-          >
+        <div
+          className={"d-flex flex-column align-items-center justify-content-start "}
+          style={{ borderRadius: "10px", width: "100%", height: "100%", overflowY: "auto" }}
+        >
 
-            { questionType === 0 && (
-              <div className="d-flex justify-content-center align-items-center" style={{ width: "100%" }}>
-                <AnswerBox
-                  answer={answer} setAnswer={setAnswer} sendAnswer={sendAnswer}
-                  min={min} max={max} step={step}
-                  helpIconClicked={helpIconClicked}
-                  prevMin={previousMinMax.min} prevMax={previousMinMax.max}
-                />
-              </div>
-            )}
-            
-            { questionType === 1 && (
-              <div className="d-flex justify-content-center align-items-center" style={{ width: "100%" }}>
-                <ChoiceAnswerBox
-                  answer={answer} setAnswer={setAnswer} sendAnswer={sendAnswer}
-                  availableAnswers={availableAnswers}
-                  fakeAnswers={fakeAnswers}
-                  helpIconClicked={helpIconClicked}
-                />
-              </div>
-            )}
+          <QuestionBox
+            question={question} image={image} showImage={!showResults && !showClassification}
+            ghostIconClicked={ghostIconClicked} ghostPowerAvailableBonuses={ghostPowerAvailableBonuses} handleGhostIconClick={handleGhostIconClick}
+            x2IconClicked={x2IconClicked} x2PowerAvailableBonuses={x2PowerAvailableBonuses} handleX2IconClick={handleX2IconClick}
+            helpIconClicked={helpIconClicked} helpPowerAvailableBonuses={helpPowerAvailableBonuses} handleHelpIconClick={handleHelpIconClick}
+            isGhostIconGlowing={isGhostIconGlowing} isHelpIconGlowing={isHelpIconGlowing} isX2IconGlowing={isX2IconGlowing}
+            setIsGhostIconGlowing={setIsGhostIconGlowing} setIsHelpIconGlowing={setIsHelpIconGlowing} setIsX2IconGlowing={setIsX2IconGlowing}
+          />
 
-            <div
-              className="d-flex flex-column align-items-center justify-content-end"
-              style={{ width: "100%", height: "fit-content" }}
+          { !hasAnswered && !showResults && !showClassification && (
+            <form
+              className="d-flex flex-column align-items-center justify-content-around"
+              style={{ width: "100%", height: "100%"}}
+              onSubmit={(e) => {
+                e.preventDefault();
+                sendAnswer();
+              }}
             >
-              <GuessButton type="submit" />
-            </div>
 
-          </form>
-        )}
+              { questionType === 0 && (
+                <div className="d-flex justify-content-center align-items-center" style={{ width: "100%" }}>
+                  <AnswerBox
+                    answer={answer} setAnswer={setAnswer} sendAnswer={sendAnswer}
+                    min={min} max={max} step={step}
+                    helpIconClicked={helpIconClicked}
+                    prevMin={previousMinMax.min} prevMax={previousMinMax.max}
+                  />
+                </div>
+              )}
+              
+              { questionType === 1 && (
+                <div className="d-flex justify-content-center align-items-center" style={{ width: "100%" }}>
+                  <ChoiceAnswerBox
+                    answer={answer} setAnswer={setAnswer} sendAnswer={sendAnswer}
+                    availableAnswers={availableAnswers}
+                    fakeAnswers={fakeAnswers}
+                    helpIconClicked={helpIconClicked}
+                  />
+                </div>
+              )}
 
-        { hasAnswered && !showResults && !showClassification && (
-          <p>Aspettando le risposte degli altri giocatori...</p>
-        )}
+              <div
+                className="d-flex flex-column align-items-center justify-content-end"
+                style={{ width: "100%", height: "100%", position: "relative" }}
+              >
+                <GuessButton type="submit"/>
+              </div>
 
-        { showResults && (
-          <Results results={results} classificationData={classificationData} />
-        )}
+            </form>
+          )}
 
+          { hasAnswered && !showResults && !showClassification && (
+            <p>Aspettando le risposte degli altri giocatori...</p>
+          )}
+
+          { showResults && (
+            <Results results={results} classificationData={classificationData} questionType={questionType} availableAnswers={availableAnswers} />
+          )}
+
+        </div>
       </div>
+
+      {/* <div className="d-flex align-items-top" style={{ width: "100%", position: "absolute", bottom: "0" }}>
+        <AnswersStatus activePlayersCount={activePlayersCount} answersCount={answersCount} />
+      </div> */}
+
     </div>
   );
 }

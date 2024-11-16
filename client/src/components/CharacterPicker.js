@@ -1,13 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { io } from 'socket.io-client';
-
 import Power from './Power';
 
+import socket from "../assets/modules/socket";
+
 import "./characterPicker.css";
-
-const socketUrl = process.env.REACT_APP_SOCKET_URL || "https://guessitserver.onrender.com";
-const socket = io.connect(socketUrl);
-
 
 
 const jack = require('../assets/images/jack.png');

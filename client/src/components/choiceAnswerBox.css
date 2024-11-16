@@ -9,44 +9,9 @@
     margin-top: 10px;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: top;
     width: 100%;
     max-width: 600px;
     flex-wrap: wrap;
     gap: 10px;
-}
-
-.choice-answer-box {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #00c9b4;
-    border-radius: 15px;
-    width: 170px;
-    height: 70px;
-    padding: 10px;
-    border: 3px solid #00927f;
-    box-shadow: 2px 3px 0px #00927f;
-}
-
-.choice-answer-box p {
-    margin: 0;
-    padding: 0;
-    color: white;
-    font-family: 'CustomFont', sans-serif;
-    font-size: 1rem;
-    letter-spacing: 0.05rem;
-    text-align: center;
-}
-
-.selected {
-    background-color: #00a18d;
-    border-color: #007a68;
-    box-shadow: 2px 3px 0px #007a68;
-}
-
-.fake {
-    background-color: silver;
-    border-color: grey;
-    box-shadow: 2px 3px 0px grey;
 }

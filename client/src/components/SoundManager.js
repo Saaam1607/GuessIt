@@ -14,6 +14,8 @@ import help from "../assets/sounds/help.mp3";
 import results from "../assets/sounds/results.mp3";
 import classification from "../assets/sounds/classification.mp3";
 
+import answerSelected from "../assets/sounds/AnswerSelected.mp3";
+
 
 
 const newQuestion = new Audio(newQuestionUrl);
@@ -31,6 +33,8 @@ const helpSound = new Audio(help);
 
 const resultsSound = new Audio(results);
 const classificationSound = new Audio(classification);
+
+const answerSelectedSound = new Audio(answerSelected);
 
 
 
@@ -90,6 +94,11 @@ function playClassification() {
   classificationSound.play().catch(error => {});
 }
 
+function playAnswerSelected() {
+  answerSelectedSound.currentTime = 0;
+  answerSelectedSound.play().catch(error => {});
+}
 
 
-export { playNewQuestionSound, playAnswerSentSound, playClockSound, playExtremeClockSound, playMenuSwoosh, playMenuSelect, playPowerSelection, playGhost, playX2, playHelp, playResults, playClassification }; 
+
+export { playNewQuestionSound, playAnswerSentSound, playClockSound, playExtremeClockSound, playMenuSwoosh, playMenuSelect, playPowerSelection, playGhost, playX2, playHelp, playResults, playClassification, playAnswerSelected }; 

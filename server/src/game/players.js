@@ -88,6 +88,12 @@ function addScore(playerId) {
   });
 }
 
+function resetPlayersWon() {
+  players.forEach(player => {
+    player.hasWon = false;
+  });
+}
+
 function setPlayerWon(playerId) {
   players.forEach(player => {
     if (player.playerId == playerId) {
@@ -262,6 +268,19 @@ function getClassification(prevClassification) {
   return tmpPlayers;
 }
 
+function getAnswersStatus() {
+
+  console.log("DEBUGGING ANSWERS STATUS");
+  console.log(players);
+
+  const activePlayersCount = players.filter(player => player.active === true).length;
+  const answersCount = players.filter(player => {player.active === true && player.answer != null && player.answer != ""}).length;
+  return {
+    activePlayersCount,
+    answersCount
+  };
+}
+
 
 
 
@@ -279,6 +298,7 @@ module.exports = {
   printPlayers,
   getPlayerName,
   addScore,
+  resetPlayersWon,
   setPlayerWon,
   consumeX2Power,
   consumeGhostPower,
@@ -291,5 +311,6 @@ module.exports = {
   updatePlayerActive,
   updatePlayerLeft,
   checkIfAllPlayersOffline,
-  getClassification
+  getClassification,
+  getAnswersStatus
 };

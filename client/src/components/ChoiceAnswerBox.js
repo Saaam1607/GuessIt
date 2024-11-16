@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
+import ChoiceAnswerCard from './ChoiceAnswerCard';
+
 import choiceAnswerBox from './choiceAnswerBox.css';
+
+const SoundManager = require('../components/SoundManager.js');
 
 
 
@@ -9,15 +13,22 @@ function ChoiceAnswerBox({ answer, setAnswer, availableAnswers, fakeAnswers, hel
   function handleAnswerClick(answer) {
     if (!fakeAnswers.includes(answer)) {
       setAnswer(answer);
+      SoundManager.playAnswerSelected();
     }
   }
 
   return (
     <div className="choice-answer-box-container" >
       {availableAnswers.map((availableAnswer, index) => (
-        <div key={index} className={`choice-answer-box ${(availableAnswer.answer == answer)? 'selected' : ''} ${(fakeAnswers.includes(availableAnswer.answer)) ? 'fake' : ''}`} onClick={() => handleAnswerClick(availableAnswer.answer)}>
-          <p>{availableAnswer.answer}</p>
-        </div>
+
+        <ChoiceAnswerCard
+          key={index}
+          answer={availableAnswer.answer}
+          isSelected={availableAnswer.answer == answer}
+          isHidden={fakeAnswers.includes(availableAnswer.answer)}
+          isWinning={false}
+          clickFunction={() => handleAnswerClick(availableAnswer.answer)}
+        />
       ))}
     </div>
   );

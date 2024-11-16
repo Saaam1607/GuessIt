@@ -1,165 +1,401 @@
 const questions = [
-  {
-    questionType: 1,
-    question: "Qual'è il telefono più venduto del 2023?",
-    answer: "iPhone 14",
-    availableAnswers: [
-      { answer: "iPhone 14"},
-      { answer: "iPhone 15"},
-      { answer: "Samsung Galaxy A14"},
-      { answer: "Samsung Galaxy S23"},
-    ],
-    image: "1a"
-  },
-  {
-    questionType: 1,
-    question: "Qual'è il nome dello scienziato Tesla?",
-    answer: "Nikola",
-    availableAnswers: [
-      { answer: "Nicola"},
-      { answer: "Nicolas"},
-      { answer: "Nicolò"},
-      { answer: "Nikola"},
-    ],
-    image: "2a"
-  },
-  {
-    questionType: 1,
-    question: "Qual'è il ragno più velenoso al mondo?",
-    answer: "Ragno dei Cunicoli",
-    availableAnswers: [
-      { answer: "Ragno delle Banane"},
-      { answer: "Vedova Nera"},
-      { answer: "Ragno dei Cunicoli"},
-      { answer: "Ragno Eremita Marrone"},
-    ],
-    image: "3a"
-  },
-  {
-    questionType: 1,
-    question: "Qual'è tra questi il videogioco più venduto?",
-    answer: "Wii Sports",
-    availableAnswers: [
-      { answer: "Super Mario Bros"},
-      { answer: "Wii Sports"},
-      { answer: "Call Of DUty: Black Ops"},
-      { answer: "Pokémon Oro e Argento"},
-    ],
-    image: "4a"
-  },
-  {
-    questionType: 1,
-    question: "Come si chiama il Gormita in figura",
-    answer: "Noctis, il Signore dei Cieli",
-    availableAnswers: [
-      { answer: "Noctis, il Signore dei Cieli"},
-      { answer: "Caelumor, il Sovrano dell'Abisso Celeste"},
-      { answer: "Arialis, il Signore delle Nuovole"},
-      { answer: "Neburios , il Signore dell'Aria"},
-    ],
-    image: "5a"
-  },
-  {
-    questionType: 1,
-    question: "Qual'è la tipologia del Pokemon Milotic?",
-    answer: "Acqua",
-    availableAnswers: [
-      { answer: "Drago"},
-      { answer: "Acqua"},
-      { answer: "Acqua / Drago"},
-      { answer: "Acqua / Volante"},
-    ],
-    image: "6a"
-  },
-  {
-    questionType: 1,
-    question: "Come si chiama l'attrezzo in figura",
-    answer: "Pinza a Pappagallo",
-    availableAnswers: [
-      { answer: "Pinza a Dente di Leone"},
-      { answer: "Pinza a Morsa"},
-      { answer: "Pinza a Pappagallo"},
-      { answer: "Pinza a Becco"},
-    ],
-    image: "7a"
-  },
-  {
-    questionType: 1,
-    question: "Qual'è il Social Network con più utenti",
-    answer: "Facebook",
-    availableAnswers: [
-      { answer: "YpuTube"},
-      { answer: "Facebook"},
-      { answer: "Instagram"},
-      { answer: "WhatsApp"},
-    ],
-    image: "8a"
-  },
-  {
-    questionType: 1,
-    question: "Chi ha segnato più gol in carriera?",
-    answer: "Cristiano Ronaldo",
-    availableAnswers: [
-      { answer: "Messi"},
-      { answer: "Pelè"},
-      { answer: "Ronaldo il Fenomeno"},
-      { answer: "Cristiano Ronaldo"},
-    ],
-    image: "9a"
-  },
-  {
-    questionType: 1,
-    question: "Come si chiama la specie del polpo in figura?",
-    answer: "Polpo Dumbo",
-    availableAnswers: [
-      { answer: "Polpo Elefantino"},
-      { answer: "Polpo delle Corna"},
-      { answer: "Polp degli Anelli"},
-      { answer: "Polpo Dumbo"},
-    ],
-    image: "10a"
-  },
+  // {
+  //   questionType: 1,
+  //   question: "Qual'è il telefono più venduto del 2023?",
+  //   answer: "iPhone 14",
+  //   availableAnswers: [
+  //     { answer: "iPhone 14"},
+  //     { answer: "iPhone 15"},
+  //     { answer: "Samsung Galaxy A14"},
+  //     { answer: "Samsung Galaxy S23"},
+  //   ],
+  //   image: "1a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Qual'è il nome dello scienziato Tesla?",
+  //   answer: "Nikola",
+  //   availableAnswers: [
+  //     { answer: "Nicola"},
+  //     { answer: "Nicolas"},
+  //     { answer: "Nicolò"},
+  //     { answer: "Nikola"},
+  //   ],
+  //   image: "2a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Qual'è il ragno più velenoso al mondo?",
+  //   answer: "Ragno dei Cunicoli",
+  //   availableAnswers: [
+  //     { answer: "Ragno delle Banane"},
+  //     { answer: "Vedova Nera"},
+  //     { answer: "Ragno dei Cunicoli"},
+  //     { answer: "Ragno Eremita Marrone"},
+  //   ],
+  //   image: "3a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Qual'è tra questi il videogioco più venduto?",
+  //   answer: "Wii Sports",
+  //   availableAnswers: [
+  //     { answer: "Super Mario Bros"},
+  //     { answer: "Wii Sports"},
+  //     { answer: "Call Of DUty: Black Ops"},
+  //     { answer: "Pokémon Oro e Argento"},
+  //   ],
+  //   image: "4a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Come si chiama il Gormita in figura",
+  //   answer: "Noctis, il Signore dei Cieli",
+  //   availableAnswers: [
+  //     { answer: "Noctis, il Signore dei Cieli"},
+  //     { answer: "Caelumor, il Sovrano dell'Abisso Celeste"},
+  //     { answer: "Arialis, il Signore delle Nuovole"},
+  //     { answer: "Neburios , il Signore dell'Aria"},
+  //   ],
+  //   image: "5a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Qual'è la tipologia del Pokemon Milotic?",
+  //   answer: "Acqua",
+  //   availableAnswers: [
+  //     { answer: "Drago"},
+  //     { answer: "Acqua"},
+  //     { answer: "Acqua / Drago"},
+  //     { answer: "Acqua / Volante"},
+  //   ],
+  //   image: "6a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Come si chiama l'attrezzo in figura",
+  //   answer: "Pinza a Pappagallo",
+  //   availableAnswers: [
+  //     { answer: "Pinza a Dente di Leone"},
+  //     { answer: "Pinza a Morsa"},
+  //     { answer: "Pinza a Pappagallo"},
+  //     { answer: "Pinza a Becco"},
+  //   ],
+  //   image: "7a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Qual'è il Social Network con più utenti",
+  //   answer: "Facebook",
+  //   availableAnswers: [
+  //     { answer: "YpuTube"},
+  //     { answer: "Facebook"},
+  //     { answer: "Instagram"},
+  //     { answer: "WhatsApp"},
+  //   ],
+  //   image: "8a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Chi ha segnato più gol in carriera?",
+  //   answer: "Cristiano Ronaldo",
+  //   availableAnswers: [
+  //     { answer: "Messi"},
+  //     { answer: "Pelè"},
+  //     { answer: "Ronaldo il Fenomeno"},
+  //     { answer: "Cristiano Ronaldo"},
+  //   ],
+  //   image: "9a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Come si chiama la specie del polpo in figura?",
+  //   answer: "Polpo Dumbo",
+  //   availableAnswers: [
+  //     { answer: "Polpo Elefantino"},
+  //     { answer: "Polpo delle Corna"},
+  //     { answer: "Polp degli Anelli"},
+  //     { answer: "Polpo Dumbo"},
+  //   ],
+  //   image: "10a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Qual'è il vero nome dell'attore di Mr.Bean?",
+  //   answer: "Rowan Atkinson",
+  //   availableAnswers: [
+  //     { answer: "John Cleese"},
+  //     { answer: "Rowan Atkinson"},
+  //     { answer: "Arthur Bafflington"},
+  //     { answer: "Stephen Fry"},
+  //   ],
+  //   image: "11a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Fino al 2016, qual'era il costo annuale di WhatsApp?",
+  //   answer: "0.89€",
+  //   availableAnswers: [
+  //     { answer: "0.89€"},
+  //     { answer: "0.99€"},
+  //     { answer: "1.49€"},
+  //     { answer: "1.99€"},
+  //   ],
+  //   image: "12a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Chi è la persona in figura?",
+  //   answer: "Ryan Tedder (One Republic)",
+  //   availableAnswers: [
+  //     { answer: "Avicii"},
+  //     { answer: "Chris Martin (Coldplay)"},
+  //     { answer: "Dan Reynolds (Imagine Dragons)"},
+  //     { answer: "Ryan Tedder (One Republic)"},
+  //   ],
+  //   image: "13a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Come si chiama la malattia degenerativa che ha colpito Sammy Basso?",
+  //   answer: "Progeria",
+  //   availableAnswers: [
+  //     { answer: "Progeria"},
+  //     { answer: "Sindrome di Prader-Willi"},
+  //     { answer: "Fibromialgia"},
+  //     { answer: "Sindrome di Marfan"},
+  //   ],
+  //   image: "14a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Qual'è la città in figura?",
+  //   answer: "",
+  //   availableAnswers: [
+  //     { answer: "Rovigo"},
+  //     { answer: "Bologna"},
+  //     { answer: "Siena"},
+  //     { answer: "Arezzo"},
+  //   ],
+  //   image: "15a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Come si chiama l'attuale imperatore del Giappone?",
+  //   answer: "Naruhito",
+  //   availableAnswers: [
+  //     { answer: "Naruhito"},
+  //     { answer: "Akihiro"},
+  //     { answer: "Kiyotaka"},
+  //     { answer: "Masayoshi"},
+  //   ],
+  //   image: "16a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Qual'è la provincia più popolosa tra le seguenti?",
+  //   answer: "Palermo",
+  //   availableAnswers: [
+  //     { answer: "Brescia"},
+  //     { answer: "Verona"},
+  //     { answer: "Varese"},
+  //     { answer: "Palermo"},
+  //   ],
+  //   image: "17a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Come si chiama la creature mitologica in figura?",
+  //   answer: "Manticora",
+  //   availableAnswers: [
+  //     { answer: "Chimera"},
+  //     { answer: "Basilisco"},
+  //     { answer: "Manticora"},
+  //     { answer: "Echidna"},
+  //   ],
+  //   image: "18a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Con cosa si prepara il 'Risotto alla Milanese'?",
+  //   answer: "Zafferano",
+  //   availableAnswers: [
+  //     { answer: "Zafferano"},
+  //     { answer: "Curcuma"},
+  //     { answer: "Timo"},
+  //     { answer: "Zucca"},
+  //   ],
+  //   image: "19a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Un 'ragionamento lapalissiano' è un ragionamento particolarmente...?",
+  //   answer: "Ovvio",
+  //   availableAnswers: [
+  //     { answer: "Complesso"},
+  //     { answer: "Ovvio"},
+  //     { answer: "Stupido"},
+  //     { answer: "Inutilmente lungo"},
+  //   ],
+  //   image: "20a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "L'ornitorinco è un...?",
+  //   answer: "Mammifero",
+  //   availableAnswers: [
+  //     { answer: "Anfibio"},
+  //     { answer: "Mammifero"},
+  //     { answer: "Rettile"},
+  //     { answer: "Pesce"},
+  //   ],
+  //   image: "21a"
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "Di che razza è il cane in figura?",
+  //   answer: "Akita",
+  //   availableAnswers: [
+  //     { answer: "Shih Tzu"},
+  //     { answer: "Shiba"},
+  //     { answer: "Kangal"},
+  //     { answer: "Akita"},
+  //   ],
+  //   image: "22a"
+  // },
+
+
 
   // {
-  //   questionType: 0,
-  //   question: "In quale anno é stata inventata la bicicletta?",
-  //   answer: 1817,
-  //   min: 1500,
-  //   max: 2000,
-  //   step: 1,
-  //   unit: "",
-  //   image: "1"
+  //   questionType: 1,
+  //   question: "",
+  //   answer: "",
+  //   availableAnswers: [
+  //     { answer: ""},
+  //     { answer: ""},A
+  //     { answer: ""},
+  //     { answer: ""},
+  //   ],
+  //   image: ""
   // },
   // {
-  //   questionType: 0,
-  //   question: "Quanti pianeti ha il nostro sistema solare?",
-  //   answer: 8,
-  //   min: 5,
-  //   max: 10,
-  //   step: 1,
-  //   unit: "",
-  //   image: "2"
+  //   questionType: 1,
+  //   question: "",
+  //   answer: "",
+  //   availableAnswers: [
+  //     { answer: ""},
+  //     { answer: ""},
+  //     { answer: ""},
+  //     { answer: ""},
+  //   ],
+  //   image: ""
   // },
   // {
-  //   questionType: 0,
-  //   question: "Quante nazioni ci sono in tutto il mondo? (solo stati sovrani)",
-  //   answer: 195,
-  //   min: 100,
-  //   max: 200,
-  //   step: 1,
-  //   unit: "",
-  //   image: "3"
+  //   questionType: 1,
+  //   question: "",
+  //   answer: "",
+  //   availableAnswers: [
+  //     { answer: ""},
+  //     { answer: ""},
+  //     { answer: ""},
+  //     { answer: ""},
+  //   ],
+  //   image: ""
   // },
   // {
-  //   questionType: 0,
-  //   question: "A quale velocitá (in km/h) é necessario vaggiare per percorrere 287 km in 2 ore e 56 minuti?",
-  //   answer: 98,
-  //   min: 50,
-  //   max: 200,
-  //   step: 1,
-  //   unit: "km/h",
-  //   image: "4"
+  //   questionType: 1,
+  //   question: "",
+  //   answer: "",
+  //   availableAnswers: [
+  //     { answer: ""},
+  //     { answer: ""},
+  //     { answer: ""},
+  //     { answer: ""},
+  //   ],
+  //   image: ""
   // },
+  // {
+  //   questionType: 1,
+  //   question: "",
+  //   answer: "",
+  //   availableAnswers: [
+  //     { answer: ""},
+  //     { answer: ""},
+  //     { answer: ""},
+  //     { answer: ""},
+  //   ],
+  //   image: ""
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "",
+  //   answer: "",
+  //   availableAnswers: [
+  //     { answer: ""},
+  //     { answer: ""},
+  //     { answer: ""},
+  //     { answer: ""},
+  //   ],
+  //   image: ""
+  // },
+  // {
+  //   questionType: 1,
+  //   question: "",
+  //   answer: "",
+  //   availableAnswers: [
+  //     { answer: ""},
+  //     { answer: ""},
+  //     { answer: ""},
+  //     { answer: ""},
+  //   ],
+  //   image: ""
+  // },
+
+
+
+
+
+
+  {
+    questionType: 0,
+    question: "In quale anno é stata inventata la bicicletta?",
+    answer: 1817,
+    min: 1500,
+    max: 2000,
+    step: 1,
+    unit: "",
+    image: "1"
+  },
+  {
+    questionType: 0,
+    question: "Quanti pianeti ha il nostro sistema solare?",
+    answer: 8,
+    min: 5,
+    max: 10,
+    step: 1,
+    unit: "",
+    image: "2"
+  },
+  {
+    questionType: 0,
+    question: "Quante nazioni ci sono in tutto il mondo? (solo stati sovrani)",
+    answer: 195,
+    min: 100,
+    max: 200,
+    step: 1,
+    unit: "",
+    image: "3"
+  },
+  {
+    questionType: 0,
+    question: "A quale velocitá (in km/h) é necessario vaggiare per percorrere 287 km in 2 ore e 56 minuti?",
+    answer: 98,
+    min: 50,
+    max: 200,
+    step: 1,
+    unit: "km/h",
+    image: "4"
+  },
   // {
   //   questionType: 0,
   //   question: "In che anno é nato Benito Mussolini (a.k.a. il puzzone)?",

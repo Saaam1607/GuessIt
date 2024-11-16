@@ -123,7 +123,10 @@ function socketEmitNextQuestion(socket) {
   }
 }
 
+
+
 io.on("connection", (socket) => {
+
   console.log(`User Connected: ${socket.id}`);
 
   socket.on("characters", (data) => {
@@ -184,6 +187,57 @@ io.on("connection", (socket) => {
         score: 0
       });
       io.emit("playersList", { playersList: playerManager.getAllPlayersNames() });
+
+
+      //! TMP
+      const obj = {
+        "playersAnswersData": [
+          {
+            "active": true,
+            "answer": "iPhone 15",
+            "ghostPowersAvailable": 1,
+            "hasUsedGhost": false,
+            "hasUsedHelp": false,
+            "hasUsedX2": false,
+            "hasWon": true,
+            "helpPowersAvailable": 4,
+            "isMovedDown": false,
+            "isMovedUp": true,
+            "name": "sam",
+            "playerId": 1731754747642,
+            "score": 2,
+            "socketId": "WqB0sMRjWAlqs68RAAAD",
+            "x2PowersAvailable": 4
+          },
+          {
+            "active": true,
+            "answer": "Samsung Galaxy A14",
+            "ghostPowersAvailable": 1,
+            "hasUsedGhost": false,
+            "hasUsedHelp": true,
+            "hasUsedX2": false,
+            "hasWon": false,
+            "helpPowersAvailable": 4,
+            "isMovedDown": true,
+            "isMovedUp": false,
+            "name": "luigi",
+            "playerId": 1731754747642,
+            "score": 3,
+            "socketId": "WqB0sMRjWAlqs68RAAAD",
+            "x2PowersAvailable": 4
+          },
+          {
+            "answer": "iPhone 15",
+            "isAnswer": true
+          }
+        ],
+      }
+
+      console.log("RES")
+      setTimeout(() => {
+        io.emit("results", { playersAnswersData: obj.playersAnswersData });      
+      }, 500); 
+
     }
 
     // gestione giocatore già presente ma con una nuova connessione socket
@@ -194,6 +248,7 @@ io.on("connection", (socket) => {
     }
 
     console.log("stampa aggiornata dei players: ");
+    io.emit("answersStatus", { answersStatus: playerManager.getAnswersStatus() });
     playerManager.printPlayers();
 
     if (gameStarted) {
@@ -266,37 +321,25 @@ io.on("connection", (socket) => {
 
   /*
     on          <--- newAnswer
-    to all      ---> newAnswer
+    to all      ---> newAnswerFromPlayer
   */
   socket.on("newAnswer", (data) => {
-    console.log("playerID: " + data.playerId);
+    console.log("newAnswer from playerID: " + data.playerId);
 
-    console.log("data.name: " + data.name);
-
-    if (data.name == undefined) {
-      console.log("H")
-      const prevName = playerManager.getPlayerName(data.playerId);
-
-      console.log(playerManager.getPlayers());
-
-      console.log("prevName: " + prevName);
-      if (prevName != undefined) {
-        playerManager.updatePlayerActive(data.playerId, socket.id);
-        socket.emit("updateName", {name: prevName});
-        console.log("OsK")
-      }
+    if (playerManager.checkIfAlreadyJoined(data.playerId)) { // player presente
+      const playerName = playerManager.getPlayerName(data.playerId);
+      playerManager.updatePlayerActive(data.playerId, socket.id); // non fa male anche se non serve se è già attivo
+    } else { // player non presente
+      socket.emit("lostPlayer");
+      return;
     }
 
-
-    console.log(playerManager.getPlayers());
     const name = playerManager.getPlayerName(data.playerId);
 
     if (playerManager.getLastResponseFromPlayer(data.playerId) != undefined) {
       console.log("player already answered");
       return;
     }
-
-    console.log("new answer from: " + name + " " + data.answer)
 
     if (data.hasUsedHelp)
       playerManager.consumeHelpPower(data.playerId);
@@ -312,7 +355,8 @@ io.on("connection", (socket) => {
 
     playerManager.setLastAnswerFromPlayer(data.playerId, data.answer);
 
-    io.emit("newAnswer", {name: name, answer: data.answer, playerId: data.playerId, hasUsedX2: data.hasUsedX2, hasUsedHelp: data.hasUsedHelp, hasUsedGhost: data.hasUsedGhost});
+    // io.emit("answersStatus", { answersStatus: playerManager.getAnswersStatus() });
+    io.emit("newAnswerFromPlayer", {name: name, answer: data.answer, playerId: data.playerId, hasUsedX2: data.hasUsedX2, hasUsedHelp: data.hasUsedHelp, hasUsedGhost: data.hasUsedGhost});
   });
 
   /*
@@ -363,6 +407,8 @@ io.on("connection", (socket) => {
     const answer = getCurrentAnswer();
     var playersAnswersData = playerManager.getPlayers();
 
+    playerManager.resetPlayersWon();
+
     switch (getCurrentQuestionType()) {
       
       case 0:
@@ -388,13 +434,15 @@ io.on("connection", (socket) => {
               }
             }
             playerManager.setPlayerWon(player.playerId);
+          } else {
+
           }
         });
         break;
 
       case 1:
         playersAnswersData.forEach(player => {
-          if (player.answer === answer) {
+          if (player.answer == answer) {
             if (data.computeScore) {
               playerManager.addScore(player.playerId);
               if (player.hasUsedX2) {
@@ -418,15 +466,17 @@ io.on("connection", (socket) => {
           return b.answer - a.answer;
         });
 
-        const classificationData = playerManager.getClassification(prevClassification);
-        prevClassification = JSON.parse(JSON.stringify(classificationData));
+        // const classificationData = playerManager.getClassification(prevClassification);
+        // prevClassification = JSON.parse(JSON.stringify(classificationData));
 
         playersAnswersData = playersAnswersData.filter(player => (player.answer !== "" && player.answer !== null));
     
         console.log("Logging players answers data: ");
         console.log(playersAnswersData);
     
-        io.emit("results", { playersAnswersData: playersAnswersData, classificationData: prevClassification });
+        // io.emit("results", { playersAnswersData: playersAnswersData, classificationData: prevClassification });
+        io.emit("results", { playersAnswersData: playersAnswersData });
+
       })
   });
 
@@ -460,6 +510,7 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     playerManager.updatePlayerLeft(socket.id);
     io.emit("playersList", { playersList: playerManager.getAllPlayersNames() });
+    // io.emit("answersStatus", { answersStatus: playerManager.getAnswersStatus() });
     playerManager.printPlayers();
     console.log(`User Disconnected: ${socket.id}`);
     if (playerManager.checkIfAllPlayersOffline()) {
@@ -467,6 +518,31 @@ io.on("connection", (socket) => {
       questionIndex = 0;
     }
   });
+
+  // socket.on('pong', () => {
+  //   // Aggiorna il timestamp del ping per questo client
+  //   clients.set(socket.id, Date.now());
+  // });
+
 });
+
+// function pingClients() {
+//   // const now = Date.now();
+//   // io.emit('ping');
+//   io.emit("playersList", { playersList: playerManager.getAllPlayersNames() });
+
+//   // clients.forEach((lastPing, clientId) => {
+//   //     // Se un client non ha risposto negli ultimi 10 secondi, viene considerato inattivo
+//   //     if (now - lastPing > 10000) {
+//   //         console.log(`Client ${clientId} non risponde, verrà rimosso.`);
+//   //         io.sockets.sockets.get(clientId)?.disconnect(true); // Disconnette il client
+//   //         clients.delete(clientId);
+//   //     }
+//   // });
+
+//   // console.log(`Client attivi: ${clients.size}`);
+// }
+
+// setInterval(pingClients, 5000);
 
 module.exports = { server, io };

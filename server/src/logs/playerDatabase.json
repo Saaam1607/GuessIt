@@ -1,16 +1,17 @@
 [
   {
     "name": "sa",
-    "playerId": 1725830835541,
-    "socketId": "FVRgCSr0rHdqgmMsAAAb",
+    "playerId": 1731796734694,
+    "socketId": "26azRkZqUbp96KNzAAAD",
     "active": true,
-    "ghostPowersAvailable": 4,
-    "helpPowersAvailable": 0,
-    "x2PowersAvailable": 2,
-    "score": 0,
-    "answer": null,
+    "ghostPowersAvailable": 1,
+    "helpPowersAvailable": 1,
+    "x2PowersAvailable": 4,
+    "score": 1,
+    "answer": 175,
     "hasUsedHelp": false,
     "hasUsedX2": false,
-    "hasUsedGhost": false
+    "hasUsedGhost": false,
+    "hasWon": true
   }
 ]

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { io } from 'socket.io-client';
 
 import CustomButton from "../../components/CustomButton.js";
 import ControllerButton from "../../components/ControllerButton.js";
@@ -7,10 +6,9 @@ import ControllerButton from "../../components/ControllerButton.js";
 import Results from "../../components/Results.js";
 import QuestionBox from "../../components/QuestionBox.js";
 
+import socket from "../../assets/modules/socket";
 
 
-const socketUrl = process.env.REACT_APP_SOCKET_URL || "https://guessitserver.onrender.com";
-const socket = io.connect(socketUrl);
 
 const SoundManager = require('../../components/SoundManager.js');
 
@@ -101,7 +99,7 @@ function HostConsole() {
 
     getQuestion();
 
-    function handleNewAnswer(data) {
+    function handleNewAnswerFromPlayer(data) {
       setPlayersAnswersData((prevData) => [
         ...(prevData || []),
         { name: data.name || 'Unknown', answer: data.answer || 'No answer', playerId: data.playerId, hasUsedX2: data.hasUsedX2, hasUsedHelp: data.hasUsedHelp, hasUsedGhost: data.hasUsedGhost },
@@ -115,24 +113,30 @@ function HostConsole() {
       setImage(data.image);
     }
 
+    function handlePlayerList(data) {
+      console.log(data)
+    }
+
     function handleNextAnswer(data) {
       setAnswer(data.answer);
     }
 
     function handleResults(data) {
       setResults(data.playersAnswersData);
-      setClassificationData(data.classificationData);
+      setClassificationData(data.playersAnswersData);
       setShowResults(true);
     }
 
     socket.on("nextQuestion", handleNextQuestion);
     socket.on("nextAnswer", handleNextAnswer);
-    socket.on("newAnswer", handleNewAnswer);
+    socket.on("newAnswerFromPlayer", handleNewAnswerFromPlayer);
+    socket.on("nextQuestion", handleNextQuestion);
+    socket.on("playersList", handlePlayerList)
 
     socket.on("results", handleResults);
   
     return () => {
-      socket.off("newAnswer", handleNewAnswer);
+      socket.off("newAnswerFromPlayer", handleNewAnswerFromPlayer);
       socket.off("nextQuestion", handleNextQuestion);
 
       socket.off("results", handleResults);
