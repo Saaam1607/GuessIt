@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import ConfettiExplosion from "react-confetti-explosion";
+import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 
 import Classification from './Classification';
 import ClassificationUserCard from './ClassificationUserCard';
 import ChoiceAnswerCard from './ChoiceAnswerCard';
 
+import 'react-vertical-timeline-component/style.min.css';
 import "./results.css";
 
 const ghost_icon = require('../assets/images/ghost_icon.png');
@@ -16,6 +18,15 @@ const trophy = require('../assets/images/trophy.png');
 const crown = require('../assets/images/crown.png');
 
 const yusuf = require('../assets/images/yusuf.png');
+
+function TrophyIcon() {
+  return (
+    <div className="d-flex justify-content-center align-items-center" style={{width: "100%", height: "100%"}}>
+      <img src={trophy} style={{minWidth: "30px", height: "auto"}} />
+    </div>
+  )
+}
+
 
 
 function Results({ results, classificationData, questionType, availableAnswers }) {
@@ -40,6 +51,21 @@ function Results({ results, classificationData, questionType, availableAnswers }
     duration: 5000,
     particleCount: 200,
   };
+
+  const basicIconStyle = {
+    background: 'black',
+    color: 'black',
+    scale: "0.5",
+  };
+
+  const winnerIconStyle = {
+    background: 'gold',
+    color: 'gold',
+  };
+
+
+    // message={isLoggedIn ? 'Welcome back!' : 'Please log in.'}
+
 
   useEffect(() => {
     console.log(availableAnswers)
@@ -98,7 +124,7 @@ function Results({ results, classificationData, questionType, availableAnswers }
                       {results.map((playerAnswerData, index) => 
                         !playerAnswerData.isAnswer && playerAnswerData.answer == answer.answer && (
                           <div className="d-flex align-items-center">
-                            <p key={index} className="m-0 me-2" style={{ color: "black" }}>
+                            <p key={index} className="m-0 ms-2 me-2" style={{ color: "black" }}>
                               {playerAnswerData.name}
                             </p>
                             {playerAnswerData.hasUsedGhost && (
@@ -127,49 +153,56 @@ function Results({ results, classificationData, questionType, availableAnswers }
                 {questionType == 0 && (
                   <div className="d-flex flex-column">
 
-                  {results.map((answer, index) => 
-                    answer.isAnswer ? (
-                      <p key={index} className="m-0 my-1 me-2">
-                        {answer.answer}
-                      </p>
-                    ) : (
-                      <div className="d-flex align-items-center">
-                        <p key={index} className="m-0 my-1 me-2">
-                          {answer.answer} - {answer.name}
-                        </p>
-                        {answer.hasWon && (
-                          <div className="power-icon-container" style={{backgroundColor: "#4f4f4f"}} >
-                            <img src={win_icon} alt="win icon" /> 
-                          </div>
-                        )}
-                        {answer.hasUsedGhost && (
-                          <div className="power-icon-container" style={{backgroundColor: "#4f4f4f"}} >
-                            <img src={ghost_icon} alt="ghost icon" /> 
-                          </div>
-                        )}
-                        {answer.hasUsedHelp && (
-                          <div className="power-icon-container" style={{backgroundColor: "#93d681"}} >
-                            <img src={help_icon} alt="help icon" />
-                          </div>
-                        )}
-                        {answer.hasUsedHelp && (
-                          <div className="power-icon-container" style={{backgroundColor: "#d6c481"}}>
-                            <img src={x2_icon} alt="X2 icon" />
-                          </div>
-                        )}
-                      </div>
-                    )
-                  )}
+                    <VerticalTimeline layout="1-column-left" lineColor="black">
 
-
-                  
+                      {results.map((answer, index) =>
+                        answer.isAnswer ? (
+                          <VerticalTimelineElement
+                            className="vertical-timeline-element--work m-0 mb-3"
+                            contentStyle={{ background: '#42A938', color: 'white', padding: "10px" }}
+                            iconStyle={{ background: 'black', color: 'black', scale: "0.5", }}
+                            contentArrowStyle={{ borderRight: '7px solid #42A938' }}
+                          >
+                            <h5 className="m-0">{answer.answer}</h5>
+                          </VerticalTimelineElement>
+                        ) : (
+                          <VerticalTimelineElement
+                            className="vertical-timeline-element--work m-0 mb-3"
+                            contentStyle={{ background: '#3D76B3', color: 'white', padding: "10px" }}
+                            // iconStyle={{ background: 'black', color: 'black', scale: "0.5" }}
+                            iconStyle={answer.hasWon ? winnerIconStyle : basicIconStyle}
+                            contentArrowStyle={{ borderRight: '7px solid #3D76B3' }}
+                            icon={answer.hasWon ? <TrophyIcon /> : <></> }
+                          >
+                            <h5 className="m-0 mb-1">{answer.answer}</h5>
+                            <div className="d-flex align-items-center">
+                              <p className="vertical-timeline-element-title m-0 me-2">{answer.name}</p>
+                              {answer.hasUsedGhost && (
+                              <div className="power-icon-container" style={{backgroundColor: "#4f4f4f"}} >
+                                <img src={ghost_icon} alt="ghost icon" /> 
+                              </div>
+                              )}
+                              {answer.hasUsedHelp && (
+                                <div className="power-icon-container" style={{backgroundColor: "#93d681"}} >
+                                  <img src={help_icon} alt="help icon" />
+                                </div>
+                              )}
+                              {answer.hasUsedHelp && (
+                                <div className="power-icon-container" style={{backgroundColor: "#d6c481"}}>
+                                  <img src={x2_icon} alt="X2 icon" />
+                                </div>
+                              )}
+                            </div> 
+                            
+                          </VerticalTimelineElement>
+                        )
+                      )}
+                    </VerticalTimeline>
                   </div>
                 )}
 
               </div>
-
             </div>
-            
           </div>
 
           <div className="back"> 

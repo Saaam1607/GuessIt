@@ -20,15 +20,16 @@ function ChoiceAnswerBox({ answer, setAnswer, availableAnswers, fakeAnswers, hel
   return (
     <div className="choice-answer-box-container" >
       {availableAnswers.map((availableAnswer, index) => (
-
-        <ChoiceAnswerCard
-          key={index}
-          answer={availableAnswer.answer}
-          isSelected={availableAnswer.answer == answer}
-          isHidden={fakeAnswers.includes(availableAnswer.answer)}
-          isWinning={false}
-          clickFunction={() => handleAnswerClick(availableAnswer.answer)}
-        />
+        <div className="d-flex flex-column" style={{width:"48%"}}>
+          <ChoiceAnswerCard
+            key={index}
+            answer={availableAnswer.answer}
+            isSelected={availableAnswer.answer == answer}
+            isHidden={fakeAnswers.includes(availableAnswer.answer)}
+            isWinning={false}
+            clickFunction={() => handleAnswerClick(availableAnswer.answer)}
+          />
+        </div>
       ))}
     </div>
   );

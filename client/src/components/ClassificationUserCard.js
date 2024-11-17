@@ -8,10 +8,11 @@ function ClassificationUserCard({ image, name, score, isMovedUp, isMovedDown }) 
     <div
       className="d-flex"
       style={{
-        border: "2px solid black",
+        // border: "2px solid black",
         borderRadius: "40px",
         padding: "0px",
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor: "white",
       }}
     >
       <img className="" style={{ minWidth: "40px", minHeight: "40px" }} src={image} alt={image}/>

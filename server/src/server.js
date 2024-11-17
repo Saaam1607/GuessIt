@@ -47,6 +47,7 @@ let questionIndex = 0;
 let prevClassification = null;
 
 const maxQuestionIndex = questionDb.length - 1;
+questionDb = shuffleArray(questionDb);
 
 function getCurrentQuestionType() {
   return  questionDb[questionIndex].questionType;
@@ -233,10 +234,10 @@ io.on("connection", (socket) => {
         ],
       }
 
-      console.log("RES")
-      setTimeout(() => {
-        io.emit("results", { playersAnswersData: obj.playersAnswersData });      
-      }, 500); 
+      // console.log("REdS")
+      // setTimeout(() => {
+      //   io.emit("results", { playersAnswersData: obj.playersAnswersData });      
+      // }, 300); 
 
     }
 

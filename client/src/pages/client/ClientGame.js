@@ -221,6 +221,7 @@ function ClientGame() {
     getBonus();
 
     function handleNextQuestion(data) {
+      
       setAnswer("");
 
       setQuestionType(data.questionType);
@@ -229,6 +230,12 @@ function ClientGame() {
 
       switch (data.questionType) {
         case 0:
+          Swal.fire({
+            title: "Indovina il numero",
+            icon: "question",
+            showConfirmButton: false,
+            timer: 1500,
+          })
           setMin(data.min);
           setMax(data.max);
           setPreviousMinMax({ min: data.min, max: data.max });
@@ -237,6 +244,12 @@ function ClientGame() {
           computeTempAnswer(data.min, data.max, data.step);
           break;
         case 1:
+          Swal.fire({
+            title: "Indovina la risposta",
+            icon: "info",
+            showConfirmButton: false,
+            timer: 1500,
+          })
           setAvailableAnswers(data.availableAnswers);
           break;
         default:
@@ -263,7 +276,7 @@ function ClientGame() {
 
       setHasAnswered(true);
 
-      console.log(data)
+      // console.log(data)
       setResults(data.playersAnswersData);
       setClassificationData(data.playersAnswersData);
       setShowClassification(false);
