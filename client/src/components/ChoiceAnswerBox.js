@@ -12,8 +12,8 @@ function ChoiceAnswerBox({ answer, setAnswer, availableAnswers, fakeAnswers, hel
 
   function handleAnswerClick(answer) {
     if (!fakeAnswers.includes(answer)) {
-      setAnswer(answer);
       SoundManager.playAnswerSelected();
+      setAnswer(answer);
     }
   }
 

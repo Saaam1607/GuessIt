@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import CustomButton from "../../components/CustomButton.js";
 import ControllerButton from "../../components/ControllerButton.js";
@@ -21,6 +22,10 @@ const win_icon = require('../../assets/images/win_icon.png');
 
 function HostConsole() {
 
+  const navigate = useNavigate();
+
+  const [questionType, setQuestionType] = useState("");
+
   const [playersAnswersData, setPlayersAnswersData] = useState([]);
   
   const [question, setQuestion] = useState("");
@@ -28,6 +33,8 @@ function HostConsole() {
   const [min, setMin] = useState(null);
   const [max, setMax] = useState(null);
   const [image, setImage] = useState("");
+
+  const [availableAnswers, setAvailableAnswers] = useState([]);
 
   const [hasSentResults, setHasSentResults] = useState(false);
 
@@ -71,29 +78,29 @@ function HostConsole() {
     socket.emit("extremeHurryUp", {});
   }
 
-  function resetPoints() {
+  function reset() {
     SoundManager.playPowerSelection();
-    socket.emit("resetPoints", {});
+    socket.emit("reset");
   }
 
-  function resetPlayers() {
-    SoundManager.playPowerSelection();
-    socket.emit("resetPlayers", {});
-  }
+  // function resetPlayers() {
+  //   SoundManager.playPowerSelection();
+  //   socket.emit("resetPlayers", {});
+  // }
 
   function addPowers() {
     SoundManager.playPowerSelection();
     socket.emit("addPower", {});
   }
 
-  function recoverPlayers() {
-    SoundManager.playPowerSelection();
-    socket.emit("recoverPlayers", {});
-    setPlayersAnswersData([]);
-    setClassificationData([]);
-    setResults([]);
-    setShowResults(false);
-  }
+  // function recoverPlayers() {
+  //   SoundManager.playPowerSelection();
+  //   socket.emit("recoverPlayers", {});
+  //   setPlayersAnswersData([]);
+  //   setClassificationData([]);
+  //   setResults([]);
+  //   setShowResults(false);
+  // }
 
   useEffect(() => {
 
@@ -107,10 +114,21 @@ function HostConsole() {
     }
 
     function handleNextQuestion(data) {
+      setQuestionType(data.questionType);
       setQuestion(data.question);
-      setMin(data.min);
-      setMax(data.max);
       setImage(data.image);
+
+      switch (data.questionType) {
+        case 0:
+          setMin(data.min);
+          setMax(data.max);
+          break;
+        case 1:
+          setAvailableAnswers(data.availableAnswers);
+          break;
+        default:
+          break;
+      }
     }
 
     function handlePlayerList(data) {
@@ -127,19 +145,26 @@ function HostConsole() {
       setShowResults(true);
     }
 
+    function handleReset() {
+      navigate("/", { });
+    }
+
     socket.on("nextQuestion", handleNextQuestion);
     socket.on("nextAnswer", handleNextAnswer);
     socket.on("newAnswerFromPlayer", handleNewAnswerFromPlayer);
-    socket.on("nextQuestion", handleNextQuestion);
     socket.on("playersList", handlePlayerList)
 
     socket.on("results", handleResults);
+    socket.on("reset", handleReset);
   
     return () => {
-      socket.off("newAnswerFromPlayer", handleNewAnswerFromPlayer);
       socket.off("nextQuestion", handleNextQuestion);
+      socket.off("nextAnswer", handleNextAnswer);
+      socket.off("newAnswerFromPlayer", handleNewAnswerFromPlayer);
+      socket.off("playersList", handlePlayerList)
 
       socket.off("results", handleResults);
+      socket.off("reset", handleReset);
     };
 
   }, [socket]);
@@ -147,9 +172,27 @@ function HostConsole() {
   return (
     <div className="d-flex flex-column align-items-center justify-content-center" style={{ height: "100%", width: "100%", overflowY: "auto" }}>
       <div className="d-flex flex-column align-items-center justify-content-center p-2" style={{width: "100%" }}>
-        <QuestionBox question={question} image={image} />
+        
+        {/* <QuestionBox question={question} image={image} /> */}
+        <QuestionBox
+            question={question} image={image} showImage={!showResults}
+            ghostIconClicked={false} ghostPowerAvailableBonuses={false} handleGhostIconClick={()=>{}}
+            x2IconClicked={false} x2PowerAvailableBonuses={false} handleX2IconClick={()=>{}}
+            helpIconClicked={false} helpPowerAvailableBonuses={false} handleHelpIconClick={()=>{}}
+            isGhostIconGlowing={false} isHelpIconGlowing={false} isX2IconGlowing={false}
+            setIsGhostIconGlowing={()=>{}} setIsHelpIconGlowing={()=>{}} setIsX2IconGlowing={()=>{}}
+          />
+
+        {questionType == 1 && availableAnswers.map((answer, index) => (
+          <p className="p-0 m-0">{answer.answer}</p>
+        ))}
+        
+        {questionType == 0 && (
+          <h4>min: {min}, max: {max}</h4>
+        )}
+        
         <h4>{answer}</h4>
-        <h4>min: {min}, max: {max}</h4>
+      
       </div>
 
       <div className="d-flex flex-wrap justify-content-center m-1" style={{gap: "15px"}}>
@@ -158,9 +201,9 @@ function HostConsole() {
         <ControllerButton icon={"bi bi-magic"} color={"#edc71a"} onClick={addPowers} />
         <ControllerButton icon={"bi bi-alarm"} color={"#ff6600"} onClick={hurryUp} />
         <ControllerButton icon={"bi bi-alarm-fill"} color={"#ff0000"} onClick={extremeHurryUp} />
-        <ControllerButton icon={"bi bi-eraser"} color={"#4f2020"} onClick={resetPoints} />
-        <ControllerButton icon={"bi bi-eraser-fill"} color={"#260a0a"} onClick={resetPlayers} />
-        <ControllerButton icon={"bi bi-database-exclamation"} color={"grey"} onClick={recoverPlayers} />
+        <ControllerButton icon={"bi bi-eraser"} color={"#4f2020"} onClick={reset} />
+        {/* <ControllerButton icon={"bi bi-eraser-fill"} color={"#260a0a"} onClick={resetPlayers} /> */}
+        {/* <ControllerButton icon={"bi bi-database-exclamation"} color={"grey"} onClick={recoverPlayers} /> */}
       </div>
 
       {playersAnswersData !== undefined && playersAnswersData.map((playerAnswerData, index) => (
@@ -170,7 +213,7 @@ function HostConsole() {
       ))}
 
       { showResults && (
-        <Results results={results} classificationData={classificationData} />
+        <Results results={results} classificationData={classificationData} questionType={questionType} availableAnswers={availableAnswers} />
       )}
 
     </div>

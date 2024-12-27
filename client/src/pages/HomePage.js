@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import CustomButton from "../components/CustomButton.js";
 import CustomDiv from "../components/CustomDiv.js";
 
+const SoundManager = require('../components/SoundManager.js');
+
 
 
 function ClientPage() {
@@ -11,10 +13,12 @@ function ClientPage() {
   const navigate = useNavigate();
 
   function goToClientPage() {
+    SoundManager.playMenuSelect();
     navigate("/client", { });
   }
 
   function goToHostPage() {
+    SoundManager.playMenuSelect();
     navigate("/host", { });
   }
 

@@ -58,7 +58,7 @@ function getFakeAnswers(answerList, rightAnswer) {
     const fakeAnswers = [];
     const fakeAnswersToRemove = answerList.length / 2;
     answerList.forEach((answer) => {
-        if (answer !== rightAnswer) {
+        if (answer.answer != rightAnswer) {
             fakeAnswers.push(answer.answer);
         };
     });

@@ -17,7 +17,10 @@ const win_icon = require('../assets/images/win_icon.png');
 const trophy = require('../assets/images/trophy.png');
 const crown = require('../assets/images/crown.png');
 
+const jack = require('../assets/images/jack.png');
+const giorgio = require('../assets/images/giorgio.png');
 const yusuf = require('../assets/images/yusuf.png');
+const roccia = require('../assets/images/roccia.png');
 
 function TrophyIcon() {
   return (
@@ -26,6 +29,25 @@ function TrophyIcon() {
     </div>
   )
 }
+
+function getImageFromCharacterIndex(characterIndex) {
+  switch (characterIndex) {
+    case 0:
+      return jack;
+    case 1:
+      return giorgio;
+    case 2:
+      return yusuf;
+    case 3:
+      return roccia;
+    default:
+      return;
+  }
+}
+
+
+
+  
 
 
 
@@ -216,7 +238,14 @@ function Results({ results, classificationData, questionType, availableAnswers }
               {classificationData.map((playerData, index) => (
                 playerData?.active && playerData.name && (
                   <div className="m-2 px-4" style={{width: "100%"}}>
-                    <ClassificationUserCard image={yusuf} name={playerData.name} score={playerData.score} isMovedUp={playerData.isMovedUp} isMovedDown={playerData.isMovedDown} />
+                    {console.log(playerData)}
+                    <ClassificationUserCard
+                      image={getImageFromCharacterIndex(playerData.characterIndex)}
+                      name={playerData.name}
+                      score={playerData.score}
+                      isMovedUp={playerData.isMovedUp}
+                      isMovedDown={playerData.isMovedDown}
+                    />
                   </div> 
                 )
               ))}

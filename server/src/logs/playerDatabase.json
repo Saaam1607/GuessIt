@@ -1,17 +1,18 @@
 [
   {
-    "name": "sam",
-    "playerId": 1731878539245,
-    "socketId": "tQAf_Fjj3bceSwEaAAAF",
+    "name": "a",
+    "playerId": 1735336214814,
+    "characterIndex": 0,
+    "socketId": "LHkkjzwVGEQRwDsoAAAD",
     "active": true,
-    "ghostPowersAvailable": 2,
-    "helpPowersAvailable": 0,
-    "x2PowersAvailable": 1,
-    "score": 4,
-    "hasUsedHelp": false,
+    "ghostPowersAvailable": 4,
+    "helpPowersAvailable": 3,
+    "x2PowersAvailable": 3,
+    "score": 2,
     "answer": null,
-    "hasWon": true,
+    "hasUsedHelp": false,
     "hasUsedX2": false,
-    "hasUsedGhost": false
+    "hasUsedGhost": false,
+    "hasWon": true
   }
 ]

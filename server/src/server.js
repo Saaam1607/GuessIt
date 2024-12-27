@@ -180,6 +180,7 @@ io.on("connection", (socket) => {
       playerManager.addPlayer({
         name: data.name,
         playerId: newPlayerId,
+        characterIndex: parseInt(data.characterIndex),
         socketId: socket.id,
         active: true,
         ghostPowersAvailable: ghostPowersAvailable,
@@ -278,15 +279,25 @@ io.on("connection", (socket) => {
     });
   });
 
-  socket.on("resetPoints", () => {
-    playerManager.resetPoints();
-  });
-
-  socket.on("resetPlayers", () => {
+  socket.on("reset", () => {
     playerManager.resetPlayers();
+    gameStarted = false;
     questionDb = shuffleArray(questionDb);
     questionIndex = 0;
+    io.emit("reset");
   });
+
+  
+
+  // socket.on("resetPoints", () => {
+  //   playerManager.resetPoints();
+  // });
+
+  // socket.on("resetPlayers", () => {
+  //   playerManager.resetPlayers();
+  //   questionDb = shuffleArray(questionDb);
+  //   questionIndex = 0;
+  // });
 
   socket.on("help", (data) => {
     switch(getCurrentQuestionType()) {
@@ -481,16 +492,16 @@ io.on("connection", (socket) => {
       })
   });
 
-  socket.on("recoverPlayers", async () => {
-    const playersData = await logsManager.readPlayersLog();
-    questionIndex = await logsManager.readQuestionsLog();
+  // socket.on("recoverPlayers", async () => {
+  //   const playersData = await logsManager.readPlayersLog();
+  //   questionIndex = await logsManager.readQuestionsLog();
     
-    playersData.forEach(player => {
-      player.answer = "";
-    });
-    playerManager.setPlayers(playersData);
+  //   playersData.forEach(player => {
+  //     player.answer = "";
+  //   });
+  //   playerManager.setPlayers(playersData);
 
-  });
+  // });
 
   /*
     on          <--- hurryUp

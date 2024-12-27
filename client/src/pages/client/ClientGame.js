@@ -335,9 +335,9 @@ function ClientGame() {
       }
     }
 
-    function recover() {
-      window.location.reload();
-    }
+    // function recover() {
+    //   window.location.reload();
+    // }
 
     function handleAnswersStatus(data) {
       console.log(data);
@@ -358,6 +358,10 @@ function ClientGame() {
       });
     }
 
+    function handleReset() {
+      localStorage.clear();
+      navigate("/", { });
+    }
 
     socket.on("nextQuestion", handleNextQuestion);
     socket.on("hasAnswered", handleHasAnswered);
@@ -377,8 +381,9 @@ function ClientGame() {
     socket.on("extremeClock", handleExtremeClockSound);
 
     socket.on("lostPlayer", handleLostPlayer);
+    socket.on("reset", handleReset);
 
-    socket.on("recover", recover);
+    // socket.on("recover", recover);
 
     return () => {
       socket.off("nextQuestion", handleNextQuestion);
@@ -392,8 +397,8 @@ function ClientGame() {
       socket.off("clock", handleClockSound);
       socket.off("extremeClock", handleExtremeClockSound);
       socket.off("lostPlayer", handleLostPlayer);
-      socket.off("recover", recover);
-
+      socket.off("reset", handleReset);
+      // socket.off("recover", recover);
     };
 
 
