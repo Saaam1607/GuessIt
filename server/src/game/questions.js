@@ -421,7 +421,7 @@ const questions = [
   },
   {
     questionType: 1,
-    question: "'È meglio un leone che mille mosche ...?'",
+    question: "'È meglio un leone che mille ...?'",
     answer: "Mosche",
     availableAnswers: [
       { answer: "Serpenti"},
@@ -445,13 +445,13 @@ const questions = [
   },
   {
     questionType: 1,
-    question: "Chi è il dittatore in figura?",
-    answer: "Saddam Hussein",
+    question: "Qual'è stata la serie più vista su Netflix nel 2019?",
+    answer: "Stranger Things",
     availableAnswers: [
-      { answer: "Bashar Al-Assad"},
-      { answer: "Saddam Hussein"},
-      { answer: "Hosni Mubarak"},
-      { answer: "Idi Amin Dada"},
+      { answer: "Stranger Things"},
+      { answer: "The Witcher"},
+      { answer: "La casa di carta"},
+      { answer: "Peaky Blinders"},
     ],
     image: "39a"
   },
@@ -527,6 +527,439 @@ const questions = [
     ],
     image: "45a"
   },
+  {
+    questionType: 1,
+    question: "Di che colore è l'Ossigeno liquido?",
+    answer: "Celeste",
+    availableAnswers: [
+      { answer: "Celeste"},
+      { answer: "Trasparente"},
+      { answer: "Grigio"},
+      { answer: "Bianco"},
+    ],
+    image: "46a"
+  },
+  {
+    questionType: 1,
+    question: "Quale tra questi animali NON ha il sangue blu?",
+    answer: "Pesce Palla",
+    availableAnswers: [
+      { answer: "Calamaro"},
+      { answer: "Limulo"},
+      { answer: "Aragosta"},
+      { answer: "Pesce Palla"},
+    ],
+    image: "47a"
+  },
+  {
+    questionType: 1,
+    question: "Quale tra questi animali non esiste?",
+    answer: "Topo Formica",
+    availableAnswers: [
+      { answer: "Topo Formica"},
+      { answer: "Anguilla pellicano"},
+      { answer: "Falena barboncino"},
+      { answer: "Cicala di mare"},
+    ],
+    image: "48a"
+  },
+  {
+    questionType: 1,
+    question: "Quale tra questi nomi è il più scelto dai genitori nel 2024?",
+    answer: "Leonardo",
+    availableAnswers: [
+      { answer: "Matteo"},
+      { answer: "Leonardo"},
+      { answer: "Andrea"},
+      { answer: "Francesco"},
+    ],
+    image: "49a"
+  },
+  {
+    questionType: 1,
+    question: "Quale tra questi nomi è il più scelto dai genitori nel 2024?",
+    answer: "Sofia",
+    availableAnswers: [
+      { answer: "Sofia"},
+      { answer: "Giulia"},
+      { answer: "Giorgia"},
+      { answer: "Vittoria"},
+    ],
+    image: "50a"
+  },
+  {
+    questionType: 1,
+    question: "Qual'è il significato originale del nome 'Luigi'?",
+    answer: "Celebre combattente",
+    availableAnswers: [
+      { answer: "Protettore bianco"},
+      { answer: "Benedetto da Dio"},
+      { answer: "Salvatore felice"},
+      { answer: "Celebre combattente"},
+    ],
+    image: "51a"
+  },
+  {
+    questionType: 1,
+    question: "Qual'è la causa di morte più diffusa in Italia (dati ISTAT 2017)?",
+    answer: "Malattie del sistema circolatorio",
+    availableAnswers: [
+      { answer: "Tumore"},
+      { answer: "Malattie infettiva"},
+      { answer: "Malattia del sistema circolatorio"},
+      { answer: "Malattia del sistema respiratorio"},
+    ],
+    image: "52a"
+  },
+  {
+    questionType: 1,
+    question: "Quale tra questi cascate non esistono?",
+    answer: "Cascate Plateadas",
+    availableAnswers: [
+      { answer: "Cascate Plateadas"},
+      { answer: "Cascate Skógafoss"},
+      { answer: "Cascate Vittoria"},
+      { answer: "Cascata Dettifoss"},
+    ],
+    image: "53a"
+  },
+  {
+    questionType: 1,
+    question: "Quale tra questi social è il più usato nel 2024?",
+    answer: "Telegram",
+    availableAnswers: [
+      { answer: "Snapchat"},
+      { answer: "X/Twitter"},
+      { answer: "Douyin"},
+      { answer: "Telegram"},
+    ],
+    image: "54a"
+  },
+  {
+    questionType: 1,
+    question: "Quale tra queste città si trova più a nord?",
+    answer: "Zurigo",
+    availableAnswers: [
+      { answer: "Budapest"},
+      { answer: "Innsbruck"},
+      { answer: "Zurigo"},
+      { answer: "Ginevra"},
+    ],
+    image: "55a"
+  },
+  {
+    questionType: 1,
+    question: "Quale nazione ha il maggior numero di vulcani attivi?",
+    answer: "Indonesia",
+    availableAnswers: [
+      { answer: "Indonesia"},
+      { answer: "Islanda"},
+      { answer: "Giappone"},
+      { answer: "Stati Uniti"},
+    ],
+    image: "56a"
+  },
+  {
+    questionType: 1,
+    question: "Quale nazione ha il maggior numero di isole?",
+    answer: "Svezia",
+    availableAnswers: [
+      { answer: "Indonesia"},
+      { answer: "Svezia"},
+      { answer: "Norvegia"},
+      { answer: "Canada"},
+    ],
+    image: "57a"
+  },
+  {
+    questionType: 1,
+    question: "Chi ha sviluppato la tavola periodica degli elementi?",
+    answer: "Dmitrij Mendeleev",
+    availableAnswers: [
+      { answer: "Albert Einstein"},
+      { answer: "Dmitrij Mendeleev"},
+      { answer: "Marie Curie"},
+      { answer: "Ernest Rutherford"},
+    ],
+    image: "58a"
+  },
+  {
+    questionType: 1,
+    question: "Chi è l'autore del celebre romanzo 'Moby Dick'?",
+    answer: "Herman Melville",
+    availableAnswers: [
+      { answer: "Herman Melville"},
+      { answer: "Mark Twain"},
+      { answer: "Charles Dickens"},
+      { answer: "Nathaniel Hawthorne"},
+    ],
+    image: "59a"
+  },
+  {
+    questionType: 1,
+    question: "Quale compositore è famoso per la sua 'Sinfonia n. 5'?",
+    answer: "Ludwig van Beethoven",
+    availableAnswers: [
+      { answer: "Franz Schubert"},
+      { answer: "Johann Sebastian Bach"},
+      { answer: "Giuseppe Verdi"},
+      { answer: "Ludwig van Beethoven"},
+    ],
+    image: "60a"
+  },
+  {
+    questionType: 1,
+    question: "Chi ha scritto 'Le Metamorfosi'?",
+    answer: "Ovidio",
+    availableAnswers: [
+      { answer: "Ovidio"},
+      { answer: "Seneca"},
+      { answer: "Platone"},
+      { answer: "Virgilio"},
+    ],
+    image: "61a"
+  },
+  {
+    questionType: 1,
+    question: "Qual'è la capitale del Canada?",
+    answer: "Ottawa",
+    availableAnswers: [
+      { answer: "Montreal"},
+      { answer: "Vancouver"},
+      { answer: "Toronto"},
+      { answer: "Ottawa"},
+    ],
+    image: "62a"
+  },
+  {
+    questionType: 1,
+    question: "Qual'è la capitale dell'India?",
+    answer: "Nuova Delhi",
+    availableAnswers: [
+      { answer: "Mumbai"},
+      { answer: "Nuova Delhi"},
+      { answer: "Calcultta"},
+      { answer: "Jaipur"},
+    ],
+    image: "63a"
+  },
+  {
+    questionType: 1,
+    question: "Che strumento suonava George Harrison?",
+    answer: "Chitarra",
+    availableAnswers: [
+      { answer: "Basso"},
+      { answer: "Batteria"},
+      { answer: "Chitarra"},
+      { answer: "Tastiera elettrica"},
+    ],
+    image: "64a"
+  },
+  {
+    questionType: 1,
+    question: "Chi ha vinto il campionato della MotoGP nel 2024?",
+    answer: "Jorge Martín",
+    availableAnswers: [
+      { answer: "Jorge Martín"},
+      { answer: "Francesco Bagnaia"},
+      { answer: "Jack Miller"},
+      { answer: "Marc Márquez"},
+    ],
+    image: "65a"
+  },
+  {
+    questionType: 1,
+    question: "Quale di questi personaggi non partecipa alla prima rapina nella serie 'La Casa di Carta'?",
+    answer: "Lisbona",
+    availableAnswers: [
+      { answer: "Berlino"},
+      { answer: "Lisbona"},
+      { answer: "Mosca"},
+      { answer: "Helsinki"},
+    ],
+    image: "66a"
+  },
+  {
+    questionType: 1,
+    question: "Cosa studia un frenologo?",
+    answer: "La conformazione del cranio",
+    availableAnswers: [
+      { answer: "I reni"},
+      { answer: "Il comportamento degli animali"},
+      { answer: "La conformazione del cranio"},
+      { answer: "Le malformazioni delle dita"},
+    ],
+    image: "67a"
+  },
+  {
+    questionType: 1,
+    question: "Come si chiamano i maschi delle Api?",
+    answer: "Fuchi",
+    availableAnswers: [
+      { answer: "Muchi"},
+      { answer: "Fuchi"},
+      { answer: "Tuchi"},
+      { answer: "Ruchi"},
+    ],
+    image: "68a"
+  },
+  {
+    questionType: 1,
+    question: "Per quale occasione venne costruita la Torre Eiffel?",
+    answer: "Esposizione Universale a Parigi",
+    availableAnswers: [
+      { answer: "Creazione del protettorato francese sul Marocco"},
+      { answer: "Esposizione Universale a Parigi"},
+      { answer: "Vittoria francese nella prima guerra mondiale"},
+      { answer: "Salita al trono di Luigi Filippo"},
+    ],
+    image: "69a"
+  },
+  {
+    questionType: 1,
+    question: "Chi viene detto una 'mosca bianca'?",
+    answer: "Persona non comune",
+    availableAnswers: [
+      { answer: "Persona che prende le difese di un'altra"},
+      { answer: "Persona facilmente irritabile"},
+      { answer: "Persona che si fa notare"},
+      { answer: "Persona non comune"},
+    ],
+    image: "70a"
+  },
+  {
+    questionType: 1,
+    question: "Chi dei seguenti NON è stato pontefice?",
+    answer: "Ferdinando II",
+    availableAnswers: [
+      { answer: "Pio X"},
+      { answer: "Leone XIII"},
+      { answer: "Beato Pio IX"},
+      { answer: "Ferdinando II"},
+    ],
+    image: "71a"
+  },
+  {
+    questionType: 1,
+    question: "Di quale stato fu dittatore Francisco Franco?",
+    answer: "Spagna",
+    availableAnswers: [
+      { answer: "Spagna"},
+      { answer: "Portogallo"},
+      { answer: "Messico"},
+      { answer: "Argentina"},
+    ],
+    image: "72a"
+  },
+  {
+    questionType: 1,
+    question: "Dove morì Napoleone?",
+    answer: "Nell'Isola d'Elba",
+    availableAnswers: [
+      { answer: "In Corsica"},
+      { answer: "Nell'Isola di Sant'Elena"},
+      { answer: "Nell'Isola d'Elba"},
+      { answer: "In Francia"},
+    ],
+    image: "73a"
+  },
+  {
+    questionType: 1,
+    question: "Chi è stato l'ultimo italiano a vincere il premio Nobel per la letteratura?",
+    answer: "Dario Fo",
+    availableAnswers: [
+      { answer: "Umberto Eco"},
+      { answer: "Dario Fo"},
+      { answer: "Gianrico Carofiglio"},
+      { answer: "Alberto Moravia"},
+    ],
+    image: "74a"
+  },
+  {
+    questionType: 1,
+    question: "Qual'è il contrario di 'coercitivo'?",
+    answer: "Libero",
+    availableAnswers: [
+      { answer: "Libero"},
+      { answer: "Incoerente"},
+      { answer: "Inutile"},
+      { answer: "Semplice"},
+    ],
+    image: "75a"
+  },
+  {
+    questionType: 1,
+    question: "Che fig. retorica è 'Vito non è certo un genio'?",
+    answer: "Litote",
+    availableAnswers: [
+      { answer: "Antitesi"},
+      { answer: "Sineddoche"},
+      { answer: "Litote"},
+      { answer: "Sinestesia"},
+    ],
+    image: "76a"
+  },
+  {
+    questionType: 1,
+    question: "Per cosa sta la sigla RAM?",
+    answer: "Memoria ad accesso casuale",
+    availableAnswers: [
+      { answer: "Memoria temporanea veloce"},
+      { answer: "Memoria di controllo di operazioni su disco"},
+      { answer: "Memoria che si può solo leggere"},
+      { answer: "Memoria ad accesso casuale"},
+    ],
+    image: "77a"
+  },
+  {
+    questionType: 1,
+    question: "Quali di questi piatti NON esiste?",
+    answer: "Memoria ad accesso casuale",
+    availableAnswers: [
+      { answer: "Burrito suicida coreano"},
+      { answer: "Baba Ganoush"},
+      { answer: "Scorpioni fritti"},
+      { answer: "Dende Muzi"},
+    ],
+    image: "78a"
+  },
+  {
+    questionType: 1,
+    question: "Quali di queste NON fa parte delle isole Eolie?",
+    answer: "Etna",
+    availableAnswers: [
+      { answer: "Etna"},
+      { answer: "Stromboli"},
+      { answer: "Vulcano"},
+      { answer: "Lipari"},
+    ],
+    image: "79a"
+  },
+  {
+    questionType: 1,
+    question: "Quali di queste NON è una delle Forza di Porter?",
+    answer: "Capitale investito",
+    availableAnswers: [
+      { answer: "Capitale investito"},
+      { answer: "Prodotti sostitutivi"},
+      { answer: "Potere contrattuale dei fornitori"},
+      { answer: "Concorrenti di settore"},
+    ],
+    image: "79a"
+  },
+  {
+    questionType: 1,
+    question: "La calanca è ...?",
+    answer: "Un'insenatura marina",
+    availableAnswers: [
+      { answer: "Un utensile da cucina"},
+      { answer: "Un'insenatura marina"},
+      { answer: "Un attrezzo agricolo"},
+      { answer: "Un formaggio sardo"},
+    ],
+    image: "80a"
+  },
+  // ------------------------------------------------------------------------------------------
   {
     questionType: 0,
     question: "In quale anno é stata inventata la bicicletta?",

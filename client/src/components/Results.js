@@ -90,9 +90,6 @@ function Results({ results, classificationData, questionType, availableAnswers }
 
 
   useEffect(() => {
-    console.log(availableAnswers)
-    console.log(results);
-    console.log(questionType)
     results.forEach((playerData) => {
       if (playerData.playerId == localStorage.getItem("playerId") && playerData?.hasWon == true) {
         setTimeout(() => {
@@ -238,7 +235,6 @@ function Results({ results, classificationData, questionType, availableAnswers }
               {classificationData.map((playerData, index) => (
                 playerData?.active && playerData.name && (
                   <div className="m-2 px-4" style={{width: "100%"}}>
-                    {console.log(playerData)}
                     <ClassificationUserCard
                       image={getImageFromCharacterIndex(playerData.characterIndex)}
                       name={playerData.name}

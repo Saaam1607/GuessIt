@@ -54,6 +54,8 @@ function GhostModal({ ghostData, playerId, showGhostModal, setShowGhostModal, ha
                 width: "80px",
                 height: "80px",
                 borderRadius: "50%",
+                backgroundColor: "black",
+                border: "10px solid black",
               }}
               onClick={handleGhostIconClick}
             />

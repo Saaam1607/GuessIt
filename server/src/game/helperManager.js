@@ -23,11 +23,9 @@ function computeSuggestedMinAndManx(currentAnswer, currentMin, currentMax, curre
 
     const randomInt = getRandomInt(0, stepToKeep);
     if (getRandomInt(0, 1) === 0) {
-        (console.log("upper"))
         upperSteps += randomInt;
         lowerSteps -= randomInt;
     } else {
-        (console.log("lower"))
         upperSteps -= randomInt;
         lowerSteps += randomInt;
     }

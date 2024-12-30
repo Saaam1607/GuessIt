@@ -24,9 +24,6 @@ function WaitingRoom() {
 
   useEffect(() => {
 
-    console.log("WaitingRoom useEffect");
-    console.log("playerName: " + playerName);
-
     joinGame();
     getPlayersList();
 

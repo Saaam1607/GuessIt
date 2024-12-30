@@ -41,7 +41,6 @@ function CharacterPicker({ characterIndex, setCharacterIndex }) {
     socket.emit("characters", { });
 
     function handleCharacters(data) {
-      console.log(data);
       setCharacters(data.characters);
     }
 

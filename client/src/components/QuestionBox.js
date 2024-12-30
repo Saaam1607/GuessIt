@@ -5,7 +5,7 @@ import PowerSelector from './PowerSelector';
 import './questionBox.css';
 
 function QuestionBox({
-  question, image, showImage,
+  question, image, showImage, hasAnswered,
 
   ghostIconClicked,
   ghostPowerAvailableBonuses,

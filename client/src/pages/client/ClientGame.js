@@ -25,7 +25,6 @@ import './clientGame.css';
 const SoundManager = require('../../components/SoundManager.js');
 
 
-console.log("AAA")
 
 const ghost_icon = require('../../assets/images/ghost_icon.png');
 const x2_icon = require('../../assets/images/x2_icon.png');
@@ -170,7 +169,7 @@ function ClientGame() {
   }
 
   function handleGhostIconClick() {
-    if (ghostPowerAvailableBonuses && !ghostIconClicked) {
+    if (ghostPowerAvailableBonuses && !ghostIconClicked && !hasAnswered) {
       SoundManager.playPowerSelection();
       SoundManager.playGhost();
       socket.emit("ghost", {});
@@ -178,7 +177,7 @@ function ClientGame() {
   }
 
   function handleHelpIconClick() {
-    if (helpPowerAvailableBonuses && !helpIconClicked) {
+    if (helpPowerAvailableBonuses && !helpIconClicked && !hasAnswered) {
       SoundManager.playPowerSelection();
       socket.emit("help", { playerId: localStorage.getItem('playerId') });
     }
@@ -197,11 +196,10 @@ function ClientGame() {
     SoundManager.playHelp();
     setHelpIconClicked(true);
     setFakeAnswers(data.fakeAnswers);
-    console.log(data.fakeAnswers);
   }
 
   function handleX2IconClick() {
-    if (x2PowerAvailableBonuses && !x2IconClicked) {
+    if (x2PowerAvailableBonuses && !x2IconClicked && !hasAnswered) {
       SoundManager.playPowerSelection();
       SoundManager.playX2();
       setX2IconClicked(true);
@@ -273,10 +271,7 @@ function ClientGame() {
     }
 
     function handleResults(data) {
-
       setHasAnswered(true);
-
-      // console.log(data)
       setResults(data.playersAnswersData);
       setClassificationData(data.playersAnswersData);
       setShowClassification(false);
@@ -285,15 +280,18 @@ function ClientGame() {
     }
 
     function handleBonus(data) {
-
-      console.log(data);
-
       if (data.powerIndex == 0)
+      {
         setIsGhostIconGlowing(true);
-      else if (data.powerIndex == 1) 
+      }
+      else if (data.powerIndex == 1)
+      {
         setIsHelpIconGlowing(true);
+      } 
       else if (data.powerIndex == 2)
+      {
         setIsX2IconGlowing(true);
+      }
 
       setGhostPowerAvailableBonuses(data.ghostAvailableBonuses);
       setHelpPowerAvailableBonuses(data.helpAvailableBonuses);
@@ -340,7 +338,6 @@ function ClientGame() {
     // }
 
     function handleAnswersStatus(data) {
-      console.log(data);
       setActivePlayersCount(data.answersStatus.activePlayersCount)
       setAnswersCount(data.answersStatus.answersCount)
     }
@@ -351,7 +348,7 @@ function ClientGame() {
         text: "Riesegui il login per continuare a giocare",
         icon: "warning",
         showConfirmButton: false,
-        timer: 5000,
+        timer: 3000,
       }).then(() => {
         navigate("/client");
 
@@ -443,7 +440,7 @@ function ClientGame() {
         >
 
           <QuestionBox
-            question={question} image={image} showImage={!showResults && !showClassification}
+            question={question} image={image} showImage={!showResults && !showClassification} hasAnswered={hasAnswered}
             ghostIconClicked={ghostIconClicked} ghostPowerAvailableBonuses={ghostPowerAvailableBonuses} handleGhostIconClick={handleGhostIconClick}
             x2IconClicked={x2IconClicked} x2PowerAvailableBonuses={x2PowerAvailableBonuses} handleX2IconClick={handleX2IconClick}
             helpIconClicked={helpIconClicked} helpPowerAvailableBonuses={helpPowerAvailableBonuses} handleHelpIconClick={handleHelpIconClick}

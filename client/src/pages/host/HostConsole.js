@@ -132,7 +132,6 @@ function HostConsole() {
     }
 
     function handlePlayerList(data) {
-      console.log(data)
     }
 
     function handleNextAnswer(data) {
@@ -170,10 +169,9 @@ function HostConsole() {
   }, [socket]);
 
   return (
-    <div className="d-flex flex-column align-items-center justify-content-center" style={{ height: "100%", width: "100%", overflowY: "auto" }}>
-      <div className="d-flex flex-column align-items-center justify-content-center p-2" style={{width: "100%" }}>
+    <div className="d-flex flex-column align-items-center justify-content-start" style={{ height: "100%", width: "100%", overflowY: "auto" }}>
+      <div className="d-flex flex-column align-items-center justify-content-center" style={{width: "100%" }}>
         
-        {/* <QuestionBox question={question} image={image} /> */}
         <QuestionBox
             question={question} image={image} showImage={!showResults}
             ghostIconClicked={false} ghostPowerAvailableBonuses={false} handleGhostIconClick={()=>{}}

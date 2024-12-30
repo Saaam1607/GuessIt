@@ -1,18 +1,34 @@
 [
   {
-    "name": "a",
-    "playerId": 1735336214814,
-    "characterIndex": 0,
-    "socketId": "LHkkjzwVGEQRwDsoAAAD",
+    "name": "chri",
+    "playerId": 1735557328677,
+    "characterIndex": 2,
+    "socketId": "nQHoqCfH37QtKOOQAAAH",
     "active": true,
-    "ghostPowersAvailable": 4,
+    "ghostPowersAvailable": 0,
     "helpPowersAvailable": 3,
-    "x2PowersAvailable": 3,
-    "score": 2,
-    "answer": null,
-    "hasUsedHelp": false,
+    "x2PowersAvailable": 2,
+    "score": 1,
+    "answer": 2015,
+    "hasWon": false,
+    "hasUsedHelp": true,
     "hasUsedX2": false,
-    "hasUsedGhost": false,
-    "hasWon": true
+    "hasUsedGhost": false
+  },
+  {
+    "name": "sam",
+    "playerId": 1735557273310,
+    "characterIndex": 0,
+    "socketId": "XZHoVo7KsXsa5GOgAAAD",
+    "active": true,
+    "ghostPowersAvailable": 3,
+    "helpPowersAvailable": 0,
+    "x2PowersAvailable": 1,
+    "score": 2,
+    "answer": 2016,
+    "hasWon": true,
+    "hasUsedHelp": false,
+    "hasUsedX2": true,
+    "hasUsedGhost": true
   }
 ]

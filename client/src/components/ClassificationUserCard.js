@@ -19,17 +19,17 @@ function ClassificationUserCard({ image, name, score, isMovedUp, isMovedDown }) 
       <p className="m-0 p-0 mx-3" style={{ color: "black" }}>{score} - {name}</p>
       {isMovedUp && (
         <div className="d-flex justify-content-center align-items-center mx-2" style={{ backgroundColor: "green", width: "20px", height: "20px", borderRadius: "50%"}}>
-          <i  className="bi bi-caret-up-fill m-0 p-0" style={{color: "black"}}></i>
+          <i  className="bi bi-caret-up-fill d-flex justify-content-center align-items-center m-0 p-0" style={{color: "black"}}></i>
         </div>
       )}
       {isMovedDown && (
         <div className="d-flex justify-content-center align-items-center mx-2" style={{ backgroundColor: "red", width: "20px", height: "20px", borderRadius: "50%"}}>
-          <i className="bi bi-caret-down-fill m-0 p-0" style={{color: "black"}}></i>
+          <i className="bi bi-caret-down-fill d-flex justify-content-center align-items-center m-0 p-0" style={{color: "black"}}></i>
         </div>
       )}
       {!isMovedUp && !isMovedDown && (
         <div className="d-flex justify-content-center align-items-center mx-2" style={{ backgroundColor: "grey", width: "20px", height: "20px", borderRadius: "50%"}}>
-          <i className="bi bi-dash m-0 p-0" style={{color: "black"}}></i>
+          <i className="bi bi-dash d-flex justify-content-center align-items-center m-0 p-0" style={{color: "black"}}></i>
         </div> 
       )}
     </div>

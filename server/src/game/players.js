@@ -29,18 +29,14 @@ function setLastAnswerFromPlayer(playerId, answer) {
   players.forEach(player => {
     if (player.playerId == playerId) {
       player.answer = answer;
-      console.log("SETTING LAST ANSWER");
-      console.log(player.answer);
     }
   });
 }
 
 function getLastResponseFromPlayer(playerId) {
-  console.log(players);
   for (let player of players) {
     if (player.playerId == playerId) {
       if (player.answer) {
-        console.log("RETURNING LAST RESPONSE: " + player.answer);
         return player.answer;
       }
     }
@@ -53,7 +49,6 @@ function checkIfAlreadyJoined(playerId) {
 }
 
 function addPlayer(player) {
-  console.log("PUSHING PLAYER");
   players.push(player);
 }
 
@@ -119,21 +114,7 @@ function resetPoints() {
 }
 
 function resetPlayers() {
-  players.forEach(player => {
-    if (player.x2PowersAvailable > 0) {
-      player.x2PowersAvailable = 0;
-    }
-    if (player.ghostPowersAvailable > 0) {
-      player.ghostPowersAvailable = 0;
-    }
-    if (player.helpPowersAvailable > 0) {
-      player.helpPowersAvailable = 0;
-    }
-    if (player.active === false) {
-      removePlayer(player.playerId);
-    }
-    resetPoints();
-  });
+  players = [];
 }
 
 function consumeX2Power(playerId) {
@@ -219,7 +200,6 @@ function addRandomPower(playerId) {
 
 function updatePlayerActive(playerId, newSocketId) {
   players.forEach(player => {
-    console.log(player)
     if (player.playerId == playerId) {
       player.socketId = newSocketId;
       player.active = true;
@@ -269,10 +249,6 @@ function getClassification(prevClassification) {
 }
 
 function getAnswersStatus() {
-
-  console.log("DEBUGGING ANSWERS STATUS");
-  console.log(players);
-
   const activePlayersCount = players.filter(player => player.active === true).length;
   const answersCount = players.filter(player => {player.active === true && player.answer != null && player.answer != ""}).length;
   return {
