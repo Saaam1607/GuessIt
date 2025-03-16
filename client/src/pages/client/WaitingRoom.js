@@ -41,12 +41,12 @@ function WaitingRoom() {
   
     socket.on("newPlayerId", handleNewPlayerId);
     socket.on("playersList", handleNewPlayersList);
-    socket.on("gameStarted", handleGameStarted);
+    socket.on("nextQuestion", handleGameStarted);
   
     return () => {
       socket.off("user newPlayerId", handleNewPlayerId);
       socket.off("playersList", handleNewPlayersList);
-      socket.off("gameStarted", handleGameStarted);
+      socket.off("nextQuestion", handleGameStarted);
     };
 
   }, [socket]);

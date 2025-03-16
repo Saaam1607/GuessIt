@@ -5,6 +5,7 @@ import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timel
 import Classification from './Classification';
 import ClassificationUserCard from './ClassificationUserCard';
 import ChoiceAnswerCard from './ChoiceAnswerCard';
+import InfoButton from './InfoButton';
 
 import 'react-vertical-timeline-component/style.min.css';
 import "./results.css";
@@ -51,12 +52,18 @@ function getImageFromCharacterIndex(characterIndex) {
 
 
 
-function Results({ results, classificationData, questionType, availableAnswers }) {
+function Results({ results, classificationData, questionType, availableAnswers, explanation }) {
 
   const [rightAnswer, setRightAnswer] = useState(null);
   const [isExploding, setIsExploding] = useState(false);
   const [isResultShowing, setIsResultShowing] = useState(true);
 
+  const [isInfoExpanded, setIsInfoExpanded] = React.useState(false);
+
+  function handleInfoClick() {
+    setIsInfoExpanded((prev) => !prev);
+  }
+  
   function handleFlip() {
     setIsResultShowing((prev) => !prev);
   };
@@ -109,6 +116,20 @@ function Results({ results, classificationData, questionType, availableAnswers }
       {isExploding && (
         <div style={source}>
           <ConfettiExplosion {...bigExplodeProps} />
+        </div>
+      )}
+
+      {explanation && (
+        <div className={`info-panel ${isInfoExpanded ? 'expanded' : ''}`}>
+          <div className="info-button-container" >
+            <InfoButton icon={"bi bi-info-circle-fill"} color={"rgb(87, 169, 221)"} onClick={handleInfoClick}/>
+          </div>
+          <div
+            className="d-flex w-100 p-3"
+            style={{ overflowY: "auto" }}
+          >
+            <p dangerouslySetInnerHTML={{ __html: explanation.replace(/\n/g, '<br />') }} />
+          </div>
         </div>
       )}
       

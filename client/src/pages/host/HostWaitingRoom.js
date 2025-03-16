@@ -18,6 +18,10 @@ function HostWaitingRoom() {
     socket.emit("startGame", {});
   }
 
+  function startNewGame() {
+    socket.emit("startNewGame", {});
+  }
+
   useEffect(() => {
 
     getPlayersList();
@@ -31,12 +35,12 @@ function HostWaitingRoom() {
     }
   
     socket.on("playersList", handleNewPlayersList);
-    socket.on("gameStarted", handleGameStarted);
+    socket.on("nextQuestion", handleGameStarted);
 
   
     return () => {
       socket.off("playersList", handleNewPlayersList);
-      socket.off("gameStarted", handleGameStarted);
+      socket.off("nextQuestion", handleGameStarted);
     };
 
   }, [socket]);
@@ -57,10 +61,17 @@ function HostWaitingRoom() {
       </div>
 
       <button
-        className={"btn btn-primary btn-lg"}
+        className={"btn btn-primary btn-lg mb-3"}
         onClick={startGame}
       >
         Start Game
+      </button>
+
+      <button
+        className={"btn btn-primary btn-lg"}
+        onClick={startNewGame}
+      >
+        Start New Game
       </button>
 
     </div>

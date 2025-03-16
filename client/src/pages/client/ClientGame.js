@@ -65,6 +65,7 @@ function ClientGame() {
 
   const [results, setResults] = useState([]);
   const [classificationData, setClassificationData] = useState([]);
+  const [explanation, setExplanation] = useState("");
 
   const [ghostPowerAvailableBonuses, setGhostPowerAvailableBonuses] = useState(0);
   const [helpPowerAvailableBonuses, setHelpPowerAvailableBonuses] = useState(0);
@@ -273,6 +274,7 @@ function ClientGame() {
     function handleResults(data) {
       setHasAnswered(true);
       setResults(data.playersAnswersData);
+      setExplanation(data.explanation);
       setClassificationData(data.playersAnswersData);
       setShowClassification(false);
       setShowResults(true);
@@ -495,7 +497,13 @@ function ClientGame() {
           )}
 
           { showResults && (
-            <Results results={results} classificationData={classificationData} questionType={questionType} availableAnswers={availableAnswers} />
+            <Results
+              results={results}
+              classificationData={classificationData}
+              questionType={questionType}
+              availableAnswers={availableAnswers}
+              explanation={explanation}
+            />
           )}
 
         </div>

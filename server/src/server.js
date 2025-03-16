@@ -8,7 +8,6 @@ const cors = require("cors");
 const playerManager = require("./game/players");
 const tokenManager = require("./components/tokenManager");
 const helperManager = require("./game/helperManager");
-// const logsManager = require("./game/logsManager");
 var questionDb = require("./game/questions");
 const characters = require("./game/characters");
 
@@ -50,6 +49,7 @@ const maxQuestionIndex = questionDb.length - 1;
 questionDb = shuffleArray(questionDb);
 
 function getCurrentQuestionType() {
+  console.log(questionIndex)
   return  questionDb[questionIndex].questionType;
 }
 
@@ -61,6 +61,14 @@ function getCurrentQuestion() {
 function getCurrentImagePath() {
   const imagePath = questionDb[questionIndex].image;
   return imagePath;
+}
+
+function getCurrentExplanation() {
+  if (questionDb[questionIndex]?.explanation) {
+    return questionDb[questionIndex].explanation;
+  } else {
+    return "No explanation available";
+  }
 }
 
 function getCurrentMin() {
@@ -96,14 +104,14 @@ function updateQuestionIndex() {
   }
 }
 
-function ioEmitNextQuestion() {
+function ioEmitNextQuestion(channel) {
   var questionType = getCurrentQuestionType();
   switch (questionType) {
     case 0:
-      io.emit("nextQuestion", {questionType: questionType, question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit(), image: getCurrentImagePath()});
+      channel.emit("nextQuestion", {questionType: questionType, question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit(), image: getCurrentImagePath()});
       break;
     case 1: 
-      io.emit("nextQuestion", {questionType: questionType, question: getCurrentQuestion(), availableAnswers: getAvailableAnswers(), image: getCurrentImagePath()});
+      channel.emit("nextQuestion", {questionType: questionType, question: getCurrentQuestion(), availableAnswers: getAvailableAnswers(), image: getCurrentImagePath()});
       break;
     default:
       break;
@@ -124,32 +132,16 @@ function socketEmitNextQuestion(socket) {
   }
 }
 
-
-
 io.on("connection", (socket) => {
 
   socket.on("characters", (data) => {
     socket.emit("characters", { characters: characters });
   });
 
-  /*
-    on          <--- playersList
-    to client   ---> playersList
-  */
   socket.on("playersList", (data) => {
     socket.emit("playersList", { playersList: playerManager.getAllPlayersNames() });
   });
 
-  /*
-    on          <--- join
-    if (new player)
-    to client   ---> newPlayerId
-    to all      ---> playersList
-    if (old player)
-    to all      ---> playersList
-    if (gameStarted)
-    to client   ---> gameStarted
-  */
   socket.on("join", (data) => {
 
     // gestione nuovo giocatore: aggiunta e invio di un nuovo token
@@ -243,18 +235,12 @@ io.on("connection", (socket) => {
     io.emit("answersStatus", { answersStatus: playerManager.getAnswersStatus() });
 
     if (gameStarted) {
-      socket.emit("gameStarted", {});
+      ioEmitNextQuestion(socket);
     }
   });
 
-  /*
-    on          <--- startGame
-    to all      ---> gameStarted
-                ---> nextQuestion
-  */
   socket.on("startGame", (data) => {
-    io.emit("gameStarted", {});
-    ioEmitNextQuestion();
+    ioEmitNextQuestion(io);
     gameStarted = true;
   });
 
@@ -275,19 +261,7 @@ io.on("connection", (socket) => {
     questionIndex = 0;
     io.emit("reset");
   });
-
   
-
-  // socket.on("resetPoints", () => {
-  //   playerManager.resetPoints();
-  // });
-
-  // socket.on("resetPlayers", () => {
-  //   playerManager.resetPlayers();
-  //   questionDb = shuffleArray(questionDb);
-  //   questionIndex = 0;
-  // });
-
   socket.on("help", (data) => {
     switch(getCurrentQuestionType()) {
       case 0:
@@ -317,15 +291,8 @@ io.on("connection", (socket) => {
     }
   });
 
-  /*
-    on          <--- newAnswer
-    to all      ---> newAnswerFromPlayer
-  */
   socket.on("newAnswer", (data) => {
-    if (playerManager.checkIfAlreadyJoined(data.playerId)) { // player presente
-      const playerName = playerManager.getPlayerName(data.playerId);
-      playerManager.updatePlayerActive(data.playerId, socket.id); // non fa male anche se non serve se è già attivo
-    } else { // player non presente
+    if (!playerManager.checkIfAlreadyJoined(data.playerId)) { // player non presente
       socket.emit("lostPlayer");
       return;
     }
@@ -354,19 +321,11 @@ io.on("connection", (socket) => {
     io.emit("newAnswerFromPlayer", {name: name, answer: data.answer, playerId: data.playerId, hasUsedX2: data.hasUsedX2, hasUsedHelp: data.hasUsedHelp, hasUsedGhost: data.hasUsedGhost});
   });
 
-  /*
-    on          <--- nextQuestion
-    to all      ---> nextQuestion
-                ---> nextAnswer
-  */
   socket.on("nextQuestion", (data) => {
     updateQuestionIndex();
-    // logsManager.writeQuestionIndexLog(questionIndex)
     const answer = getCurrentAnswer();
     playerManager.resetLastPlayersAnswers();
-    // logsManager.writePlayersLog( playerManager.getPlayers())
-    io.emit("gameStarted", {});
-    ioEmitNextQuestion();
+    ioEmitNextQuestion(io);
     io.emit("nextAnswer", {answer: answer});
   });
 
@@ -375,10 +334,6 @@ io.on("connection", (socket) => {
     socket.emit("bonus", availableBonusesData);
   });
 
-  /*
-    on          <--- getQuestion
-    to client   ---> nextQuestion
-  */
   socket.on("getQuestion", (data) => {
     const answer = getCurrentAnswer();
     socketEmitNextQuestion(socket);
@@ -393,12 +348,7 @@ io.on("connection", (socket) => {
       socket.emit("hasAnswered", { hasAnswered: false });
   });
 
-  /*
-    on          <--- results
-    to all      ---> results
-  */
-  socket.on("results", async (data) =>  {
-
+  socket.on("results", async (computeScore) =>  {
     const answer = getCurrentAnswer();
     var playersAnswersData = playerManager.getPlayers();
     var resultsData = playersAnswersData;
@@ -424,7 +374,7 @@ io.on("connection", (socket) => {
         playersAnswersData.forEach(player => {
           if (parseInt(parseInt(player.answer) + minDistance) === parseInt(answer) || parseInt(parseInt(player.answer) - minDistance) === parseInt(answer)) {
     
-            if (data.computeScore) {
+            if (computeScore) {
               playerManager.addScore(player.playerId);
               if (player.hasUsedX2) {
                 playerManager.addScore(player.playerId);
@@ -438,7 +388,7 @@ io.on("connection", (socket) => {
       case 1:
         playersAnswersData.forEach(player => {
           if (player.answer == answer) {
-            if (data.computeScore) {
+            if (computeScore) {
               playerManager.addScore(player.playerId);
               if (player.hasUsedX2) {
                 playerManager.addScore(player.playerId);
@@ -461,38 +411,13 @@ io.on("connection", (socket) => {
     });
     resultsData = resultsData.filter(player => (player.answer !== "" && player.answer !== null));
 
-    io.emit("results", { playersAnswersData: resultsData });
-
-    // logsManager.writePlayersLog(playersAnswersData)
-    //   .then(() => {
-        
-
-    //   })
+    io.emit("results", { playersAnswersData: resultsData, explanation: getCurrentExplanation() });
   });
 
-  // socket.on("recoverPlayers", async () => {
-  //   const playersData = await logsManager.readPlayersLog();
-  //   questionIndex = await logsManager.readQuestionsLog();
-    
-  //   playersData.forEach(player => {
-  //     player.answer = "";
-  //   });
-  //   playerManager.setPlayers(playersData);
-
-  // });
-
-  /*
-    on          <--- hurryUp
-    to all      ---> clock
-  */
   socket.on("hurryUp", (data) => {
     io.emit("clock", {});
   });
 
-  /*
-    on          <--- extremeHurryUp
-    to all      ---> extremeClock
-  */
   socket.on("extremeHurryUp", (data) => {
     io.emit("extremeClock", {});
   });
@@ -501,36 +426,8 @@ io.on("connection", (socket) => {
     playerManager.updatePlayerLeft(socket.id);
     io.emit("playersList", { playersList: playerManager.getAllPlayersNames() });
     // io.emit("answersStatus", { answersStatus: playerManager.getAnswersStatus() });
-    if (playerManager.checkIfAllPlayersOffline()) {
-      gameStarted = false;
-      questionIndex = 0;
-    }
   });
 
-  // socket.on('pong', () => {
-  //   // Aggiorna il timestamp del ping per questo client
-  //   clients.set(socket.id, Date.now());
-  // });
-
 });
-
-// function pingClients() {
-//   // const now = Date.now();
-//   // io.emit('ping');
-//   io.emit("playersList", { playersList: playerManager.getAllPlayersNames() });
-
-//   // clients.forEach((lastPing, clientId) => {
-//   //     // Se un client non ha risposto negli ultimi 10 secondi, viene considerato inattivo
-//   //     if (now - lastPing > 10000) {
-//   //         console.log(`Client ${clientId} non risponde, verrà rimosso.`);
-//   //         io.sockets.sockets.get(clientId)?.disconnect(true); // Disconnette il client
-//   //         clients.delete(clientId);
-//   //     }
-//   // });
-
-//   // console.log(`Client attivi: ${clients.size}`);
-// }
-
-// setInterval(pingClients, 5000);
 
 module.exports = { server, io };

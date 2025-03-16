@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 
 import PowerSelector from './PowerSelector';
 
@@ -27,19 +27,13 @@ function QuestionBox({
   setIsHelpIconGlowing,
   setIsX2IconGlowing,
 }) {
-  let imagePath;
-  if (image && typeof image === 'string' && image.trim() !== '') {
-    try {
-      imagePath = require(`../assets/images/questionImages/${image}.png`);
-    } catch (error) {
-      console.error("Image not found:", error);
-    }
-  }
+  
+  const imagePath = image ? `/assets/images/questionImages/${image}.png` : null;
 
   return (
     <div className="question-box" >
       <div className="upper">
-        {showImage && imagePath && <img className="question-image" src={imagePath} alt="question" />}
+        { showImage && imagePath && <img className="question-image" src={imagePath} alt="question" /> }
         { showImage && (
           <PowerSelector
             ghostIconClicked={ghostIconClicked} ghostPowerAvailableBonuses={ghostPowerAvailableBonuses} handleGhostIconClick={handleGhostIconClick}

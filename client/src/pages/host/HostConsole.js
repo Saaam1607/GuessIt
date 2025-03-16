@@ -53,11 +53,11 @@ function HostConsole() {
   function sendResults() {
     SoundManager.playPowerSelection();
     if (!hasSentResults) {
-      socket.emit("results", { playersAnswersData: playersAnswersData, computeScore: true });
+      socket.emit("results", true );
       setHasSentResults(true);
     }
     else 
-      socket.emit("results", { playersAnswersData: playersAnswersData, computeScore: false });
+      socket.emit("results", false );
   }
 
   function sendNextQuestion() {
@@ -83,24 +83,10 @@ function HostConsole() {
     socket.emit("reset");
   }
 
-  // function resetPlayers() {
-  //   SoundManager.playPowerSelection();
-  //   socket.emit("resetPlayers", {});
-  // }
-
   function addPowers() {
     SoundManager.playPowerSelection();
     socket.emit("addPower", {});
   }
-
-  // function recoverPlayers() {
-  //   SoundManager.playPowerSelection();
-  //   socket.emit("recoverPlayers", {});
-  //   setPlayersAnswersData([]);
-  //   setClassificationData([]);
-  //   setResults([]);
-  //   setShowResults(false);
-  // }
 
   useEffect(() => {
 
@@ -200,8 +186,6 @@ function HostConsole() {
         <ControllerButton icon={"bi bi-alarm"} color={"#ff6600"} onClick={hurryUp} />
         <ControllerButton icon={"bi bi-alarm-fill"} color={"#ff0000"} onClick={extremeHurryUp} />
         <ControllerButton icon={"bi bi-eraser"} color={"#4f2020"} onClick={reset} />
-        {/* <ControllerButton icon={"bi bi-eraser-fill"} color={"#260a0a"} onClick={resetPlayers} /> */}
-        {/* <ControllerButton icon={"bi bi-database-exclamation"} color={"grey"} onClick={recoverPlayers} /> */}
       </div>
 
       {playersAnswersData !== undefined && playersAnswersData.map((playerAnswerData, index) => (

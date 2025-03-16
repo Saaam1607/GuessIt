@@ -2,3 +2,11 @@
     font-family: "customFont";
     src: local("Chewy"), url("../assets/fonts/Chewy.ttf"), format("woff");
 }
+
+@font-face {
+    font-family: "customTextFont";
+    src: local("CoolveticaRg"), url("../assets/fonts/CoolveticaRg.otf"), format("woff");
+}
+
+
+
