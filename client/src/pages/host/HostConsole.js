@@ -159,12 +159,10 @@ function HostConsole() {
       <div className="d-flex flex-column align-items-center justify-content-center" style={{width: "100%" }}>
         
         <QuestionBox
-            question={question} image={image} showImage={!showResults}
-            ghostIconClicked={false} ghostPowerAvailableBonuses={false} handleGhostIconClick={()=>{}}
-            x2IconClicked={false} x2PowerAvailableBonuses={false} handleX2IconClick={()=>{}}
-            helpIconClicked={false} helpPowerAvailableBonuses={false} handleHelpIconClick={()=>{}}
-            isGhostIconGlowing={false} isHelpIconGlowing={false} isX2IconGlowing={false}
-            setIsGhostIconGlowing={()=>{}} setIsHelpIconGlowing={()=>{}} setIsX2IconGlowing={()=>{}}
+            showImage={!showResults}
+            handleGhostIconClick={()=>{}}
+            handleX2IconClick={()=>{}}
+            handleHelpIconClick={()=>{}}
           />
 
         {questionType == 1 && availableAnswers.map((answer, index) => (
@@ -195,7 +193,7 @@ function HostConsole() {
       ))}
 
       { showResults && (
-        <Results results={results} classificationData={classificationData} questionType={questionType} availableAnswers={availableAnswers} />
+        <Results results={results} classificationData={classificationData} />
       )}
 
     </div>

@@ -1,34 +1,23 @@
-import React, { Suspense } from 'react';
+import React, { useEffect } from 'react';
+import { useSelector } from "react-redux";
 
 import PowerSelector from './PowerSelector';
 
 import './questionBox.css';
 
+
+
 function QuestionBox({
-  question, image, showImage, hasAnswered,
-
-  ghostIconClicked,
-  ghostPowerAvailableBonuses,
+  showImage,
   handleGhostIconClick,
-
-  x2IconClicked,
-  x2PowerAvailableBonuses,
   handleX2IconClick,
-
-  helpIconClicked,
-  helpPowerAvailableBonuses,
   handleHelpIconClick,
-
-  isGhostIconGlowing,
-  isHelpIconGlowing,
-  isX2IconGlowing,
-
-  setIsGhostIconGlowing,
-  setIsHelpIconGlowing,
-  setIsX2IconGlowing,
 }) {
-  
-  const imagePath = image ? `/assets/images/questionImages/${image}.png` : null;
+
+  const questionData = useSelector(state => state.questionData);
+  const bonusData = useSelector(state => state.bonusData);
+
+  const imagePath = questionData.image ? `/assets/images/questionImages/${questionData.image}.png` : null;
 
   return (
     <div className="question-box" >
@@ -36,15 +25,13 @@ function QuestionBox({
         { showImage && imagePath && <img className="question-image" src={imagePath} alt="question" /> }
         { showImage && (
           <PowerSelector
-            ghostIconClicked={ghostIconClicked} ghostPowerAvailableBonuses={ghostPowerAvailableBonuses} handleGhostIconClick={handleGhostIconClick}
-            x2IconClicked={x2IconClicked} x2PowerAvailableBonuses={x2PowerAvailableBonuses} handleX2IconClick={handleX2IconClick}
-            helpIconClicked={helpIconClicked} helpPowerAvailableBonuses={helpPowerAvailableBonuses} handleHelpIconClick={handleHelpIconClick}
-            isGhostIconGlowing={isGhostIconGlowing} isHelpIconGlowing={isHelpIconGlowing} isX2IconGlowing={isX2IconGlowing}
-            setIsGhostIconGlowing={setIsGhostIconGlowing} setIsHelpIconGlowing={setIsHelpIconGlowing} setIsX2IconGlowing={setIsX2IconGlowing}
+            handleGhostIconClick={handleGhostIconClick}
+            handleX2IconClick={handleX2IconClick}
+            handleHelpIconClick={handleHelpIconClick}
           />
         )}
       </div>
-      <h1 className="question-text lead">{question}</h1>
+      <h1 className="question-text lead">{questionData.question}</h1>
     </div>
   );
 }

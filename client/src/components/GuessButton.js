@@ -6,7 +6,7 @@ import answer_icon from '../assets/images/answer_icon.png';
 
 
 
-function GuessButton({ onClickFunction }) {
+function GuessButton() {
 
   const [currentImage, setCurrentImage] = useState(answer_icon);
 

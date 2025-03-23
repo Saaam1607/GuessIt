@@ -1,0 +1,11 @@
+@keyframes shadow-rotate {
+    0% { box-shadow: 0px 0 15px rgba(0, 0, 0, 0.0); }
+    60% { box-shadow: 0px 0 15px rgba(0, 0, 0, 0.0); }
+    80% { box-shadow: 0px 0 15px rgba(0, 0, 0, 0.6); }
+    0% { box-shadow: 0px 0 15px rgba(0, 0, 0, 0.0); }
+}
+
+.info-button {
+    animation: shadow-rotate 3s linear infinite;
+    border-radius: 50%;
+}

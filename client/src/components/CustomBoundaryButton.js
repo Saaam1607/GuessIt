@@ -1,18 +1,34 @@
 import React from 'react';
+import { useSelector } from "react-redux";
 
 import "./customFont.css";
 import "./boundaryButton.css";
 
 
 
-function CustomBoundaryButton({ isMin, message, helperUsed, prevMessage, color }) {
+function CustomBoundaryButton({ isMin, helperUsed, color }) {
 
-  const messageToDisplay = helperUsed ? prevMessage : message;
+  const questionData = useSelector(state => state.questionData);
+
+  let message = isMin? questionData.min : questionData.max;
+  let bonusMessage = isMin? questionData.bonusMin : questionData.bonusMax;
+
+  console.log("message: ", message);
+  console.log("bonusMessage: ", bonusMessage);
 
   return (
     <div className={`boundary-container ${isMin? 'min' : 'max'}  ${helperUsed? 'gold' : ''}`}>
-      <p className={`${helperUsed ? 'crossed' : ''}`} >{messageToDisplay}</p>
-      {helperUsed && ( <p className="helper" >{message}</p> )}
+      {helperUsed ? (
+        <>
+          <p className='crossed'>{message}</p>
+          <p className="helper" >{bonusMessage}</p>
+        </>
+      ) : (
+        <p>{message}</p>
+      )}
+
+
+
     </div>
   );
 

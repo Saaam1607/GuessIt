@@ -104,28 +104,34 @@ function updateQuestionIndex() {
   }
 }
 
-function ioEmitNextQuestion(channel) {
+function emitNextQuestion(channel) {
   var questionType = getCurrentQuestionType();
   switch (questionType) {
     case 0:
-      channel.emit("nextQuestion", {questionType: questionType, question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit(), image: getCurrentImagePath()});
+      const {suggestedMin, suggestedMax} = helperManager.computeSuggestedMinAndManx(getCurrentAnswer(), getCurrentMin(), getCurrentMax(), getCurrentStep());
+      channel.emit("nextQuestion", {
+        questionType: questionType,
+        question: getCurrentQuestion(),
+        min: getCurrentMin(),
+        max: getCurrentMax(),
+        bonusMin: suggestedMin,
+        bonusMax: suggestedMax,
+        step: getCurrentStep(),
+        unit: getCurrentUnit(),
+        image: getCurrentImagePath(),
+        explanation: getCurrentExplanation()
+      });
       break;
     case 1: 
-      channel.emit("nextQuestion", {questionType: questionType, question: getCurrentQuestion(), availableAnswers: getAvailableAnswers(), image: getCurrentImagePath()});
-      break;
-    default:
-      break;
-  }
-}
-
-function socketEmitNextQuestion(socket) {
-  var questionType = getCurrentQuestionType();
-  switch (questionType) {
-    case 0:
-      socket.emit("nextQuestion", {questionType: questionType, question: getCurrentQuestion(), min: getCurrentMin(), max: getCurrentMax(), step: getCurrentStep(), unit: getCurrentUnit(), image: getCurrentImagePath()});
-      break;
-    case 1: 
-      socket.emit("nextQuestion", {questionType: questionType, question: getCurrentQuestion(), availableAnswers: getAvailableAnswers(), image: getCurrentImagePath()});
+      const fakeAnswers = helperManager.getFakeAnswers(getAvailableAnswers(), getCurrentAnswer());
+      channel.emit("nextQuestion", {
+        questionType: questionType,
+        question: getCurrentQuestion(),
+        availableAnswers: getAvailableAnswers(),
+        fakeAnswers: fakeAnswers,
+        image: getCurrentImagePath(),
+        explanation: getCurrentExplanation()
+      });
       break;
     default:
       break;
@@ -235,12 +241,12 @@ io.on("connection", (socket) => {
     io.emit("answersStatus", { answersStatus: playerManager.getAnswersStatus() });
 
     if (gameStarted) {
-      ioEmitNextQuestion(socket);
+      emitNextQuestion(socket);
     }
   });
 
   socket.on("startGame", (data) => {
-    ioEmitNextQuestion(io);
+    emitNextQuestion(io);
     gameStarted = true;
   });
 
@@ -325,7 +331,7 @@ io.on("connection", (socket) => {
     updateQuestionIndex();
     const answer = getCurrentAnswer();
     playerManager.resetLastPlayersAnswers();
-    ioEmitNextQuestion(io);
+    emitNextQuestion(io);
     io.emit("nextAnswer", {answer: answer});
   });
 
@@ -336,7 +342,7 @@ io.on("connection", (socket) => {
 
   socket.on("getQuestion", (data) => {
     const answer = getCurrentAnswer();
-    socketEmitNextQuestion(socket);
+    emitNextQuestion(socket);
     io.emit("nextAnswer", {answer: answer});
   });
 
@@ -411,7 +417,7 @@ io.on("connection", (socket) => {
     });
     resultsData = resultsData.filter(player => (player.answer !== "" && player.answer !== null));
 
-    io.emit("results", { playersAnswersData: resultsData, explanation: getCurrentExplanation() });
+    io.emit("results", { playersAnswersData: resultsData });
   });
 
   socket.on("hurryUp", (data) => {

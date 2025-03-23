@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from "react-redux";
+
 import ConfettiExplosion from "react-confetti-explosion";
 import { VerticalTimeline, VerticalTimelineElement }  from 'react-vertical-timeline-component';
 
@@ -46,19 +48,28 @@ function getImageFromCharacterIndex(characterIndex) {
   }
 }
 
+function Results() {
 
-
-  
-
-
-
-function Results({ results, classificationData, questionType, availableAnswers, explanation }) {
+  const questionData = useSelector(state => state.questionData);
+  const resultsData = useSelector(state => state.resultsData.playersAnswersData);
 
   const [rightAnswer, setRightAnswer] = useState(null);
   const [isExploding, setIsExploding] = useState(false);
   const [isResultShowing, setIsResultShowing] = useState(true);
 
   const [isInfoExpanded, setIsInfoExpanded] = React.useState(false);
+
+  const [isInfoVisible, setIsInfoVisible] = React.useState(false);
+
+  useEffect(() => {
+    if (questionData.explanation) {
+      setTimeout(() => {
+        setIsInfoVisible(true);
+      }
+      , 1000);
+    }
+
+  }, [questionData]);
 
   function handleInfoClick() {
     setIsInfoExpanded((prev) => !prev);
@@ -97,7 +108,7 @@ function Results({ results, classificationData, questionType, availableAnswers, 
 
 
   useEffect(() => {
-    results.forEach((playerData) => {
+    resultsData.forEach((playerData) => {
       if (playerData.playerId == localStorage.getItem("playerId") && playerData?.hasWon == true) {
         setTimeout(() => {
           setIsExploding(true);
@@ -107,7 +118,7 @@ function Results({ results, classificationData, questionType, availableAnswers, 
         setRightAnswer(playerData.answer);
       }
     })
-  }, [results]);
+  }, [resultsData]);
 
 
   return (
@@ -119,7 +130,9 @@ function Results({ results, classificationData, questionType, availableAnswers, 
         </div>
       )}
 
-      {explanation && (
+
+
+      {/* {explanation && (
         <div className={`info-panel ${isInfoExpanded ? 'expanded' : ''}`}>
           <div className="info-button-container" >
             <InfoButton icon={"bi bi-info-circle-fill"} color={"rgb(87, 169, 221)"} onClick={handleInfoClick}/>
@@ -131,7 +144,7 @@ function Results({ results, classificationData, questionType, availableAnswers, 
             <p dangerouslySetInnerHTML={{ __html: explanation.replace(/\n/g, '<br />') }} />
           </div>
         </div>
-      )}
+      )} */}
       
       <div className={`panel ${isResultShowing ? "" : "flipped"}`}>
 
@@ -150,20 +163,20 @@ function Results({ results, classificationData, questionType, availableAnswers, 
               <div className="choice-answer-box-container" >
 
                 {/* MULTIPLE CHOICE */}
-                {questionType == 1 && ( 
-                  availableAnswers.map((answer, index) => (
-                    <div className="d-flex flex-column" style={{width:"48%"}}>
+                {questionData.questionType == 1 && ( 
+                  questionData.availableAnswers.map((answer, index) => (
+                    <div className="d-flex flex-column" style={{width:"48%"}} key={index}>
                       <ChoiceAnswerCard
                         key={index}
-                        answer={answer.answer} 
+                        answer={answer.answer}
                         isSelected={false}
                         isHidden={false}
                         isWinning={rightAnswer == answer.answer}
                         clickFunction={() => {}}
                       />
-                      {results.map((playerAnswerData, index) => 
+                      {resultsData.map((playerAnswerData, index) => 
                         !playerAnswerData.isAnswer && playerAnswerData.answer == answer.answer && (
-                          <div className="d-flex align-items-center">
+                          <div className="d-flex align-items-center" key={index}>
                             <p key={index} className="m-0 ms-2 me-2" style={{ color: "black" }}>
                               {playerAnswerData.name}
                             </p>
@@ -190,12 +203,12 @@ function Results({ results, classificationData, questionType, availableAnswers, 
                 )} 
 
                 {/* MULTIPLE CHOICE */}
-                {questionType == 0 && (
+                {questionData.questionType == 0 && (
                   <div className="d-flex flex-column">
 
                     <VerticalTimeline layout="1-column-left" lineColor="black">
 
-                      {results.map((answer, index) =>
+                      {resultsData.map((answer, index) =>
                         answer.isAnswer ? (
                           <VerticalTimelineElement
                             className="vertical-timeline-element--work m-0 mb-3"
@@ -253,9 +266,9 @@ function Results({ results, classificationData, questionType, availableAnswers, 
             </div>
 
             <div className="results-body">
-              {classificationData.map((playerData, index) => (
+              {resultsData.map((playerData, index) => (
                 playerData?.active && playerData.name && (
-                  <div className="m-2 px-4" style={{width: "100%"}}>
+                  <div className="m-2 px-4" style={{width: "100%"}} key={index}>
                     <ClassificationUserCard
                       image={getImageFromCharacterIndex(playerData.characterIndex)}
                       name={playerData.name}
@@ -270,6 +283,22 @@ function Results({ results, classificationData, questionType, availableAnswers, 
           </div>
 
         </div>
+
+        <div
+          style={{
+            position: "absolute",
+            width: "fit-content",
+            height: "fit-content",
+            bottom: "10svh",
+            right: "0",
+            overflowX: 'hidden',
+        }}>
+          <div className={"info-button-container" + (isInfoVisible ? " visible" : "")} >           
+           <InfoButton icon={"bi bi-info-circle-fill"} color={"rgb(87, 169, 221)"} onClick={handleInfoClick}/>
+          </div>
+        </div>
+
+
       </div>
     </>
   );

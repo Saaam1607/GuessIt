@@ -1,4 +1,6 @@
 import React, {useState} from 'react';
+import { useSelector } from 'react-redux';
+
 import { Modal, Button } from "react-bootstrap";
 
 import './buttonAnimation.css';
@@ -7,8 +9,9 @@ const ghost_icon = require('../assets/images/ghost_icon.png');
 
 
 
-function GhostModal({ ghostData, playerId, showGhostModal, setShowGhostModal, handleSendGhost }) {
+function GhostModal({ playerId, handleSendGhost }) {
   
+  const ghostData = useSelector((state) => state.ghostData);
 
   const [selectedPlayerId, setSelectedPlayerId] = useState(null);
 
@@ -20,13 +23,10 @@ function GhostModal({ ghostData, playerId, showGhostModal, setShowGhostModal, ha
 
   return (
     <>
-      {ghostData.length > 0 && (
-        <Modal show={showGhostModal}>
-          {/* <Modal.Header closeButton>
-            <Modal.Title>Login Form</Modal.Title>
-          </Modal.Header> */}
+      {ghostData.ghostData.length > 0 && (
+        <Modal show={ghostData.showGhostModal}>
           <Modal.Body className="d-flex flex-column align-items-center">
-          {ghostData.map((player) => (
+          {ghostData.ghostData.map((player) => (
               <div key={player.playerId} className="mb-2">
                 <button
                   className={`px-6 py-2 ${selectedPlayerId == player.playerId ? 'glow-on-hover' : ''}`}

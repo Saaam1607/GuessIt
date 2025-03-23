@@ -7,17 +7,11 @@ const circle = require('../assets/images/circle.png');
 function Power({
   powerAvailableBonuses,
   isIconClicked, handleIconClick,
-  isIconGlowing, setIsIconGlowing,
+  isIconGlowing,
   backgroundColor, image,
 }) {
 
-  useEffect(() => {
-    if (isIconGlowing == true) {
-      setTimeout(() => {
-        setIsIconGlowing(false);
-      }, 750);
-    }
-  }, [isIconGlowing]);
+
 
   return (
       <div className={`power-container ${isIconClicked ? 'box' : 'empty-box'} ${isIconGlowing ? 'glow' : ''}`} style={{ backgroundColor: `${backgroundColor}` }}  >

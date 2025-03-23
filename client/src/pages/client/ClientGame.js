@@ -1,17 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useSelector } from "react-redux";
 import { useLocation, useNavigate } from 'react-router-dom';
+
+import { createStore } from "redux";
 
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 import CustomButton from "../../components/CustomButton.js";
-import CustomBoundaryButton from "../../components/CustomBoundaryButton.js";
 
 import AnswerBox from "../../components/AnswerBox.js";
 import ChoiceAnswerBox from "../../components/ChoiceAnswerBox.js";
 
 import QuestionBox from "../../components/QuestionBox.js";
-import PowerSelector from "../../components/PowerSelector.js";
 import GhostModal from "../../components/GhostModal.js";
 import Results from "../../components/Results.js";
 import Classification from "../../components/Classification.js";
@@ -20,11 +21,18 @@ import AnswersStatus from "../../components/AnswersStatus.js";
 
 import socket from "../../assets/modules/socket";
 
+// REDUX
+import { useDispatch } from "react-redux";
+import { setQuestionData } from "../../redux/actions/questionDataActions.js";
+import { resetAnswerData, setAnswer, setHasAnswered, setGhostBonusUsed, setX2BonusUsed, setHelpBonusUsed } from "../../redux/actions/answerDataActions.js";
+import { setBonusData } from "../../redux/actions/bonusDataActions.js";
+import { setResultsData, showResults, hideResults } from "../../redux/actions/resultsDataActions.js";
+import { setGhostData, resetGhostData, showGhostModal, hideGhostModal } from "../../redux/actions/ghostDataActions.js";
+
+// CSS 
 import './clientGame.css';
 
 const SoundManager = require('../../components/SoundManager.js');
-
-
 
 const ghost_icon = require('../../assets/images/ghost_icon.png');
 const x2_icon = require('../../assets/images/x2_icon.png');
@@ -33,63 +41,20 @@ const win_icon = require('../../assets/images/win_icon.png');
 
 
 
-
 function ClientGame() {
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const [questionType, setQuestionType] = useState("");
+  const questionData = useSelector(state => state.questionData);
+  const answerData = useSelector(state => state.answerData);
+  const bonusData = useSelector(state => state.bonusData);
+  const resultsData = useSelector(state => state.resultsData);
+  const ghostData = useSelector(state => state.ghostData);
 
-  const [question, setQuestion] = useState("");
-  const [image, setImage] = useState("");
-
-  const [min, setMin] = useState(0);
-  const [max, setMax] = useState(0);
-  const [step, setStep] = useState(0);
-  const [unit, setUnit] = useState("");
-  const [answer, setAnswer] = useState("");
-  const [hasAnswered, setHasAnswered] = useState(false);
-
-  const [previousMinMax, setPreviousMinMax] = useState({ min: 0, max: 0 });
-  const [fakeAnswers, setFakeAnswers] = useState([]);
-
-  const [availableAnswers, setAvailableAnswers] = useState([]);
-
-  const hasAnsweredRef = useRef(hasAnswered);
-
+  // WIP
   const [activePlayersCount, setActivePlayersCount] = useState(0);
   const [answersCount, setAnswersCount] = useState(0);
-
-  const [showResults, setShowResults] = useState(false);
-  const [showClassification, setShowClassification] = useState(false);
-
-  const [results, setResults] = useState([]);
-  const [classificationData, setClassificationData] = useState([]);
-  const [explanation, setExplanation] = useState("");
-
-  const [ghostPowerAvailableBonuses, setGhostPowerAvailableBonuses] = useState(0);
-  const [helpPowerAvailableBonuses, setHelpPowerAvailableBonuses] = useState(0);
-  const [x2PowerAvailableBonuses, setX2PowerAvailableBonuses] = useState(0);
-
-  const [ghostIconClicked, setGhostIconClicked] = useState(false);
-  const [helpIconClicked, setHelpIconClicked] = useState(false);
-  const [x2IconClicked, setX2IconClicked] = useState(false);
-
-  const [isGhostIconGlowing, setIsGhostIconGlowing] = useState(false);
-  const [isHelpIconGlowing, setIsHelpIconGlowing] = useState(false);
-  const [isX2IconGlowing, setIsX2IconGlowing] = useState(false);
-
-  const [showGhostModal, setShowGhostModal] = useState(false);
-  const [ghostData, setGhostData] = useState([]);
-  const [ghostResponse, setGhostResponse] = useState(null);
-  
-
-
-  useEffect(() => {
-    hasAnsweredRef.current = hasAnswered;
-  }, [hasAnswered]);
-
-
 
   function joinGame() {
     socket.emit("join", { name: "", playerId: localStorage.getItem('playerId'), characterIndex: localStorage.getItem('characterIndex') });
@@ -108,15 +73,17 @@ function ClientGame() {
   }
 
   function sendAnswer() {
-    if (hasAnswered) {
+
+    if (answerData.hasAnswered) {
       return;
     }
 
-    if (answer === undefined || answer === "") {
+    if (answerData.answer === undefined || answerData.answer === "") {
       return;
     }
-    setHasAnswered(true);
-    socket.emit("newAnswer", { playerId: localStorage.getItem('playerId'), answer: answer, hasUsedX2: x2IconClicked, hasUsedHelp: helpIconClicked, hasUsedGhost: ghostIconClicked});
+
+    dispatch(setHasAnswered(true));
+    socket.emit("newAnswer", { playerId: localStorage.getItem('playerId'), answer: answerData.answer, hasUsedX2: answerData.x2BonusUsed, hasUsedHelp: answerData.helpBonusUsed, hasUsedGhost: answerData.ghostBonusUsed});
     SoundManager.playAnswerSentSound();
   }
 
@@ -129,7 +96,7 @@ function ClientGame() {
     var nearestValue = Math.round(middleValue / step) * step;
     nearestValue = Math.min(max, Math.max(min, nearestValue));
 
-    setAnswer(nearestValue);
+    dispatch(setAnswer(nearestValue));
   }
 
   function showGhostResponseSwal(response) {
@@ -158,19 +125,19 @@ function ClientGame() {
     
 
   function handleClockSound() {
-    if (!hasAnsweredRef.current) {
+    if (!answerData.hasAnswered) {
       SoundManager.playClockSound();
     }
   }
 
   function handleExtremeClockSound() {
-    if (!hasAnsweredRef.current) {
+    if (!answerData.hasAnswered) {
       SoundManager.playExtremeClockSound();
     }
   }
 
   function handleGhostIconClick() {
-    if (ghostPowerAvailableBonuses && !ghostIconClicked && !hasAnswered) {
+    if (bonusData.ghostBonusesAvailable && !answerData.ghostBonusUsed && !answerData.hasAnswered) {
       SoundManager.playPowerSelection();
       SoundManager.playGhost();
       socket.emit("ghost", {});
@@ -178,7 +145,7 @@ function ClientGame() {
   }
 
   function handleHelpIconClick() {
-    if (helpPowerAvailableBonuses && !helpIconClicked && !hasAnswered) {
+    if (bonusData.helpBonusesAvailable && !answerData.helpBonusUsed && !answerData.hasAnswered) {
       SoundManager.playPowerSelection();
       socket.emit("help", { playerId: localStorage.getItem('playerId') });
     }
@@ -187,23 +154,20 @@ function ClientGame() {
 
   function handleMinMaxSuggest(data) {
     SoundManager.playHelp();
-    setHelpIconClicked(true);
-    setMin(data.suggestedMin);
-    setMax(data.suggestedMax);
-    computeTempAnswer(data.suggestedMin, data.suggestedMax, data.step);
+    dispatch(setHelpBonusUsed(true));
+    computeTempAnswer(data.suggestedMin, data.suggestedMax, data.step); //!
   }
 
   function handleFakeAnswersSuggest(data) {
     SoundManager.playHelp();
-    setHelpIconClicked(true);
-    setFakeAnswers(data.fakeAnswers);
+    dispatch(setHelpBonusUsed(true));
   }
 
   function handleX2IconClick() {
-    if (x2PowerAvailableBonuses && !x2IconClicked && !hasAnswered) {
+    if (bonusData.x2BonusesAvailable && !answerData.x2BonusUsed && !answerData.hasAnswered) {
       SoundManager.playPowerSelection();
       SoundManager.playX2();
-      setX2IconClicked(true);
+      dispatch(setX2BonusUsed(true));
     }
   }
 
@@ -220,12 +184,9 @@ function ClientGame() {
     getBonus();
 
     function handleNextQuestion(data) {
-      
-      setAnswer("");
 
-      setQuestionType(data.questionType);
-      setQuestion(data.question);
-      setImage(data.image);
+      dispatch(resetAnswerData());
+      dispatch(setQuestionData(data));
 
       switch (data.questionType) {
         case 0:
@@ -235,11 +196,6 @@ function ClientGame() {
             showConfirmButton: false,
             timer: 1500,
           })
-          setMin(data.min);
-          setMax(data.max);
-          setPreviousMinMax({ min: data.min, max: data.max });
-          setStep(data.step);
-          setUnit(data.unit);
           computeTempAnswer(data.min, data.max, data.step);
           break;
         case 1:
@@ -249,21 +205,14 @@ function ClientGame() {
             showConfirmButton: false,
             timer: 1500,
           })
-          setAvailableAnswers(data.availableAnswers);
           break;
         default:
           break;
       }
 
-      setHasAnswered(false);
-      setShowResults(false);
-      setShowClassification(false);
+      dispatch(hideResults());
 
-      setGhostIconClicked(false);
-      setHelpIconClicked(false);
-      setX2IconClicked(false);
-
-      setGhostData([]);
+      dispatch(resetGhostData());
 
       SoundManager.playNewQuestionSound();
 
@@ -272,32 +221,19 @@ function ClientGame() {
     }
 
     function handleResults(data) {
-      setHasAnswered(true);
-      setResults(data.playersAnswersData);
-      setExplanation(data.explanation);
-      setClassificationData(data.playersAnswersData);
-      setShowClassification(false);
-      setShowResults(true);
+      dispatch(setResultsData(data.playersAnswersData));
+      // setResults(data.playersAnswersData);
+      dispatch(showResults());
       SoundManager.playResults();
     }
 
     function handleBonus(data) {
-      if (data.powerIndex == 0)
-      {
-        setIsGhostIconGlowing(true);
-      }
-      else if (data.powerIndex == 1)
-      {
-        setIsHelpIconGlowing(true);
-      } 
-      else if (data.powerIndex == 2)
-      {
-        setIsX2IconGlowing(true);
-      }
-
-      setGhostPowerAvailableBonuses(data.ghostAvailableBonuses);
-      setHelpPowerAvailableBonuses(data.helpAvailableBonuses);
-      setX2PowerAvailableBonuses(data.x2AvailableBonuses);
+      dispatch(setBonusData({
+        ghostBonusesAvailable: data.ghostAvailableBonuses,
+        x2BonusesAvailable: data.x2AvailableBonuses,
+        helpBonusesAvailable: data.helpAvailableBonuses,
+        lastBonusAddedIndex: data.powerIndex,
+      }));
     }
 
     function handleGhostData(data) {
@@ -311,27 +247,25 @@ function ClientGame() {
         return;
       }
 
-      setGhostIconClicked(true);
-      setGhostData(playersData);
-      setShowGhostModal(true);
+      dispatch(setGhostBonusUsed(true));
+      dispatch(setGhostData(playersData));
+      dispatch(showGhostModal());
     }
 
     function handleGhostAnswer(data) {
-      setGhostResponse(data.playerResponse);
       showGhostResponseSwal(data.playerResponse);
-      setShowGhostModal(false);
+      dispatch(hideGhostModal());
     }
 
     function handleGhostAnswerNotReady(data) {
       showGhostResponseNotReadySwal();
-      setGhostIconClicked(false);
-      setShowGhostModal(false);
+      dispatch(setGhostBonusUsed(false));
+      dispatch(hideGhostModal());
     }
 
     function handleHasAnswered(data) {
       if (data.hasAnswered) {
-        setAnswer(data.response);
-        setHasAnswered(true);
+        dispatch(setAnswer(data.response));
       }
     }
 
@@ -429,10 +363,7 @@ function ClientGame() {
       >
 
         <GhostModal
-          ghostData={ghostData}
           playerId={localStorage.getItem('playerId')}
-          showGhostModal={showGhostModal}
-          setShowGhostModal={setShowGhostModal}
           handleSendGhost={handleSendGhost}
         />
 
@@ -442,15 +373,13 @@ function ClientGame() {
         >
 
           <QuestionBox
-            question={question} image={image} showImage={!showResults && !showClassification} hasAnswered={hasAnswered}
-            ghostIconClicked={ghostIconClicked} ghostPowerAvailableBonuses={ghostPowerAvailableBonuses} handleGhostIconClick={handleGhostIconClick}
-            x2IconClicked={x2IconClicked} x2PowerAvailableBonuses={x2PowerAvailableBonuses} handleX2IconClick={handleX2IconClick}
-            helpIconClicked={helpIconClicked} helpPowerAvailableBonuses={helpPowerAvailableBonuses} handleHelpIconClick={handleHelpIconClick}
-            isGhostIconGlowing={isGhostIconGlowing} isHelpIconGlowing={isHelpIconGlowing} isX2IconGlowing={isX2IconGlowing}
-            setIsGhostIconGlowing={setIsGhostIconGlowing} setIsHelpIconGlowing={setIsHelpIconGlowing} setIsX2IconGlowing={setIsX2IconGlowing}
+            showImage={!resultsData.showResults}
+            handleGhostIconClick={handleGhostIconClick}
+            handleX2IconClick={handleX2IconClick}
+            handleHelpIconClick={handleHelpIconClick}
           />
 
-          { !hasAnswered && !showResults && !showClassification && (
+          { !answerData.hasAnswered && !resultsData.showResults && (
             <form
               className="d-flex flex-column align-items-center justify-content-around"
               style={{ width: "100%", height: "100%"}}
@@ -460,25 +389,15 @@ function ClientGame() {
               }}
             >
 
-              { questionType === 0 && (
+              { questionData.questionType === 0 && (
                 <div className="d-flex justify-content-center align-items-center" style={{ width: "100%" }}>
-                  <AnswerBox
-                    answer={answer} setAnswer={setAnswer} sendAnswer={sendAnswer}
-                    min={min} max={max} step={step}
-                    helpIconClicked={helpIconClicked}
-                    prevMin={previousMinMax.min} prevMax={previousMinMax.max}
-                  />
+                  <AnswerBox/>
                 </div>
               )}
               
-              { questionType === 1 && (
+              { questionData.questionType === 1 && (
                 <div className="d-flex justify-content-center align-items-center" style={{ width: "100%" }}>
-                  <ChoiceAnswerBox
-                    answer={answer} setAnswer={setAnswer} sendAnswer={sendAnswer}
-                    availableAnswers={availableAnswers}
-                    fakeAnswers={fakeAnswers}
-                    helpIconClicked={helpIconClicked}
-                  />
+                  <ChoiceAnswerBox/>
                 </div>
               )}
 
@@ -492,18 +411,12 @@ function ClientGame() {
             </form>
           )}
 
-          { hasAnswered && !showResults && !showClassification && (
+          { answerData.hasAnswered && !resultsData.showResults && (
             <p>Aspettando le risposte degli altri giocatori...</p>
           )}
 
-          { showResults && (
-            <Results
-              results={results}
-              classificationData={classificationData}
-              questionType={questionType}
-              availableAnswers={availableAnswers}
-              explanation={explanation}
-            />
+          { resultsData.showResults && (
+            <Results />
           )}
 
         </div>
